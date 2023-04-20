@@ -21,6 +21,28 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
+    <style>
+        * {
+            scrollbar-width: auto;
+            scrollbar-color: #ebebeb #ffffff;
+        }
+
+        /* Chrome, Edge, and Safari */
+        *::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background-color: #ebebeb;
+            border-radius: 10px;
+            border: 3px solid #ffffff;
+        }
+    </style>
+
 </head>
 
 <body>

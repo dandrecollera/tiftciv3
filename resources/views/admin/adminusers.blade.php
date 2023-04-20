@@ -6,10 +6,11 @@
         <div class="col">
             <h1>Admin User</h1>
         </div>
-        <div class="col-sm-3 text-end">
-            <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Admin User</button>
-        </div>
+    </div>
+    <div class="">
+        <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Admin
+            User</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -35,16 +36,18 @@
     </div>
     @endif
     <div class="row">
-        <div class="col">
+        <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    {!!$page_first_url!!}
-                    {!!$page_prev_url!!}
-                    <span class="input-group-text bg-success-subtle" id="basic-addon3">Page {{$page}} of {{$totalpages}}
-                        ({{$totalitems}} Total)</span>
-                    {!!$page_next_url!!}
-                    {!!$page_last_url!!}
-
+                    <input type="text" name="keyword" class="form-control bg-success-subtle"
+                        value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
+                        aria-label="Keyword Search" aria-describedby="basic-addon2" required>
+                    <button class="btn btn-success" type="submit">Go</button>
+                    @if (!empty($keyword))
+                    <a class="btn btn-primary" href="/adminusers" role="button">Reset</a>
+                    @endif
+                </div>
+                <div class="input-group mb-3">
                     <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{$lpp}} Items</button>
                     <ul class="dropdown-menu">
@@ -71,21 +74,14 @@
                         <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
                         @endforeach
                     </ul>
-
-                    <input type="text" name="keyword" class="form-control bg-success-subtle"
-                        value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
-                        aria-label="Keyword Search" aria-describedby="basic-addon2" required>
-                    <button class="btn btn-success" type="submit">Go</button>
-                    @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminuser" role="button">Reset Search</a>
-                    @endif
                 </div>
+
             </form>
         </div>
 
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col overflow-scroll scrollable-container">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -104,7 +100,6 @@
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}">Middle
                                 Name</span></th>
-                        <th scope="col">Type</th>
                         <th scope="col">Status</th>
                         <th scope="col">Options</th>
                     </tr>
@@ -117,7 +112,6 @@
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
-                        <td>{{$dbr->accounttype}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group">
@@ -139,6 +133,13 @@
 
                 </tbody>
             </table>
+        </div>
+        <div class="input-group mb-4">
+            {!!$page_first_url!!}
+            {!!$page_prev_url!!}
+            <span class="input-group-text bg-success-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            {!!$page_next_url!!}
+            {!!$page_last_url!!}
         </div>
     </div>
 </div>
@@ -166,7 +167,7 @@
 
 @endsection
 
-@push('jscripts')
+@push('jsscripts')
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -179,6 +180,7 @@
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
+        console.log(iid);
         $('#addeditmodalLabel').html('Edit This Admin User');
         $('#addeditframe').attr('src', '/adminuser_edit?id='+iid+'{!!$qstring!!}');
     });

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -22,7 +23,7 @@ class AdminController extends Controller
     //-----------------------
     // Default variables
     //-----------------------
-    public $default_url_adminuser = "/adminuser";   //default return URL
+    public $default_url_adminuser = "/adminusers";   //default return URL
     public $default_lpp = 25;                       //default line per page
     public $default_start_page = 1;                 //default starting page
 
@@ -115,7 +116,7 @@ class AdminController extends Controller
             ->leftJoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->where('accounttype', 'admin');
         if (!empty($keyword)) {
-            //dbcounting with keyword
+
             $countdata = DB::table('main_users')->leftJoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')->where('accounttype', 'admin')
                 ->Where('main_users.email', 'like', "%$keyword%")
                 ->orWhere('main_users_details.firstname', 'like', "%$keyword%")
@@ -124,16 +125,7 @@ class AdminController extends Controller
                 ->orWhere('main_users_details.mobilenumber', 'like', "%$keyword%")
                 ->orWhere('main_users_details.address', 'like', "%$keyword%")
                 ->count();
-            /*
-            $dbdata->Where(function(Builder $query) {
-                $query->orWhere('main_users.email', $keyword)
-                    ->orWhere('main_users_details.firstname', $keyword)
-                    ->orWhere('main_users_details.lastname', $keyword)
-                    ->orWhere('main_users_details.middlename', $keyword)
-                    ->orWhere('main_users_details.mobilenumber', $keyword)
-                    ->orWhere('main_users_details.address', $keyword);
-            });
-            */
+
             $dbdata->Where('main_users.email', 'like', "%$keyword%");
             $dbdata->orWhere('main_users_details.firstname', 'like', "%$keyword%");
             $dbdata->orWhere('main_users_details.lastname', 'like', "%$keyword%");
@@ -158,35 +150,102 @@ class AdminController extends Controller
         //paging URL settings
         if ($page < 2) {
             //disabled URLS of first and previous button
-            $data['page_first_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-left"></i> </a>';
-            $data['page_prev_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-left"></i> </a>';
+            $data['page_first_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-left fa-xs"></i> </a>';
+            $data['page_prev_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-left fa-xs"></i> </a>';
         } else {
             $urlvar = $qstring; $urlvar['page'] = 1; //firstpage
-            $data['page_first_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-left"></i> </a>';
+            $data['page_first_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-left fa-xs"></i> </a>';
             $urlvar = $qstring; $urlvar['page'] = $urlvar['page'] - 1; // current page minus 1 for prev
-            $data['page_prev_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-left"></i> </a>';
+            $data['page_prev_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-left fa-xs"></i> </a>';
         }
         if ($page >= $data['totalpages']) {
             //disabled URLS on next and last button
-            $data['page_last_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-right"></i> </a>';
-            $data['page_next_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-right"></i> </a>';
+            $data['page_last_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-right fa-xs"></i> </a>';
+            $data['page_next_url'] = '<a class="btn btn-success disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-right fa-xs"></i> </a>';
         } else {
             $urlvar = $qstring; $urlvar['page'] = $data['totalpages']; //lastpage
-            $data['page_last_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-right"></i> </a>';
+            $data['page_last_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-right fa-xs"></i> </a>';
             $urlvar = $qstring; $urlvar['page'] = $urlvar['page'] + 1; //nest page
-            $data['page_next_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-right"></i> </a>';
+            $data['page_next_url'] = '<a class="btn btn-success" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-right fa-xs"></i> </a>';
         }
 
-
-        //$tosql = $dbdata->toSql(); print_r($tosql); die();
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
-        //echo "<pre>"; print_r($dbresult); echo "</pre>";
-        //print_r($countdata);
-
-        //query builder
-
-        //$tbluser = DB::table('main_users')->join('main_users_details', 'main_users_details.userid', '=', 'main_users.id');
 
         return view('admin.adminusers', $data);
     }
+
+
+    public function adminuser_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('admin.adminusers_add', $data);
+    }
+
+    public function adminuser_add_process(Request $request) {
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input(); print_r($input);
+        //error: required forms
+        if (empty($input['email']) || empty($input['password']) || empty($input['password2']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])) { return redirect($this->default_url_adminuser.'?e=1'); die(); }
+        //error: at least 8 chars long on password
+        if (strlen($input['password']) < 8) { return redirect($this->default_url_adminuser.'?e=2'); die(); }
+        //error: both password should be the same
+        if ($input['password'] != $input['password2']) { return redirect($this->default_url_adminuser.'?e=3'); die(); }
+        //check if email is existing
+        $chkemail = DB::table('main_users')->Where('email', $input['email'])->first();
+        if (!empty($chkemail->email)) { return redirect($this->default_url_adminuser.'?e=4'); die(); }
+        //echo "<pre>";print_r($chkemail); echo "</pre>";
+        //print_r($data);
+        $muserid = DB::table('main_users')->insertGetId([
+            'email' => $input['email'],
+            'password' => md5($input['password']),
+            'accounttype' => 'admin',
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString()
+        ]);
+
+        $photo = 'blank.jpg';
+        if($request->hasFile('image')){
+            $destinationPath = 'public/images';
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $path = $request->file('image')->storeAs($destinationPath,$imageName);
+
+            $photo = $imageName;
+        }
+
+        DB::table('main_users_details')->insert([
+            'userid' => $muserid,
+            'firstname' => $input['firstname'],
+            'lastname' => $input['lastname'],
+            'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
+            'mobilenumber' => !empty($input['mobilenumber']) ? $input['mobilenumber'] : '',
+            'address' => !empty($input['address']) ? $input['address'] : '',
+            'photo' => $photo,
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString()
+        ]);
+
+        return redirect($this->default_url_adminuser.'?n=1'); die();
+    }
+
+    public function adminuser_edit(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+        if(empty($query['id'])){
+            die('Error: Requirements are not complete');
+        }
+
+        $data['dbdata'] = $dbdata = DB::table('main_users')
+            ->select('main_users.*', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname', 'main_users_details.mobilenumber', 'main_users_details.address')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.accounttype', 'admin')
+            ->where('main_users.id', $query['id'])
+            ->first();
+
+        return view('admin.adminusers_edit', $data);
+    }
 }
+

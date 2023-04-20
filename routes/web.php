@@ -24,4 +24,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
     Route::get('/adminusers', [AdminController::class, 'adminuser'])->name('adminuser');
+    Route::get('/adminuser_add', [AdminController::class, 'adminuser_add'])->name('adminusersAddPage');
+    Route::post('/adminuser_add_process', [AdminController::class, 'adminuser_add_process'])->name('adminuserAddProcess');
+    Route::get('/adminuser_edit', [AdminController::class, 'adminuser_edit'])->name('adminuserEditPage');
+
 });

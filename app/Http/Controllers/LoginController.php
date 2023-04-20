@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LoginController extends Controller
 {
@@ -38,8 +39,7 @@ class LoginController extends Controller
         }
 
         $profile_pic = $userdata->photo;
-
-        $userkey = [$userdata->id,$userdata->firstname,$userdata->lastname,$userdata->middlename,$userdata->email,$userdata->accounttype,$userdata->photo,date('ymdHis')];
+        $userkey = [$userdata->id,$userdata->firstname,$userdata->middlename,$userdata->lastname,$userdata->email,$userdata->accounttype,$userdata->photo,date('ymdHis')];
         $user_id = encrypt(implode($userkey, ','));
         $request->session()->put('sessionkey', $user_id);
         session(['sessionkey' => $user_id]);
