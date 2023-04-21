@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controller\TeacherController;
+use App\Http\Controllers\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +34,5 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminuser_delete_process', [AdminController::class, 'adminuser_delete_process'])->name('adminuserDeleteProcess');
 
 
-
+    Route::get('/adminteachers', [TeacherController::class, 'teacheruser'])->name('teacheruser');
 });

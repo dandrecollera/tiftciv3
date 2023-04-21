@@ -10,7 +10,7 @@
     <a href="/adminusers" class="list-group-item list-group-item-action py-2">
         <span>Administrator</span>
     </a>
-    <a href="/teachers" class="list-group-item list-group-item-action py-2">
+    <a href="/adminteachers" class="list-group-item list-group-item-action py-2">
         <span>Teachers</span>
     </a>
 </div>
