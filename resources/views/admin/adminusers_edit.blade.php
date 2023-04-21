@@ -55,6 +55,7 @@
                 </select>
             </div>
 
+            <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>
             <br>
         </div>
@@ -81,6 +82,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>
             <br>
         </div>
@@ -90,15 +92,17 @@
     <hr>
 
     <form action="/adminuser_image_process" method="post" target="_parent" enctype="multipart/form-data">
+        @csrf
         <div class="container-fluid">
 
             <h4>Update Profile Picture</h4>
 
-            <label for="InputGroupFile01" class="form-label">Image:</label>
+            <label for="InputGroupFile01" class="form-label">Image: <span>{{ $dbdata->photo }}</span></label>
             <div class="input-group mb-3">
                 <input type="file" name="image" class="form-control" id="inputGroupFile01">
             </div>
 
+            <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>
 
         </div>
