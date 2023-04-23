@@ -23,7 +23,7 @@ class AdminController extends Controller
     //-----------------------
     // Default variables
     //-----------------------
-    public $default_url_adminuser = "/adminusers";   //default return URL
+    public $default_url_adminuser = "/adminuser";   //default return URL
     public $default_lpp = 25;                       //default line per page
     public $default_start_page = 1;                 //default starting page
 

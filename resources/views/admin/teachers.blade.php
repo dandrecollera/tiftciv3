@@ -4,12 +4,12 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Administrator</h1>
+            <h1>Teachers</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Admin
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Teacher
             User</button>
     </div>
     <hr>
@@ -44,7 +44,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-success" type="submit">Go</button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminusers" role="button">Reset</a>
+                    <a class="btn btn-primary" href="/adminteacher" role="button">Reset</a>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -122,7 +122,7 @@
                                     <li><a class="dropdown-item dcc_edit" href="#" data-id="{{$dbr->id}}"
                                             data-bs-toggle="modal" data-bs-target="#addeditmodal">Edit/View</a></li>
                                     <li><a class="dropdown-item"
-                                            href="/adminuser_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
+                                            href="/adminteacher_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
                                             onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');">Delete</a>
                                     </li>
                                 </ul>
@@ -172,19 +172,18 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Admin User');
-        $('#addeditframe').attr('src', '/adminuser_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New Teacher User');
+        $('#addeditframe').attr('src', '/adminteacher_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Admin User');
-        $('#addeditframe').attr('src', '/adminuser_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Edit This Teacher User');
+        $('#addeditframe').attr('src', '/adminteacher_edit?id='+iid+'{!!$qstring!!}');
     });
 });
-
 </script>
 
 @endpush

@@ -16,12 +16,12 @@ class TeacherController extends Controller
         $this->middleware('axuadmin'); //only admin can enter here
     }
 
-    public $default_url = '/adminteachers';
+    public $default_url = '/adminteacher';
     public $default_lpp = 25;
     public $default_start_page = 1;
     public $default_accounttype = 'teacher';
 
-    public function teacheruser(Request $request){
+    public function adminteacher(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -32,6 +32,7 @@ class TeacherController extends Controller
             4 => 'the email already existed, please try to check the user on the list.',
             5 => 'This user doed not exist',
             6 => 'status should only be Active or Inactive',
+            7 => 'No Image has been Uploaded',
         ];
 
         $data['error'] = 0;
@@ -43,7 +44,8 @@ class TeacherController extends Controller
             1 => 'New User has been saved.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
-            4 => 'User has been deleted.'
+            4 => 'User has been deleted.',
+            5 => 'Image has been updated'
         ];
         $data['notif'] = 0;
         if(!empty($_GET['n'])){
@@ -150,5 +152,249 @@ class TeacherController extends Controller
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
         return view('admin.teachers', $data);
+    }
+
+    public function adminteacher_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('admin.teachers_add', $data);
+    }
+
+    public function adminteacher_add_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $unserinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['email']) || empty($input['password']) || empty($input['password2']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+            return redirect($this->default_url.'?e=1');
+            die();
+        }
+
+        if(strlen($input['password']) < 8){
+            return redirect($this->default_url.'?e=2');
+            die();
+        }
+
+        if($input['password'] != $input['password2']){
+            return redirect($this->default_url.'?e=3');
+            die();
+        }
+
+        $checkemail = DB::table('main_users')
+            ->where('email', $input['email'])
+            ->first();
+        if(!empty($checkemail->email)){
+            return redirect($this->default_url.'?e=4');
+            die();
+        }
+
+        $muserid = DB::table('main_users')
+            ->insertGetID([
+                'email' => $input['email'],
+                'password' => md5($input['password']),
+                'accounttype' => 'teacher',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        $photo = 'blank.jpg';
+        if($request->hasFile('image')){
+            $destinationPath = 'public/images';
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $path = $request->file('image')->storeAs($destinationPath, $imageName);
+
+            $photo = $imageName;
+        }
+
+        DB::table('main_users_details')
+            ->insert([
+                'userid' => $muserid,
+                'firstname' => $input['firstname'],
+                'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
+                'lastname' => $input['lastname'],
+                'mobilenumber' => !empty($input['mobilenumber']) ? $input['mobilenumber'] : '',
+                'address' => !empty($input['address']) ? $input['address'] : '',
+                'photo' => $photo,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=1');
+    }
+
+    public function adminteacher_edit(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+        if(empty($query['id'])){
+            die('Error: Requirements are not complete');
+        }
+
+        $data['dbdata'] = $dbdata = DB::table('main_users')
+            ->select('main_users.*', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname', 'main_users_details.mobilenumber', 'main_users_details.address', 'main_users_details.photo')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.accounttype', $this->default_accounttype)
+            ->where('main_users.id', $query['id'])
+            ->first();
+
+        return view('admin.teachers_edit', $data);
+    }
+
+    public function adminteacher_edit_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['did']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+            return redirect($this->default_url.'?e=1');
+            die();
+        }
+
+        if($input['status'] != 'active' && $input['status'] != 'inactive'){
+            return redirect($this->default_url.'?e=6');
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5');
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->update([
+                'status' => $input['status'],
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'firstname' => $input['firstname'],
+                'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
+                'lastname' => $input['lastname'],
+                'mobilenumber' => !empty($input['mobilenumber']) ? $input['mobilenumber'] : '',
+                'address' => !empty($input['address']) ? $input['address'] : '',
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=2');
+
+    }
+
+    public function adminteacher_pass_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['did']) || empty($input['password']) || empty($input['password2'])){
+            return redirect($this->default_url.'?e=1');
+            die();
+        }
+
+        if(strlen($input['password']) < 8){
+            return redirect($this->default_url.'?e=2');
+            die();
+        }
+
+        if($input['password'] != $input['password2']){
+            return redirect($this->default_url.'?e=3');
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5');
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->update([
+                'password' => md5($input['password']),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=3');
+    }
+
+    public function adminteacher_image_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $input = $request->input();
+        $photo = DB::table('main_users_details')
+            ->select('main_users_details.photo')
+            ->where('userid', $input['did'])
+            ->first();
+
+        if($request->hasFile('image')){
+            $destinationPath = 'public/images';
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $path = $request->file('image')->storeAs($destinationPath, $imageName);
+
+            $photo = $imageName;
+        } else {
+            return redirect($this->default_url_adminuser.'?e=7');
+            die();
+        }
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'photo' => $photo,
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=5');
+    }
+
+    public function adminteacher_delete_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5&'.$qstring);
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->delete();
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->delete();
+
+        return redirect($this->default_url.'?n=4&'.$qstring);
     }
 }

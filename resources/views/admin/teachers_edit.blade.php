@@ -11,7 +11,7 @@
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/adminuser_edit_process" method="POST" target="_parent">
+    <form action="/adminteacher_edit_process" method="POST" target="_parent">
         @csrf
         <div class="container-fluid mb-4">
 
@@ -63,7 +63,7 @@
 
     <hr>
 
-    <form action="/adminuser_pass_process" method="POST" target="_parent">
+    <form action="/adminteacher_pass_process" method="POST" target="_parent">
         @csrf
         <div class="container-fluid mb-4">
 
@@ -91,7 +91,7 @@
 
     <hr>
 
-    <form action="/adminuser_image_process" method="post" target="_parent" enctype="multipart/form-data">
+    <form action="/adminteacher_image_process" method="post" target="_parent" enctype="multipart/form-data">
         @csrf
         <div class="container-fluid">
 

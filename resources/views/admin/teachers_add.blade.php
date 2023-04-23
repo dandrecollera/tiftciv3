@@ -12,7 +12,7 @@
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/adminuser_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/adminteacher_add_process" method="POST" target="_parent" enctype="multipart/form-data">
         @csrf
         <div class="container-fluid">
 

@@ -24,7 +24,7 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
-    Route::get('/adminusers', [AdminController::class, 'adminuser'])->name('adminuser');
+    Route::get('/adminuser', [AdminController::class, 'adminuser'])->name('adminuser');
     Route::get('/adminuser_add', [AdminController::class, 'adminuser_add'])->name('adminusersAddPage');
     Route::post('/adminuser_add_process', [AdminController::class, 'adminuser_add_process'])->name('adminuserAddProcess');
     Route::get('/adminuser_edit', [AdminController::class, 'adminuser_edit'])->name('adminuserEditPage');
@@ -34,5 +34,14 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminuser_delete_process', [AdminController::class, 'adminuser_delete_process'])->name('adminuserDeleteProcess');
 
 
-    Route::get('/adminteachers', [TeacherController::class, 'teacheruser'])->name('teacheruser');
+    Route::get('/adminteacher', [TeacherController::class, 'adminteacher'])->name('adminteacher');
+
+    Route::get('/adminteacher_add', [TeacherController::class, 'adminteacher_add'])->name('adminTeacherAddPage');
+    Route::post('/adminteacher_add_process', [TeacherController::class, 'adminteacher_add_process'])->name('adminTeacherAddProcess');
+    Route::get('/adminteacher_edit', [TeacherController::class, 'adminteacher_edit'])->name('adminTeacherPage');
+    Route::post('/adminteacher_edit_process', [TeacherController::class, 'adminteacher_edit_process'])->name('adminTeacherEditProcess');
+    Route::post('/adminteacher_pass_process', [TeacherController::class, 'adminteacher_pass_process'])->name('adminTeacherPassProcess');
+    Route::post('/adminteacher_image_process', [TeacherController::class, 'adminteacher_image_process'])->name('adminTeacherImageProcess');
+    Route::get('/adminteacher_delete_process', [TeacherController::class, 'adminteacher_delete_process'])->name('adminTeacherDeleteProcess');
+
 });

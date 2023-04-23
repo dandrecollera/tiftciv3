@@ -7,10 +7,10 @@
     <span>Accounts</span>
 </a>
 <div class="collapse list-group-flush ps-2" id="AdminToolsContent">
-    <a href="/adminusers" class="list-group-item list-group-item-action py-2">
+    <a href="/adminuser" class="list-group-item list-group-item-action py-2">
         <span>Administrator</span>
     </a>
-    <a href="/adminteachers" class="list-group-item list-group-item-action py-2">
+    <a href="/adminteacher" class="list-group-item list-group-item-action py-2">
         <span>Teachers</span>
     </a>
 </div>
