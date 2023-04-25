@@ -14,3 +14,7 @@
         <span>Teachers</span>
     </a>
 </div>
+
+<a href="/adminsubject" class="list-group-item list-group-item-action py-2">
+    <span>Subjects</span>
+</a>

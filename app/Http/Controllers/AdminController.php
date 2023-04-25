@@ -396,10 +396,6 @@ class AdminController extends Controller
             ->where('id', $input['did'])
             ->delete();
 
-        DB::table('main_users_details')
-            ->where('userid', $input['did'])
-            ->delete();
-
         return redirect($this->default_url_adminuser.'?n=4&'.$qstring);
     }
 }

@@ -24,28 +24,22 @@
     <style>
         * {
             scrollbar-width: auto;
-            scrollbar-color: #ebebeb #ffffff;
+            scrollbar-color: #282828 #282828;
         }
 
         /* Chrome, Edge, and Safari */
-        *::-webkit-scrollbar {
-            width: 16px;
-        }
 
-        *::-webkit-scrollbar-track {
-            background: #ffffff;
-        }
 
         *::-webkit-scrollbar-thumb {
-            background-color: #ebebeb;
+            background-color: #282828;
             border-radius: 10px;
-            border: 3px solid #ffffff;
+            border: 7px solid #282828;
         }
     </style>
 
 </head>
 
-<body>
+<body style="background-image: url('/asset/polka2.png')">
     <header>
         <!-- Sidebar -->
         <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">

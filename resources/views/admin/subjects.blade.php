@@ -4,13 +4,12 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Teachers</h1>
+            <h1>Subjects</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Teacher
-            User</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Subject</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -44,7 +43,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-success" type="submit">Go</button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminteacher" role="button">Reset</a>
+                    <a class="btn btn-primary" href="/adminsubject" role="button">Reset</a>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -75,7 +74,6 @@
                         @endforeach
                     </ul>
                 </div>
-
             </form>
         </div>
 
@@ -89,40 +87,36 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}">ID</span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}">Username/Email</span>
+                                class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}">Subject
+                                Name</span>
                         </th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Last Name' ? 'text-primary' : '' }}">Last
-                                Name</span></th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'First Name' ? 'text-primary' : '' }}">First
-                                Name</span></th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}">Middle
-                                Name</span></th>
-                        <th scope="col">Status</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
+                    <tr>
                         <th scope="row">{{$dbr->id}}</th>
-                        <td>{{$dbr->email}}</td>
-                        <td>{{$dbr->lastname}}</td>
-                        <td>{{$dbr->firstname}}</td>
-                        <td>{{$dbr->middlename}}</td>
-                        <td>{{$dbr->status}}</td>
+                        <td>{{$dbr->subject_name}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
+                                <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-caret-down fa-xs"></i></a>
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-danger btn-sm"
-                                    href="/adminteacher_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');"><i
+                                    href="/adminsubject_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
+                                    onclick="return confirm('Are you sure you want to delete {{$dbr->subject_name}}?\nPlease note this is unrecoverable.');"><i
                                         class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
+                        </td>
+                    </tr>
+                    <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
+                        <td colspan="4">
+                            <iframe id="" src="/subject_teacher?sid={{$dbr->id}}" width="100%" height="450px"
+                                style="border:none; height:80vh;"></iframe>
                         </td>
                     </tr>
                     @endforeach
@@ -151,7 +145,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" width="100%" height="450px" style="border:none; height:80vh;"></iframe>
+                <iframe id="addeditframe" src="/adminsubject_add" width="100%" height="450px"
+                    style="border:none; height:80vh;"></iframe>
             </div>
 
         </div>
@@ -167,16 +162,16 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Teacher User');
-        $('#addeditframe').attr('src', '/adminteacher_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New Subject');
+        $('#addeditframe').attr('src', '/adminsubject_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Teacher User');
-        $('#addeditframe').attr('src', '/adminteacher_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Edit This Subject');
+        $('#addeditframe').attr('src', '/adminsubject_edit?id='+iid+'&{!!$qstring!!}');
     });
 });
 </script>

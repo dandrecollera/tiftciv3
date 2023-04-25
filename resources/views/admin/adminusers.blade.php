@@ -101,7 +101,7 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}">Middle
                                 Name</span></th>
                         <th scope="col">Status</th>
-                        <th scope="col">Options</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,18 +114,14 @@
                         <td>{{$dbr->middlename}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-info dropdown-toggle btn-sm"
-                                    data-bs-toggle="dropdown" aria-expanded="false"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Action</button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item dcc_edit" href="#" data-id="{{$dbr->id}}"
-                                            data-bs-toggle="modal" data-bs-target="#addeditmodal">Edit/View</a></li>
-                                    <li><a class="dropdown-item"
-                                            href="/adminuser_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
-                                            onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');">Delete</a>
-                                    </li>
-                                </ul>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
+                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-pen fa-xs"></i></a>
+                                <a class="btn btn-danger btn-sm"
+                                    href="/adminuser_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
+                                    onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');"><i
+                                        class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
