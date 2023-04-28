@@ -24,16 +24,22 @@
     <style>
         * {
             scrollbar-width: auto;
-            scrollbar-color: #282828 #282828;
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
         }
 
         /* Chrome, Edge, and Safari */
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
 
-
-        *::-webkit-scrollbar-thumb {
-            background-color: #282828;
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            border: 7px solid #282828;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.0);
         }
     </style>
 

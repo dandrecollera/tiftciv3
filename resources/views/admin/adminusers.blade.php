@@ -81,7 +81,7 @@
 
     </div>
     <div class="row">
-        <div class="col overflow-scroll scrollable-container">
+        <div class="col overflow-scroll scrollable-container mb-2">
             <table class="table table-hover">
                 <thead>
                     <tr>

@@ -79,7 +79,7 @@
 
     </div>
     <div class="row">
-        <div class="col overflow-scroll scrollable-container">
+        <div class="col overflow-scroll scrollable-container mb-2">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -87,7 +87,7 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}">ID</span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}">Subject
+                                class="{{ $orderbylist[$sort]['display'] == 'Subject' ? 'text-primary' : '' }}">Subject
                                 Name</span>
                         </th>
                         <th scope="col"></th>
@@ -115,8 +115,8 @@
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
                         <td colspan="4">
-                            <iframe id="" src="/subject_teacher?sid={{$dbr->id}}" width="100%" height="450px"
-                                style="border:none; height:80vh;"></iframe>
+                            <iframe id="" src="/subject_teacher?sid={{$dbr->id}}" width="100%" height="500px"
+                                style="border:none;"></iframe>
                         </td>
                     </tr>
                     @endforeach

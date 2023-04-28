@@ -227,4 +227,43 @@ class SubjectAdminController extends Controller
 
         return redirect($this->default_url.'?n=4&'.$qstring);
     }
+
+    public function admin_teacher(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+        if(empty($query['sid'])){
+            die('Error: Requirements are not complete');
+        }
+
+        $data['subjectname'] = $subjectname = DB::table('subjects')
+            ->where('id', $query['sid'])
+            ->first();
+
+        $data['dbdata'] = $dbdata = DB::table('teachers')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'teachers.userid')
+            ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
+            ->where('subjectid', $query['sid'])
+            ->select('main_users_details.userid', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname' ,'subjects.subject_name');
+
+        $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
+
+        return view('admin.subject_teacher', $data);
+    }
+
+    public function admin_teacher_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['teachers'] = $teachers = DB::table('main_users')
+            ->where('accounttype', 'teacher')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->select('main_users.id', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname')
+            ->get()
+            ->toArray();
+
+
+        return view('admin.subject_teacheradd', $data);
+    }
 }
