@@ -20,6 +20,8 @@ class SubjectAdminController extends Controller
     public $default_lpp = 25;
     public $default_start_page = 1;
 
+    public $default_url_sub = '/subject_teacher';
+
     public function adminsubject(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
@@ -31,7 +33,7 @@ class SubjectAdminController extends Controller
             4 => 'The subject already existed, please try to check the subject on the list.',
             5 => 'This Subject does not exist',
             6 => 'Status should only be Active or Inactive',
-            7 => 'No Image has been Uploaded',
+            7 => 'Added Teacher to a Subject Sucessfully',
         ];
         $data['error'] = 0;
         if(!empty($_GET['e'])){
@@ -43,7 +45,7 @@ class SubjectAdminController extends Controller
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
             4 => 'Subject has been deleted.',
-            5 => 'Image has been updated'
+            5 => 'Added Teacher to a Subject Sucessfully'
         ];
         $data['notif'] = 0;
         if(!empty($_GET['n'])){
@@ -228,6 +230,7 @@ class SubjectAdminController extends Controller
         return redirect($this->default_url.'?n=4&'.$qstring);
     }
 
+    // Admin Teacher Components
     public function admin_teacher(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
@@ -235,6 +238,34 @@ class SubjectAdminController extends Controller
         $query = $request->query();
         if(empty($query['sid'])){
             die('Error: Requirements are not complete');
+        }
+
+        $data['qsid'] = $query['sid'];
+
+        $data['errorlist'] = [
+            1 => 'All forms are required please try again.',
+            2 => 'Your password is too short, it should be at least 8 characters long.',
+            3 => 'Both password and retype password are not the same.',
+            4 => 'The Teacher already existed, please try to check the Teacher on the list.',
+            5 => 'This Subject does not exist',
+            6 => 'Status should only be Active or Inactive',
+            7 => 'Added Teacher to a Subject Sucessfully',
+        ];
+        $data['error'] = 0;
+        if(!empty($_GET['e'])){
+            $data['error'] = $_GET['e'];
+        }
+
+        $data['notiflist'] = [
+            1 => 'Add.',
+            2 => 'Changes has been saved.',
+            3 => 'Password has been changed.',
+            4 => 'Teacher on a Subject has been deleted.',
+            5 => 'Added Teacher to a Subject Sucessfully'
+        ];
+        $data['notif'] = 0;
+        if(!empty($_GET['n'])){
+            $data['notif'] = $_GET['n'];
         }
 
         $data['subjectname'] = $subjectname = DB::table('subjects')
@@ -245,7 +276,7 @@ class SubjectAdminController extends Controller
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'teachers.userid')
             ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
             ->where('subjectid', $query['sid'])
-            ->select('main_users_details.userid', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname' ,'subjects.subject_name');
+            ->select('main_users_details.userid', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname' ,'subjects.subject_name', 'teachers.subjectid');
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
@@ -256,6 +287,10 @@ class SubjectAdminController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+        $query = $request->query();
+
+        $data['sid'] = $query['sid'];
+
         $data['teachers'] = $teachers = DB::table('main_users')
             ->where('accounttype', 'teacher')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
@@ -263,7 +298,65 @@ class SubjectAdminController extends Controller
             ->get()
             ->toArray();
 
-
         return view('admin.subject_teacheradd', $data);
+    }
+
+    public function admin_teacher_add_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'sid' => !empty($input['sid']) ? $input['sid'] : '',
+        ]);
+
+
+        if(empty($input['teacher'])){
+            return redirect($this->default_url_sub.'?e=1&'.$qstring);
+            die();
+        }
+
+        $checkname = DB::table('teachers')
+            ->where('subjectid', $input['sid'])
+            ->where('userid', $input['teacher'])
+            ->first();
+
+        if(!empty($checkname->id)){
+            return redirect($this->default_url_sub.'?e=4&'.$qstring);
+            die();
+        }
+
+        DB::table('teachers')
+            ->insertGetID([
+                'userid' => $input['teacher'],
+                'subjectid' => $input['sid'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url_sub.'?n=5&'.$qstring);
+    }
+
+    public function admin_teacher_delete_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+        $query = $request->query();
+
+        // QSTRING PROBLEM
+        $qstring = http_build_query([
+            'sid' => !empty($query['sid']) ? $query['sid'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url_sub.'?e=1&'.$qstring);
+            die();
+        }
+
+        DB::table('teachers')
+            ->where('userid', $input['did'])
+            ->delete();
+
+        return redirect($this->default_url_sub.'?n=4&'.$qstring);
     }
 }

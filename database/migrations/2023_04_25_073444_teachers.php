@@ -19,8 +19,8 @@ class Teachers extends Migration
             $table->unsignedBigInteger('subjectid');
             $table->timestamps();
 
-            $table->foreign('userid')->references('id')->on('main_users');
-            $table->foreign('subjectid')->references('id')->on('subjects');
+            $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
+            $table->foreign('subjectid')->references('id')->on('subjects')->onDelete('cascade');
         });
     }
 

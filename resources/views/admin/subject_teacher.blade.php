@@ -31,6 +31,28 @@
 
 @section('content')
 <div class="py-3 px-5">
+    @if (!empty($error))
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Error</h4>
+                <p>{{ $errorlist[(int) $error ] }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    @endif
+    @if (!empty($notif))
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Success</h4>
+                <p>{{ $notiflist[(int) $notif ] }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    @endif
     <h4>{{ $subjectname->subject_name }}</h4>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
@@ -52,7 +74,10 @@
                         <th>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</th>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-danger btn-sm"><i class=" fa-solid fa-trash fa-xs"></i></a>
+                                <a class="btn btn-danger btn-sm"
+                                    href="/subject_teacher_delete_process?did={{$dbr->userid}}&sid={{$dbr->subjectid}}"
+                                    onclick="return confirm('Are you sure you want to delete {{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}?\nPlease note this is unrecoverable.');"><i
+                                        class=" fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -74,7 +99,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/subject_teacher_add" width="100%" height="450px"
+                <iframe id="addeditframe" src="/subject_teacher_add?sid={{ $qsid }}" width="100%" height="450px"
                     style="border:none; height:80vh;"></iframe>
             </div>
 
