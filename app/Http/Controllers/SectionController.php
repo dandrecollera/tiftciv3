@@ -29,7 +29,6 @@ class SectionController extends Controller
         $data['errorlist'] = [
             1 => 'All forms are required please try again.',
             2 => 'The section already existed, please try to check the section on the list.',
-
         ];
         $data['error'] = 0;
         if(!empty($_GET['e'])){
@@ -240,13 +239,6 @@ class SectionController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        $query = $request->query();
-        if(empty($query['sid'])){
-            die('Error: Requirements are not complete');
-        }
-
-        $data['qsid'] = $query['sid'];
-
         $data['errorlist'] = [
             1 => 'All forms are required please try again.',
             2 => 'Your password is too short, it should be at least 8 characters long.',
@@ -262,7 +254,7 @@ class SectionController extends Controller
         }
 
         $data['notiflist'] = [
-            1 => 'Add.',
+            1 => 'Added a new Subject/Schedule.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
             4 => 'Teacher on a Subject has been deleted.',
@@ -273,35 +265,122 @@ class SectionController extends Controller
             $data['notif'] = $_GET['n'];
         }
 
+        $query = $request->query();
+        $qstring = array();
+        if(empty($query['sid'])){
+            die('Error: Requirements are not complete');
+        }
+
+        $data['qsid'] = $query['sid'];
+
+
+        $day = '';
+        if(!empty($query['day'])){
+            $qstring['day'] = $day = $query['day'];
+            $data['day'] = $day;
+        }
+
+        $data['sort'] = 0;
+        $data['orderbylist'] = [
+            ['display' => 'Start', 'field' => 'schedules.start_time'],
+            ['display' => 'End', 'field' => 'schedules.end_time'],
+            ['display' => 'Day', 'field' => 'schedules.day'],
+        ];
+        if(!empty($query['sort'])){
+            $data['sort'] = $qstring['sort'] = $query['sort'];
+        }
+
         $data['section'] = $subjectname = DB::table('sections')
             ->where('id', $query['sid'])
             ->first();
 
-        $data['dbdata'] = $dbdata = DB::table('schedules')
+        $dbdata = DB::table('schedules')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.teacherid')
             ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->where('sectionid', $query['sid'])
+            ->where('sectionid', $query['sid']);
+
+
+        if(!empty($day)){
+            $dbdata->where('schedules.day', 'like', "%$day%");
+        }
+
+        $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
+        $dbdata->select(
+            'main_users_details.userid',
+            'main_users_details.firstname',
+            'main_users_details.middlename',
+            'main_users_details.lastname',
+            'subjects.subject_name',
+            'sections.section_name',
+            'subjects.subject_name',
+            DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
+            DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
+            'schedules.day'
+        );
+        $data['qstring'] = http_build_query($qstring);
+        $data['qstring'] = $qstring;
+
+        $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
+        return view('admin.schedules', $data);
+    }
+
+    public function adminschedule_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+        $data['sid'] = $query['sid'];
+
+        $data['teachers'] = $teachers = DB::table('teachers')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'teachers.userid')
+            ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
             ->select(
-                'main_users_details.userid',
+                'teachers.id',
                 'main_users_details.firstname',
                 'main_users_details.middlename',
                 'main_users_details.lastname',
                 'subjects.subject_name',
-                'sections.section_name',
-                'subjects.subject_name',
-                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
-                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
-                'schedules.day'
-            );
+            )
+            ->get()
+            ->toArray();
 
-        $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
-
-        return view('admin.schedules', $data);
+        return view('admin.schedules_add', $data);
     }
 
-    public function adminschedule_add(Request $request)
-    {
+    public function adminschedule_add_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
 
+        $qstring = http_build_query([
+            'sid' => !empty($input['sid']) ? $input['sid'] : ''
+        ]);
+
+        if(empty($input['teacher']) || empty($input['starttime']) || empty($input['endtime']) || empty($input['day'])){
+            return redirect($this->default_url_sched.'?e=1&'.$qstring);
+            die();
+        }
+
+        $getteacher = DB::table('teachers')
+            ->where('id', $input['teacher'])
+            ->first();
+
+        $checkschedule = DB::table('schedules')
+            ->where('subjectid', $getteacher->subjectid)
+            ->first();
+
+        DB::table('schedules')
+            ->insertGetID([
+                'subjectid' => $getteacher->subjectid,
+                'sectionid' => $input['sid'],
+                'teacherid' => $getteacher->userid,
+                'start_time' => $input['starttime'],
+                'end_time' => $input['endtime'],
+                'day' => $input['day'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url_sched.'?n=1&'.$qstring);
     }
 }

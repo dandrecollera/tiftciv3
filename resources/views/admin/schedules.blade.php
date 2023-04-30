@@ -59,15 +59,71 @@
             data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add Subject/Schedule</button>
     </div>
     <hr>
+    <div class="row">
+        <div class="col ">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
+                    <ul class="dropdown-menu">
+                        @foreach($orderbylist as $key => $odl)
+                        @php
+                        $qstring2['sort'] = $key;
+                        $query = array_merge(request()->query(), $qstring2);
+                        $sorturl = http_build_query($query);
+                        $currentUrl = url()->current();
+                        @endphp
+                        <li><a class="dropdown-item" href="{{ $currentUrl }}?{{ $sorturl }}">{{ $odl['display'] }}</a>
+                        </li>
+                        @endforeach
+                    </ul>
+
+                    @php
+                    $day = request()->input('day');
+                    @endphp
+                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">{{empty($day) ? "Filter to Day" : "Filter to ".$day}}</button>
+                    <ul class="dropdown-menu">
+                        @php
+                        $currentUrl = url()->current();
+                        $query = request()->getQueryString();
+                        $sid = request()->input('sid');
+                        @endphp
+                        <li><a class="dropdown-item"
+                                href="{{ $currentUrl }}?{{ $query }}&sid={{ $sid }}&day=Monday">Monday</a></li>
+                        <li><a class="dropdown-item"
+                                href="{{ $currentUrl }}?{{ $query }}&sid={{ $sid }}&day=Tuesday">Tuesday</a></li>
+                        <li><a class="dropdown-item"
+                                href="{{ $currentUrl }}?{{ $query }}&sid={{ $sid }}&day=Wednesday">Wednesday</a></li>
+                        <li><a class="dropdown-item"
+                                href="{{ $currentUrl }}?{{ $query }}&sid={{ $sid }}&day=Thursday">Thursday</a></li>
+                        <li><a class="dropdown-item"
+                                href="{{ $currentUrl }}?{{ $query }}&sid={{ $sid }}&day=Friday">Friday</a></li>
+                    </ul>
+                    @if (!empty($day))
+                    @php
+                    $currentUrl = url()->current();
+                    $query = request()->getQueryString();
+                    $sid = request()->input('sid');
+                    @endphp
+                    <a class="btn btn-primary" href="{{ $currentUrl }}?sid={{ $sid }}" role="button">Reset</a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row fs-6">
         <div class="col overflow-scroll scrollable-container mb-2">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Subject</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
-                        <th scope="col">Day</th>
+                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Start' ? 'text-primary' : '' }}">
+                            Start</th>
+                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'End' ? 'text-primary' : '' }}">End
+                        </th>
+                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Day' ? 'text-primary' : '' }}">Day
+                        </th>
                         <th scope="col">Teacher</th>
                         <th scope="col"></th>
                     </tr>
@@ -102,12 +158,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
-                    <div>Add Teacher</div>
+                    <div>Add Class Subject</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/subject_teacher_add?sid={{ $qsid }}" width="100%" height="450px"
+                <iframe id="addeditframe" src="/adminschedule_add?sid={{ $qsid }}" width="100%" height="450px"
                     style="border:none; height:80vh;"></iframe>
             </div>
 

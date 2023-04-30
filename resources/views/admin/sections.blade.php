@@ -76,7 +76,6 @@
                 </div>
             </form>
         </div>
-
     </div>
     <div class="row">
         <div class="col overflow-scroll scrollable-container mb-2">

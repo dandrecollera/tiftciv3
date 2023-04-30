@@ -71,4 +71,5 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     Route::get('/adminschedule', [SectionController::class, 'adminschedule'])->name('adminSchedulePage');
     Route::get('/adminschedule_add', [SectionController::class, 'adminschedule_add'])->name('adminScheduleAddPage');
+    Route::post('/adminschedule_add_process', [SectionController::class, 'adminschedule_add_process'])->name('adminScheduleAddProcess');
 });
