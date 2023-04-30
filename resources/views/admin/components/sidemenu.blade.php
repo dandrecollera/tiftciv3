@@ -18,3 +18,7 @@
 <a href="/adminsubject" class="list-group-item list-group-item-action py-2">
     <span>Subjects</span>
 </a>
+
+<a href="/adminsection" class="list-group-item list-group-item-action py-2">
+    <span>Sections</span>
+</a>

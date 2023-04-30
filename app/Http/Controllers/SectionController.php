@@ -10,30 +10,26 @@ use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class SubjectAdminController extends Controller
+class SectionController extends Controller
 {
     public function __construct(Request $request){
         $this->middleware('axuadmin');
     }
 
-    public $default_url = '/adminsubject';
+    public $default_url = '/adminsection';
     public $default_lpp = 25;
     public $default_start_page = 1;
 
-    public $default_url_sub = '/subject_teacher';
+    public $default_url_sched = '/adminschedule';
 
-    public function adminsubject(Request $request){
+    public function adminsection(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
         $data['errorlist'] = [
             1 => 'All forms are required please try again.',
-            2 => 'Your password is too short, it should be at least 8 characters long.',
-            3 => 'Both password and retype password are not the same.',
-            4 => 'The subject already existed, please try to check the subject on the list.',
-            5 => 'This Subject does not exist',
-            6 => 'Status should only be Active or Inactive',
-            7 => 'Added Teacher to a Subject Sucessfully',
+            2 => 'The section already existed, please try to check the section on the list.',
+
         ];
         $data['error'] = 0;
         if(!empty($_GET['e'])){
@@ -41,11 +37,10 @@ class SubjectAdminController extends Controller
         }
 
         $data['notiflist'] = [
-            1 => 'New Subject has been saved.',
-            2 => 'Changes has been saved.',
-            3 => 'Password has been changed.',
-            4 => 'Subject has been deleted.',
-            5 => 'Added Teacher to a Subject Sucessfully'
+            1 => 'New Section has been saved.',
+            2 => 'Section successfully edited.',
+            3 => 'Section does not exist.',
+            4 => 'Section has been deleted.'
         ];
         $data['notif'] = 0;
         if(!empty($_GET['n'])){
@@ -73,8 +68,10 @@ class SubjectAdminController extends Controller
 
         $data['sort'] = 0;
         $data['orderbylist'] = [
-            ['display' => 'ID', 'field' => 'subjects.id'],
-            ['display' => 'Subject', 'field' => 'subjects.subject_name']
+            ['display' => 'ID', 'field' => 'sections.id'],
+            ['display' => 'Section', 'field' => 'sections.section_name'],
+            ['display' => 'Strand', 'field' => 'sections.strand'],
+            ['display' => 'Year Level', 'field' => 'sections.yearlevel']
         ];
         if(!empty($query['sort'])){
             $data['sort'] = $qstring['sort'] = $query['sort'];
@@ -86,16 +83,20 @@ class SubjectAdminController extends Controller
         }
         $qstring['page'] = $page;
 
-        $countdata = DB::table('subjects')
+        $countdata = DB::table('sections')
             ->count();
-        $dbdata = DB::table('subjects');
+        $dbdata = DB::table('sections');
 
         if(!empty($keyword)){
-            $countdata = DB::table('subjects')
-                ->where('subjects.subject_name', 'like', "%$keyword%")
+            $countdata = DB::table('sections')
+                ->where('sections.section_name', 'like', "%$keyword%")
+                ->orwhere('sections.strand', 'like', "%$keyword%")
+                ->orwhere('sections.yearlevel', 'like', "%$keyword%")
                 ->count();
 
-            $dbdata->where('subjects.subject_name', 'like', "%$keyword%");
+            $dbdata->where('sections.section_name', 'like', "%$keyword%");
+            $dbdata->orwhere('sections.strand', 'like', "%$keyword%");
+            $dbdata->orwhere('sections.yearlevel', 'like', "%$keyword%");
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
@@ -132,37 +133,39 @@ class SubjectAdminController extends Controller
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
-        return view('admin.subjects', $data);
+        return view('admin.sections', $data);
     }
 
-    public function adminsubject_add(Request $request){
+    public function adminsection_add(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        return view('admin.subjects_add', $data);
+        return view('admin.sections_add', $data);
     }
 
-    public function adminsubject_add_process(Request $request){
+    public function adminsection_add_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['subjectname'])){
+        if(empty($input['sectionname']) || empty($input['strand']) || empty($input['yearlevel'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
 
-        $checksubject = DB::table('subjects')
-            ->where('subject_name', $input['subjectname'])
+        $checksection = DB::table('sections')
+            ->where('section_name', $input['sectionname'])
             ->first();
-        if(!empty($checksubject->subject_name)){
-            return redirect($this->default_url.'?e=4');
+        if(!empty($checksection->section_name)){
+            return redirect($this->default_url.'?e=2');
             die();
         }
 
-        $subjectid = DB::table('subjects')
+        $sectionid = DB::table('sections')
             ->insertGetID([
-                'subject_name' => $input['subjectname'],
+                'section_name' => $input['sectionname'],
+                'strand' => $input['strand'],
+                'yearlevel' => $input['yearlevel'],
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -170,7 +173,7 @@ class SubjectAdminController extends Controller
         return redirect($this->default_url.'?n=1');
     }
 
-    public function adminsubject_edit(Request $request){
+    public function adminsection_edit(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -179,34 +182,37 @@ class SubjectAdminController extends Controller
             die('Error: Requirements are not complete');
         }
 
-        $data['dbdata'] = $dbdata = DB::table('subjects')
-            ->where('subjects.id', $query['id'])
+        $data['dbdata'] = $dbdata = DB::table('sections')
+            ->select('sections.*')
+            ->where('sections.id', $query['id'])
             ->first();
 
-        return view('admin.subjects_edit', $data);
+        return view('admin.sections_edit', $data);
     }
 
-    public function adminsubject_edit_process(Request $request){
+    public function adminsection_edit_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['subjectname'])){
+        if(empty($input['sid']) ||empty($input['sectionname']) || empty($input['strand']) || empty($input['yearlevel'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
 
-        DB::table('subjects')
-            ->where('id', $input['did'])
+        DB::table('sections')
+            ->where('id', $input['sid'])
             ->update([
-                'subject_name' => $input['subjectname'],
+                'section_name' => $input['sectionname'],
+                'strand' => $input['strand'],
+                'yearlevel' => $input['yearlevel'],
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
         return redirect($this->default_url.'?n=2');
     }
 
-    public function adminsubject_delete_process(Request $request){
+    public function adminsection_delete_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -218,20 +224,19 @@ class SubjectAdminController extends Controller
             'sort' => !empty($input['sort']) ? $input['sort'] : ''
         ]);
 
-        if(empty($input['did'])){
+        if(empty($input['sid'])){
             return redirect($this->default_url.'?e1&'.$qstring);
             die();
         }
 
-        DB::table('subjects')
-            ->where('id', $input['did'])
+        DB::table('sections')
+            ->where('id', $input['sid'])
             ->delete();
 
         return redirect($this->default_url.'?n=4&'.$qstring);
     }
 
-    // Admin Teacher Components
-    public function admin_teacher(Request $request){
+    public function adminschedule(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -268,95 +273,35 @@ class SubjectAdminController extends Controller
             $data['notif'] = $_GET['n'];
         }
 
-        $data['subjectname'] = $subjectname = DB::table('subjects')
+        $data['section'] = $subjectname = DB::table('sections')
             ->where('id', $query['sid'])
             ->first();
 
-        $data['dbdata'] = $dbdata = DB::table('teachers')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'teachers.userid')
-            ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
-            ->where('subjectid', $query['sid'])
-            ->select('main_users_details.userid', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname' ,'subjects.subject_name', 'teachers.subjectid');
+        $data['dbdata'] = $dbdata = DB::table('schedules')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.teacherid')
+            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+            ->where('sectionid', $query['sid'])
+            ->select(
+                'main_users_details.userid',
+                'main_users_details.firstname',
+                'main_users_details.middlename',
+                'main_users_details.lastname',
+                'subjects.subject_name',
+                'sections.section_name',
+                'subjects.subject_name',
+                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
+                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
+                'schedules.day'
+            );
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
-        return view('admin.subject_teacher', $data);
+        return view('admin.schedules', $data);
     }
 
-    public function admin_teacher_add(Request $request){
-        $data = array();
-        $data['userinfo'] = $userinfo = $request->get('userinfo');
+    public function adminschedule_add(Request $request)
+    {
 
-        $query = $request->query();
-
-        $data['sid'] = $query['sid'];
-
-        $data['teachers'] = $teachers = DB::table('main_users')
-            ->where('accounttype', 'teacher')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->select('main_users.id', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname')
-            ->get()
-            ->toArray();
-
-        return view('admin.subject_teacheradd', $data);
-    }
-
-    public function admin_teacher_add_process(Request $request){
-        $data = array();
-        $data['userinfo'] = $userinfo = $request->get('userinfo');
-        $input = $request->input();
-
-        $qstring = http_build_query([
-            'sid' => !empty($input['sid']) ? $input['sid'] : '',
-        ]);
-
-
-        if(empty($input['teacher'])){
-            return redirect($this->default_url_sub.'?e=1&'.$qstring);
-            die();
-        }
-
-        $checkname = DB::table('teachers')
-            ->where('subjectid', $input['sid'])
-            ->where('userid', $input['teacher'])
-            ->first();
-
-        if(!empty($checkname->id)){
-            return redirect($this->default_url_sub.'?e=4&'.$qstring);
-            die();
-        }
-
-        DB::table('teachers')
-            ->insertGetID([
-                'userid' => $input['teacher'],
-                'subjectid' => $input['sid'],
-                'created_at' => Carbon::now()->toDateTimeString(),
-                'updated_at' => Carbon::now()->toDateTimeString()
-            ]);
-
-        return redirect($this->default_url_sub.'?n=5&'.$qstring);
-    }
-
-    public function admin_teacher_delete_process(Request $request){
-        $data = array();
-        $data['userinfo'] = $userinfo = $request->get('userinfo');
-        $input = $request->input();
-        $query = $request->query();
-
-        // QSTRING PROBLEM
-        $qstring = http_build_query([
-            'sid' => !empty($query['sid']) ? $query['sid'] : '',
-        ]);
-
-        if(empty($input['did'])){
-            return redirect($this->default_url_sub.'?e=1&'.$qstring);
-            die();
-        }
-
-        DB::table('teachers')
-            ->where('userid', $input['did'])
-            ->delete();
-
-        return redirect($this->default_url_sub.'?n=4&'.$qstring);
     }
 }
