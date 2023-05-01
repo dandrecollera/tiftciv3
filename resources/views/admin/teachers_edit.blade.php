@@ -68,7 +68,7 @@
         <div class="container-fluid mb-4">
 
             <h4>Change Password</h4>
-            <label class=" form-label">Password:</label>
+            <label class=" form-label">Password: (8 Characters Long)</label>
             <div class="row">
                 <div class="col">
                     <div class="input-group mb-3">

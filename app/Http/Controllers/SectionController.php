@@ -384,8 +384,16 @@ class SectionController extends Controller
         return redirect($this->default_url_sched.'?n=1&'.$qstring);
     }
 
-    public function adminschedule_edit_process(Request $request){
+    public function adminschedule_delete_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+        $query = $request->query();
+
+        $qstring = http_build_query([
+            'sid' => !empty($query['sid']) ? $query['sid'] : '',
+        ]);
+
+
     }
 }

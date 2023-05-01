@@ -21,7 +21,7 @@
                 <input type="email" class="form-control" placeholder="Email" name="email" id="emailInput" required>
             </div>
 
-            <label class="form-label">Password:</label>
+            <label class="form-label">Password: (8 Characters Long)</label>
             <div class="row">
                 <div class="col">
                     <div class="input-group mb-3">
