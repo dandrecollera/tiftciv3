@@ -44,7 +44,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-success" type="submit">Go</button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminusers" role="button">Reset</a>
+                    <a class="btn btn-primary" href="/adminuser" role="button">Reset</a>
                     @endif
                 </div>
                 <div class="input-group mb-3">
