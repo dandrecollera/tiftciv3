@@ -18,7 +18,7 @@
 
             <label for="emailInput" class="form-label">Section Name</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Subject" name="sectionname" id="sectionInput"
+                <input type="text" class="form-control" placeholder="Section Name" name="sectionname" id="sectionInput"
                     required>
             </div>
 
@@ -28,6 +28,7 @@
                     <option value="ABM">ABM</option>
                     <option value="HE">HE</option>
                     <option value="ICT">ICT</option>
+                    <option value="GAS">GAS</option>
                 </select>
             </div>
 
