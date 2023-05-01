@@ -313,6 +313,8 @@ class SectionController extends Controller
             'main_users_details.lastname',
             'subjects.subject_name',
             'sections.section_name',
+            'schedules.sectionid',
+            'schedules.id',
             'subjects.subject_name',
             DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
             DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
@@ -394,6 +396,15 @@ class SectionController extends Controller
             'sid' => !empty($query['sid']) ? $query['sid'] : '',
         ]);
 
+        if(empty($input['did'])){
+            return redirect($this->default_url_sub.'?e=1&'.$qstring);
+            die();
+        }
 
+        DB::table('schedules')
+            ->where('id', $input['did'])
+            ->delete();
+
+        return redirect($this->default_url_sched.'?n=4&'.$qstring);
     }
 }

@@ -139,7 +139,7 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-danger btn-sm"
-                                    href="/subject_teacher_delete_process?did={{$dbr->userid}}&sid="
+                                    href="/adminschedule_delete_process?did={{$dbr->id}}&sid={{$dbr->sectionid}}"
                                     onclick="return confirm('Are you sure you want to delete {{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}?\nPlease note this is unrecoverable.');"><i
                                         class=" fa-solid fa-trash fa-xs"></i></a>
                             </div>
