@@ -33,7 +33,7 @@
                 <input type="time" name="endtime" class="form-control">
             </div>
 
-            <label for="emailInput" class="form-label">Time</label>
+            <label for="emailInput" class="form-label">Day</label>
             <div class="input-group mb-3">
                 <select name="day" id="statusInput" class="form-select" required>
                     <option value="Monday">Monday</option>
