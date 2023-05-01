@@ -22,3 +22,7 @@
 <a href="/adminsection" class="list-group-item list-group-item-action py-2">
     <span>Sections</span>
 </a>
+
+<a href="/adminsection" class="list-group-item list-group-item-action py-2">
+    <span>School Year</span>
+</a>

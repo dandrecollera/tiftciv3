@@ -32,6 +32,7 @@
                 </select>
             </div>
 
+            <label for="emailInput" class="form-label">Year Level</label>
             <label for="emailInput" class="form-label"></label>
             <div class="input-group mb-3">
                 <select name="yearlevel" id="strandInput" class="form-select" required>
