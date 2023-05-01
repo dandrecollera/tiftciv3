@@ -386,5 +386,6 @@ class SectionController extends Controller
 
     public function adminschedule_edit_process(Request $request){
         $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
     }
 }
