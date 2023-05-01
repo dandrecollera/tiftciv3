@@ -27,7 +27,7 @@
                 </select>
             </div>
 
-            <label for="emailInput" class="form-label">Time</label>
+            <label for="emailInput" class="form-label">Start Time - End Time:</label>
             <div class="input-group mb-3">
                 <input type="time" name="starttime" class="form-control">
                 <input type="time" name="endtime" class="form-control">
