@@ -41,6 +41,10 @@
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.0);
         }
+
+        .dpcover {
+            object-fit: cover;
+        }
     </style>
 
 </head>
