@@ -32,8 +32,6 @@
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
 </head>
-{{ md5("c34514845734d2437b311d65fdaa7f3b
-")}}
 
 <body>
     @isset($err)

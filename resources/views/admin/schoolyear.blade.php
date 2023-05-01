@@ -4,12 +4,13 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Sections</h1>
+            <h1>School Year</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Section</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New School
+            Year/Semester</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -43,7 +44,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-success" type="submit">Go</button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminsection" role="button">Reset</a>
+                    <a class="btn btn-primary" href="/adminschoolyear" role="button">Reset</a>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -86,16 +87,12 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}">ID</span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Section' ? 'text-primary' : '' }}">Section
+                                class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}">School
+                                Year
                             </span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Strand' ? 'text-primary' : '' }}">Strand
-                            </span>
-                        </th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Year Level' ? 'text-primary' : '' }}">Year
-                                Level
+                                class="{{ $orderbylist[$sort]['display'] == 'Status' ? 'text-primary' : '' }}">Status
                             </span>
                         </th>
                         <th scope="col"></th>
@@ -103,30 +100,30 @@
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr>
+                    <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
                         <th scope="row">{{$dbr->id}}</th>
-                        <td>{{$dbr->section_name}}</td>
-                        <td>{{$dbr->strand}}</td>
-                        <td>{{$dbr->yearlevel}}</td>
+                        <td>{{$dbr->school_year}}</td>
+                        <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
-                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-caret-down fa-xs"></i></a>
-                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-pen fa-xs"></i></a>
+
+                                @if ($dbr->status != 'inactive')
+                                <a class="btn btn-dark btn-sm"
+                                    href="/adminschoolyear_lock_process?sid={{$dbr->id}}&{!!$qstring!!}"
+                                    onclick="return confirm('Are you sure you want to deactive {{$dbr->school_year}}?');"><i
+                                        class="fa-solid fa-lock fa-xs" style="color:white"></i></a>
+                                @else
+                                <a class="btn btn-success btn-sm"
+                                    href="/adminschoolyear_activate_process?sid={{$dbr->id}}&{!!$qstring!!}"
+                                    onclick="return confirm('Are you sure you want to activate {{$dbr->school_year}}?');"><i
+                                        class="fa-solid fa-lock-open fa-xs" style="color:white"></i></a>
+                                @endif
+
                                 <a class="btn btn-danger btn-sm"
-                                    href="/adminsection_delete_process?sid={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->section_name}}?\nPlease note this is unrecoverable.');"><i
+                                    href="/adminschoolyear_delete_process?sid={{$dbr->id}}&{!!$qstring!!}"
+                                    onclick="return confirm('Are you sure you want to delete {{$dbr->school_year}}?\nPlease note this is unrecoverable.');"><i
                                         class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
-                        </td>
-                    </tr>
-                    <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="5">
-                            <iframe id="" src="/adminschedule?sid={{$dbr->id}}" width="100%" height="500px"
-                                style="border:none;"></iframe>
                         </td>
                     </tr>
                     @endforeach
@@ -155,7 +152,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/adminsection_add" width="100%" height="450px"
+                <iframe id="addeditframe" src="/adminschoolyear_add" width="100%" height="450px"
                     style="border:none; height:80vh;"></iframe>
             </div>
 
@@ -172,8 +169,8 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Section');
-        $('#addeditframe').attr('src', '/adminsection_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New School Year');
+        $('#addeditframe').attr('src', '/adminschoolyear_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
