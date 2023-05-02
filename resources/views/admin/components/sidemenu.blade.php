@@ -30,3 +30,7 @@
 <a href="/adminstudent" class="list-group-item list-group-item-action py-2">
     <span>Students</span>
 </a>
+
+<a href="/adminappointments" class="list-group-item list-group-item-action py-2">
+    <span>Appointments</span>
+</a>

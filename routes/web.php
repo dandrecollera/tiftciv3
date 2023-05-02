@@ -8,6 +8,7 @@ use App\Http\Controllers\SubjectAdminController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\AdminStudentController;
+use App\Http\Controllers\AdminAppointmentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,4 +91,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminstudent_add_process', [AdminStudentController::class, 'adminstudent_add_process'])->name('adminstudent_add_process');
     Route::get('/adminstudent_edit', [AdminStudentController::class, 'adminstudent_edit'])->name('adminstudent_edit');
     Route::post('/adminstudent_edit_process', [AdminStudentController::class, 'adminstudent_edit_process'])->name('adminstudent_edit_process');
+
+    // Admin/Appointments
+    Route::get('/adminappointments', [AdminAppointmentsController::class, 'adminappointments'])->name('adminappointments');
+
 });
