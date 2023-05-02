@@ -17,6 +17,7 @@ class Schedules extends Migration
             $table->id();
             $table->unsignedBigInteger('subjectid');
             $table->unsignedBigInteger('sectionid');
+            $table->unsignedBigInteger('userid');
             $table->unsignedBigInteger('teacherid');
             $table->time('start_time');
             $table->time('end_time');
@@ -26,7 +27,8 @@ class Schedules extends Migration
             // Define foreign key constraints
             $table->foreign('subjectid')->references('id')->on('subjects')->onDelete('cascade');
             $table->foreign('sectionid')->references('id')->on('sections')->onDelete('cascade');
-            $table->foreign('teacherid')->references('id')->on('main_users')->onDelete('cascade');
+            $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
+            $table->foreign('teacherid')->references('id')->on('teachers')->onDelete('cascade');
         });
     }
 

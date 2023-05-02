@@ -26,3 +26,7 @@
 <a href="/adminschoolyear" class="list-group-item list-group-item-action py-2">
     <span>School Year</span>
 </a>
+
+<a href="/adminstudent" class="list-group-item list-group-item-action py-2">
+    <span>Students</span>
+</a>

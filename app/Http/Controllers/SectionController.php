@@ -295,10 +295,24 @@ class SectionController extends Controller
             ->first();
 
         $dbdata = DB::table('schedules')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.teacherid')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
             ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->where('sectionid', $query['sid']);
+            ->where('sectionid', $query['sid'])
+            ->select(
+                'main_users_details.userid',
+                'main_users_details.firstname',
+                'main_users_details.middlename',
+                'main_users_details.lastname',
+                'sections.section_name',
+                'subjects.subject_name',
+                'subjects.subject_name',
+                'schedules.sectionid',
+                'schedules.id',
+                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
+                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
+                'schedules.day'
+            );
 
 
         if(!empty($day)){
@@ -306,20 +320,6 @@ class SectionController extends Controller
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
-        $dbdata->select(
-            'main_users_details.userid',
-            'main_users_details.firstname',
-            'main_users_details.middlename',
-            'main_users_details.lastname',
-            'subjects.subject_name',
-            'sections.section_name',
-            'schedules.sectionid',
-            'schedules.id',
-            'subjects.subject_name',
-            DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
-            DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
-            'schedules.day'
-        );
         $data['qstring'] = http_build_query($qstring);
         $data['qstring'] = $qstring;
 
@@ -375,7 +375,8 @@ class SectionController extends Controller
             ->insertGetID([
                 'subjectid' => $getteacher->subjectid,
                 'sectionid' => $input['sid'],
-                'teacherid' => $getteacher->userid,
+                'userid' => $getteacher->userid,
+                'teacherid' => $getteacher->id,
                 'start_time' => $input['starttime'],
                 'end_time' => $input['endtime'],
                 'day' => $input['day'],
