@@ -9,6 +9,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminAppointmentsController;
+use App\Http\Controllers\Student\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,5 +95,10 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Admin/Appointments
     Route::get('/adminappointments', [AdminAppointmentsController::class, 'adminappointments'])->name('adminappointments');
+
+
+    // Student Portal
+    Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
+    Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
 
 });

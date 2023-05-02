@@ -44,7 +44,7 @@ class LoginController extends Controller
         $request->session()->put('sessionkey', $user_id);
         session(['sessionkey' => $user_id]);
 
-        $goto = 'enrollment';
+        $goto = 'portal';
         if($userdata->accounttype == 'admin') $goto = 'admin';
         return redirect()->to($goto);
     }
