@@ -102,5 +102,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
     Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
+    Route::get('/hmv', [StudentController::class, 'hmv'])->name('hmv');
+    Route::get('/feedback', [StudentController::class, 'feedback'])->name('feedback');
 
 });

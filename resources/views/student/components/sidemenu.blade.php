@@ -26,10 +26,10 @@
     <span>Feedback</span>
 </a>
 
-<a href="/about" class="list-group-item list-group-item-warning py-2">
+{{-- <a href="/about" class="list-group-item list-group-item-warning py-2">
     <span>About</span>
 </a>
 
 <a href="/FAQs" class="list-group-item list-group-item-warning py-2">
     <span>FAQs</span>
-</a>
+</a> --}}

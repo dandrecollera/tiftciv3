@@ -1,6 +1,7 @@
 @extends('student.components.layout')
 
 @section('content')
+<h1>Balance</h1>
 <div class="container-lg mt-4">
     <div class="row">
         <div class="col-12">

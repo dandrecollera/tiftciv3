@@ -37,4 +37,16 @@ class StudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         return view('student.balance', $data);
     }
+
+    public function hmv(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('student.hmv', $data);
+    }
+
+    public function feedback(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('student.feedback', $data);
+    }
 }
