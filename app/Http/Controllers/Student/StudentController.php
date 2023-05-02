@@ -25,4 +25,16 @@ class StudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         return view('student.grades', $data);
     }
+
+    public function schedule(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('student.schedule', $data);
+    }
+
+    public function balance(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('student.balance', $data);
+    }
 }

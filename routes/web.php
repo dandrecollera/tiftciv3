@@ -100,5 +100,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     // Student Portal
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
     Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
+    Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
+    Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
 
 });

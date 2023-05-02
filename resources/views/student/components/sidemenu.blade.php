@@ -12,8 +12,8 @@
     <span>Schedule</span>
 </a>
 
-<a href="/balances" class="list-group-item list-group-item-warning py-2">
-    <span>Balances</span>
+<a href="/balance" class="list-group-item list-group-item-warning py-2">
+    <span>Balance</span>
 </a>
 
 <br>
