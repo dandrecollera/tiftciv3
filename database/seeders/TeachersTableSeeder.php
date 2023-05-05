@@ -59,6 +59,38 @@ class TeachersTableSeeder extends Seeder
                 'updated_at' => '2023-04-30 06:34:10',
                 'userid' => 6,
             ),
+            5 => 
+            array (
+                'created_at' => '2023-05-05 05:55:31',
+                'id' => 8,
+                'subjectid' => 4,
+                'updated_at' => '2023-05-05 05:55:31',
+                'userid' => 10,
+            ),
+            6 => 
+            array (
+                'created_at' => '2023-05-05 05:56:20',
+                'id' => 9,
+                'subjectid' => 5,
+                'updated_at' => '2023-05-05 05:56:20',
+                'userid' => 11,
+            ),
+            7 => 
+            array (
+                'created_at' => '2023-05-05 05:56:38',
+                'id' => 10,
+                'subjectid' => 6,
+                'updated_at' => '2023-05-05 05:56:38',
+                'userid' => 4,
+            ),
+            8 => 
+            array (
+                'created_at' => '2023-05-05 05:56:46',
+                'id' => 11,
+                'subjectid' => 7,
+                'updated_at' => '2023-05-05 05:56:46',
+                'userid' => 6,
+            ),
         ));
         
         
