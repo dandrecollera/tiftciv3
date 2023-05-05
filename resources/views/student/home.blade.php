@@ -52,7 +52,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{$studentsection->section_name}}</h5>
+                    <h5 class="card-title">{{$studentsection->section_name}} Schedule</h5>
                     <h6 class="card-title">{{$today}}</h6>
                     <table class="table">
                         <thead>
