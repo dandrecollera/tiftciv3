@@ -1,6 +1,7 @@
 @extends('student.components.layout')
 
 @section('content')
+<h1>Function Needed</h1>
 <h1>Feedback</h1>
 <button type="button" id="addbutton" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-plus"></i>Add
     Feedback</button>

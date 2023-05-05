@@ -1,6 +1,7 @@
 @extends('student.components.layout')
 
 @section('content')
+<h1>No Function: Teacher Function Needed</h1>
 <h1>Grades</h1>
 <div class="container-lg mt-4">
     <div class="row">
