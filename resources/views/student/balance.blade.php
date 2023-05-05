@@ -7,8 +7,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">2022-2023</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
+                    <h5 class="card-title">Balance</h5>
+                    <h6 class="card-title">{{ $balance->school_year}}</h6>
                     <table class="table">
                         <thead>
                             <tr>
@@ -20,34 +20,28 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">General</th>
+                                <th scope="row">Voucher</th>
                                 <td></td>
                                 <td></td>
-                                <td>1,500</td>
+                                <td>{{ $balance->voucher}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Msc</th>
+                                <th scope="row">Tuition</th>
                                 <td></td>
                                 <td></td>
-                                <td>1,500</td>
+                                <td>{{ $balance->tuition}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Subjects</th>
+                                <th scope="row">Registration</th>
                                 <td></td>
                                 <td></td>
-                                <td>1,500</td>
+                                <td>{{ $balance->registration}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Books</th>
+                                <th scope="row">Total</th>
                                 <td></td>
                                 <td></td>
-                                <td>1,500</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Uniform</th>
-                                <td></td>
-                                <td></td>
-                                <td>1,500</td>
+                                <td>{{ $total }}</td>
                             </tr>
                         </tbody>
                     </table>
