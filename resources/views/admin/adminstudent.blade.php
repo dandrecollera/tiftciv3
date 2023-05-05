@@ -118,6 +118,9 @@
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
+                                <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-peso-sign fa-xs mx-1"></i></a>
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
@@ -126,6 +129,12 @@
                                     onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');"><i
                                         class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
+                        </td>
+                    </tr>
+                    <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
+                        <td colspan="8">
+                            <iframe id="" src="/admintransaction?sid={{$dbr->id}}" width="100%" height="500px"
+                                style="border:none;"></iframe>
                         </td>
                     </tr>
                     @endforeach
@@ -171,7 +180,7 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Admin User');
+        $('#addeditmodalLabel').html('Add A New Student User');
         $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
@@ -179,7 +188,7 @@
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Admin User');
+        $('#addeditmodalLabel').html('Edit This Student User');
         $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
     });
 });

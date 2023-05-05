@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container-xl mt-4">
+    <h4>not functional: need student function, no public connection</h4>
     <h1>Dashboard</h1>
     <div class="row py-3">
         <div class="col-4">

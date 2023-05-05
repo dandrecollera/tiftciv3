@@ -4,6 +4,7 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
+            <h4>not functional: needed student function</h4>
             <h1>Appointments</h1>
         </div>
     </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Students extends Migration
+class Tuition extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,19 @@ class Students extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('tuition', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('userid');
-            $table->unsignedBigInteger('sectionid');
+            $table->unsignedBigInteger('yearid');
+            $table->string('paymenttype');
+            $table->string('paymentmethod');
+            $table->decimal('voucher', 10, 2)->nullable();
+            $table->decimal('tuition', 10, 2)->nullable();
+            $table->decimal('registration', 10, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
-            $table->foreign('sectionid')->references('id')->on('sections')->onDelete('cascade');
+            $table->foreign('yearid')->references('id')->on('schoolyears')->onDelete('cascade');
         });
 
     }
@@ -32,6 +37,6 @@ class Students extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('tuition');
     }
 }

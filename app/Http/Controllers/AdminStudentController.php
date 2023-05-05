@@ -23,6 +23,7 @@ class AdminStudentController extends Controller
 
     public $default_accounttype = 'student';
 
+
     public function adminstudent(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
@@ -35,6 +36,7 @@ class AdminStudentController extends Controller
             5 => 'This user does not exist',
             6 => 'Status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
+            8 => 'Enter right amount.'
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -46,7 +48,8 @@ class AdminStudentController extends Controller
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
             4 => 'Student has been deleted.',
-            5 => 'Image has been updated'
+            5 => 'Image has been updated',
+            6 => 'Tuition has been updated.'
         ];
         $data['notif'] = 0;
         if (!empty($_GET['n'])) {
@@ -191,7 +194,7 @@ class AdminStudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['email']) || empty($input['password']) || empty($input['password2']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['email']) || empty($input['password']) || empty($input['password2']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status']) || empty($input['paymenttype']) || empty($input['paymentmethod'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
@@ -237,7 +240,6 @@ class AdminStudentController extends Controller
             $image = $request->file('image');
             $imageName = $image->getClientOriginalName();
             $path = $request->file('image')->storeAs($destinationPath, $imageName);
-
             $photo = $imageName;
         }
 
@@ -251,6 +253,46 @@ class AdminStudentController extends Controller
                 'mobilenumber' => !empty($input['mobilenumber']) ? $input['mobilenumber'] : '',
                 'address' => !empty($input['address']) ? $input['address'] : '',
                 'photo' => $photo,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        $voucher = 0;
+        $tuition = 0;
+        $registration = 0;
+        if($input['paymenttype'] == 'public'){
+            $voucher = 17500.00;
+            $tuition = 0.00;
+            $registration = 1000.00;
+        } else if($input['paymenttype'] == 'semi'){
+            $voucher = 14000.00;
+            $tuition = 3500.00;
+            $registration = 1000.00;
+        } else {
+            $voucher = 0.00;
+            $tuition = 17500.00;
+            $registration = 1000.00;
+        }
+
+        if($input['paymentmethod'] == 'full'){
+            $voucher = 0;
+            $tuition = 0;
+            $registration = 0;
+        }
+
+        $latestyear = DB::table('schoolyears')
+            ->orderBy('school_year', 'desc')
+            ->first();
+
+        DB::table('tuition')
+            ->insert([
+                'userid' => $muserid,
+                'yearid' => $latestyear->id,
+                'paymenttype' => $input['paymenttype'],
+                'paymentmethod' => $input['paymentmethod'],
+                'voucher' => $voucher,
+                'tuition' => $tuition,
+                'registration' => $registration,
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -340,4 +382,133 @@ class AdminStudentController extends Controller
 
         return redirect($this->default_url.'?n=2');
     }
+
+    public function adminstudent_section_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['did']) || empty($input['section'])){
+            return redirect($this->default_url.'?e=1');
+            die();
+        }
+
+        DB::table('students')
+            ->where('userid', $input['did'])
+            ->update([
+                'sectionid' => $input['section'],
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=3');
+    }
+
+    public function adminstudent_pass_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['did']) || empty($input['password']) || empty($input['password2'])){
+            return redirect($this->default_url.'?e=1');
+            die();
+        }
+
+        if(strlen($input['password']) < 8){
+            return redirect($this->default_url.'?e=2');
+            die();
+        }
+
+        if($input['password'] != $input['password2']){
+            return redirect($this->default_url.'?e=3');
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5');
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->update([
+                'password' => md5($input['password']),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=3');
+    }
+
+    public function adminstudent_image_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $input = $request->input();
+        $photo = DB::table('main_users_details')
+            ->select('main_users_details.photo')
+            ->where('userid', $input['did'])
+            ->first();
+
+        if($request->hasFile('image')){
+            $destinationPath = 'public/images';
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $path = $request->file('image')->storeAs($destinationPath, $imageName);
+            $photo = $imageName;
+        } else {
+            die();
+        }
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'photo' => $photo,
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=5');
+    }
+
+    public function adminstudent_delete_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5&'.$qstring);
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->delete();
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->delete();
+
+        return redirect($this->default_url.'?n=4&'.$qstring);
+    }
+
 }

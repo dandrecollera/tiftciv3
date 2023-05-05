@@ -62,7 +62,7 @@
             <div class="input-group mb-3">
                 <select name="section" id="statusInput" class="form-select">
                     @foreach ($sections as $section)
-                    <option value="{{$section->id}}" selected>{{$section->id}}: {{$section->section_name}}</option>
+                    <option value="{{$section->id}}">{{$section->id}}: {{$section->section_name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -78,6 +78,25 @@
             <label for="InputGroupFile01" class="form-label">Image:</label>
             <div class="input-group mb-3">
                 <input type="file" name="image" class="form-control" id="inputGroupFile01">
+            </div>
+
+            <hr>
+
+            <label for="address" class="form-label">Payment Type:</label>
+            <div class="input-group mb-3">
+                <select name="paymenttype" id="statusInput" class="form-select">
+                    <option value="public" selected>Public School</option>
+                    <option value="semi">Private School-Esc & Non-Esc Grante</option>
+                    <option value="private">Private School</option>
+                </select>
+            </div>
+            <label for="address" class="form-label">Payment Method:</label>
+            <div class="input-group mb-3">
+                <select name="paymentmethod" id="statusInput" class="form-select">
+                    <option value="full" selected>Full</option>
+                    <option value="semesteral">Semestral</option>
+                    <option value="monthly">Monthly</option>
+                </select>
             </div>
 
             <button type="submit" class="btn btn-primary float-end">Save</button>

@@ -79,6 +79,36 @@ class MainUsersTableSeeder extends Seeder
                 'created_at' => '2023-04-25 07:28:54',
                 'updated_at' => '2023-04-25 07:28:54',
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'email' => 'student1@student.com',
+                'password' => 'ad6a280417a0f533d8b670c61667e1a0',
+                'accounttype' => 'student',
+                'status' => 'active',
+                'created_at' => '2023-05-04 18:50:48',
+                'updated_at' => '2023-05-04 18:50:48',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'email' => 'student2@student.com',
+                'password' => '213ee683360d88249109c2f92789dbc3',
+                'accounttype' => 'student',
+                'status' => 'active',
+                'created_at' => '2023-05-04 19:12:15',
+                'updated_at' => '2023-05-04 19:12:15',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'email' => 'student3@student.com',
+                'password' => 'ad6a280417a0f533d8b670c61667e1a0',
+                'accounttype' => 'student',
+                'status' => 'active',
+                'created_at' => '2023-05-04 19:13:51',
+                'updated_at' => '2023-05-04 19:13:51',
+            ),
         ));
         
         

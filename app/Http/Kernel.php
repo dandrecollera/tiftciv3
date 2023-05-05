@@ -65,5 +65,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'axuauth' => \App\Http\Middleware\LoginHandler::class,
         'axuadmin' => \App\Http\Middleware\AdminHandler::class,
+        'axuteacher' => \App\Http\Middleware\TeacherHandler::class,
+        'axustudent' => \App\Http\Middleware\StudentHandler::class,
     ];
 }

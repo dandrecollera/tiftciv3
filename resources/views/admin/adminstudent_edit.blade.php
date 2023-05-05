@@ -71,7 +71,8 @@
             <div class="input-group mb-3">
                 <select name="section" id="statusInput" class="form-select">
                     @foreach ($sections as $section)
-                    <option value="{{$section->id}}" selected>{{$section->id}}: {{$section->section_name}}</option>
+                    <option value="{{$section->id}}" {{$dbdata->section_name == $section->section_name ? 'selected' :
+                        ''}}>{{$section->id}}: {{$section->section_name}}</option>
                     @endforeach
                 </select>
             </div>

@@ -97,6 +97,45 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'created_at' => '2023-04-25 07:28:54',
                 'updated_at' => '2023-04-25 07:28:54',
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'userid' => 7,
+                'firstname' => 'Student',
+                'middlename' => 'One',
+                'lastname' => 'TheOne',
+                'mobilenumber' => '12345678912',
+                'address' => 'student 1 address',
+                'photo' => 'hbd.png',
+                'created_at' => '2023-05-04 18:50:48',
+                'updated_at' => '2023-05-04 18:50:48',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'userid' => 8,
+                'firstname' => 'Student',
+                'middlename' => '',
+                'lastname' => 'Two',
+                'mobilenumber' => '12345678912',
+                'address' => 'student2',
+                'photo' => 'azurinez.png',
+                'created_at' => '2023-05-04 19:12:15',
+                'updated_at' => '2023-05-04 19:12:15',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'userid' => 9,
+                'firstname' => 'Student',
+                'middlename' => '',
+                'lastname' => 'Three',
+                'mobilenumber' => '12345678912',
+                'address' => 'Student 3',
+                'photo' => 'code12.png',
+                'created_at' => '2023-05-04 19:13:51',
+                'updated_at' => '2023-05-04 19:13:51',
+            ),
         ));
         
         
