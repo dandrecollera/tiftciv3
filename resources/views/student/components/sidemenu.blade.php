@@ -27,7 +27,7 @@
 </a>
 
 <a href="https://tiftci.com/login/index.php" class="list-group-item list-group-item-warning py-2">
-    <span>Portal</span>
+    <span>Student LMS</span>
 </a>
 
 {{-- <a href="/about" class="list-group-item list-group-item-warning py-2">
