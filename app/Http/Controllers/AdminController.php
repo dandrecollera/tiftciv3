@@ -318,7 +318,7 @@ class AdminController extends Controller
             ->first();
 
         if(empty($logindata)){
-            return redirect($this->defaullt_url_adminuser.'?e=5');
+            return redirect($this->default_url_adminuser.'?e=5');
             die();
         }
 
@@ -372,7 +372,7 @@ class AdminController extends Controller
 
         $qstring = http_build_query([
             'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
-            'page' => !empty($input['page']) ? $input['page'] : $this-> default_page,
+            'page' => !empty($input['page']) ? $input['page'] : $this-> default_start_page,
             'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
             'sort' => !empty($input['sort']) ? $input['sort'] : '',
         ]);
