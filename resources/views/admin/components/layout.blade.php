@@ -79,9 +79,8 @@
         <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <!-- Container wrapper -->
             <div class="container-fluid">
-                <a class="navbar-brand fw-bolder" href="#">
-                    {{-- <img src="" height="25" alt="" /> --}}
-                    TIFTCI Admin
+                <a class="navbar-brand fw-bolder ps-2" href="/admin">
+                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Admin
                 </a>
                 <!-- Right links -->
                 <ul class="navbar-nav ms-auto d-flex flex-row d-none d-lg-block">
@@ -106,7 +105,7 @@
     </header>
 
 
-    <main style="margin-top: 72px">
+    <main style="margin-top: 80px">
         <div class="container pt-2 pt-lg-4">
             @yield('content')
         </div>
