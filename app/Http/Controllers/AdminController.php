@@ -33,6 +33,19 @@ class AdminController extends Controller
     public function index(Request $request) {
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['studentcount'] = $studentcount = DB::table('main_users')
+            ->where('accounttype', 'student')
+            ->count();
+        $data['teachercount'] = $teachercount = DB::table('main_users')
+            ->where('accounttype', 'teacher')
+            ->count();
+        $data['admincount'] = $admincount = DB::table('main_users')
+            ->where('accounttype', 'admin')
+            ->count();
+
+
+
         return view('admin.home', $data);
     }
 

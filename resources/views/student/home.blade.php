@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="row py-3">
-    <div class="col-9">
-        <div class="col overflow-scroll scrollable-container mb-2">
+    <div class="col-lg-8 mb-3">
+        <div class="col  mb-2">
 
             <div class="card">
-                <div class="card-body">
+                <div class="card-body overflow-scroll">
                     <h5 class="card-title">Balance</h5>
                     <h6 class="card-title">{{ $balance->school_year}}</h6>
                     <table class="table">
@@ -51,7 +51,7 @@
             <br>
 
             <div class="card">
-                <div class="card-body">
+                <div class="card-body overflow-scroll">
                     <h5 class="card-title">{{$studentsection->section_name}} Schedule</h5>
                     <h6 class="card-title">{{$today}}</h6>
                     <table class="table">
@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Latest News</h6>
