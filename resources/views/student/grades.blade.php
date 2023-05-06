@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body overflow-scroll">
                     <h5 class="card-title">2022-2023</h5>
                     <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
                     <table class="table">
