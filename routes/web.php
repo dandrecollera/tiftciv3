@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Alumni\AlumniController;
+use App\Http\Controllers\Teacher\MainTeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,13 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
     Route::get('/hmv', [StudentController::class, 'hmv'])->name('hmv');
     Route::get('/feedback', [StudentController::class, 'feedback'])->name('feedback');
+
+
+    // Teacher Portal
+    Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');
+    Route::get('/section', [MainTeacherController::class, 'section'])->name('section');
+    Route::get('/studentsgrades', [MainTeacherController::class, 'studentsgrades'])->name('studentsgrades');
+
 
 
     // Alumni Portal

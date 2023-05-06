@@ -147,7 +147,7 @@ class SubjectAdminController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['subjectname'])){
+        if(empty($input['subjectname']) || empty($input['semester'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
@@ -163,6 +163,7 @@ class SubjectAdminController extends Controller
         $subjectid = DB::table('subjects')
             ->insertGetID([
                 'subject_name' => $input['subjectname'],
+                'semester' => $input['semester'],
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -200,6 +201,7 @@ class SubjectAdminController extends Controller
             ->where('id', $input['did'])
             ->update([
                 'subject_name' => $input['subjectname'],
+                'semester' => $input['semester'],
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 

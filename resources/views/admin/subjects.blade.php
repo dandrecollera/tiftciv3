@@ -90,6 +90,7 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Subject' ? 'text-primary' : '' }}">Subject
                                 Name</span>
                         </th>
+                        <th scope="col">Semester</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -98,6 +99,7 @@
                     <tr>
                         <th scope="row">{{$dbr->id}}</th>
                         <td>{{$dbr->subject_name}}</td>
+                        <td>{{$dbr->semester}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"

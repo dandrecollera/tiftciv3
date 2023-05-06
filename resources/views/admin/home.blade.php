@@ -7,7 +7,7 @@
     <h1>Dashboard</h1>
     <div class="row py-3">
         <div class="col-4">
-            <div class="card text-center">
+            <div class="card text-center text-bg-success">
                 <div class="card-body">
                     <h6 class="card-title"># of Student</h6>
                     <h3 class="card-title">400</h3>
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="card text-center">
+            <div class="card text-center text-bg-success">
                 <div class="card-body">
                     <h6 class="card-title"># of Teachers</h6>
                     <h3 class="card-title">13</h3>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="card text-center">
+            <div class="card text-center text-bg-success">
                 <div class="card-body">
                     <h6 class="card-title"># of Admins</h6>
                     <h3 class="card-title">4</h3>

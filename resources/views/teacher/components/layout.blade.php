@@ -52,20 +52,20 @@
 <body style="background-image: url('/asset/polka2.png')">
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-warning-subtle">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-info-subtle">
 
             <div class="position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-3 mt-lg-4">
 
-                    @include('student.components.sidemenu')
+                    @include('teacher.components.sidemenu')
 
                     <div class="dropdown py-2 mx-2 mt-2 d-block d-lg-none">
                         <a href="#" class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            @include('student.components.imagename')
+                            @include('teacher.components.imagename')
                         </a>
                         <ul class="dropdown-menu text-small shadow">
-                            @include('student.components.usermenu')
+                            @include('teacher.components.usermenu')
                         </ul>
                     </div>
 
@@ -76,11 +76,11 @@
         <!-- Sidebar -->
 
         <!-- Navbar -->
-        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-warning fixed-top">
+        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-info fixed-top">
             <!-- Container wrapper -->
             <div class="container-fluid">
-                <a class="navbar-brand fw-bolder ps-2" href="/portal">
-                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Portal
+                <a class="navbar-brand fw-bolder ps-2" href="/admin">
+                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Teacher
                 </a>
                 <!-- Right links -->
                 <ul class="navbar-nav ms-auto d-flex flex-row d-none d-lg-block">
@@ -88,10 +88,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
                             id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @include('student.components.imagename')
+                            @include('teacher.components.imagename')
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-label="navbarDropdownMenuLink">
-                            @include('student.components.usermenu')
+                            @include('teacher.components.usermenu')
                         </ul>
                     </li>
                 </ul>

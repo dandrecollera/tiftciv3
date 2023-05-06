@@ -52,10 +52,10 @@
 <body style="background-image: url('/asset/polka2.png')">
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-dark-subtle">
 
             <div class="position-sticky">
-                <div class="list-group list-group-flush mx-3 mt-0 mt-lg-3">
+                <div class="list-group list-group-flush mx-3 mt-3 mt-lg-4">
 
                     @include('admin.components.sidemenu')
 
@@ -105,7 +105,7 @@
     </header>
 
 
-    <main style="margin-top: 80px">
+    <main style="margin-top: 90px">
         <div class="container pt-2 pt-lg-4">
             @yield('content')
         </div>
