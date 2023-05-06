@@ -61,6 +61,21 @@ class StudentController extends Controller
     public function grades(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        $data['studentsection'] = $studentsection = DB::table('students')
+            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->where('students.userid', $userinfo[0])
+            ->select('sections.section_name', 'sections.id')
+            ->first();
+
+        $data['subjects'] = $subjects = DB::table('schedules')
+            ->where('sectionid', $studentsection->id)
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+            ->get();
+
+        // dd($subjects);
+
         return view('student.grades', $data);
     }
 
