@@ -87,6 +87,7 @@ class MainTeacherController extends Controller
         $data['students'] = $students = DB::table('students')
             ->where('students.sectionid', $query['section'])
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
+            // ->leftjoin('grades', 'grades.userid', '=', 'students.userid')
             ->select(
                 'main_users_details.userid',
                 'main_users_details.firstname',
@@ -96,10 +97,64 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
+        // dd($students)
+
         $data['qstring'] = http_build_query($qstring);
         $data['qstring2'] = $qstring;
         // dd($dbresult);
         return view('teacher.studentgrades', $data);
     }
 
+
+    public function studentsgrades_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+
+
+        $data['sid'] = $query['id'];
+        $data['subject'] = $query['subject'];
+        $data['section'] = $query['section'];
+        $data['quarter'] = $query['quarter'];
+        // dd($query);
+        $data['query'] = $query;
+        return view('teacher.studentgrades_add', $data);
+    }
+
+    public $default_url = 'studentsgrades';
+
+    public function studentsgrades_add_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        $input = $request->input();
+
+        if(empty($input['grade'])){
+            return redirect($this->default_url.'?e=1&subject='.$input['subject'].'&section='.$input['section']);
+            die();
+        }
+
+        if($input['grade'] <= 0 || $input['grade'] > 100){
+            return redirect($this->default_url.'?e=1&subject='.$input['subject'].'&section='.$input['section']);
+            die();
+        }
+
+        $latestyear = DB::table('schoolyears')
+            ->orderBy('school_year', 'desc')
+            ->first();
+
+        DB::table('grades')
+            ->insert([
+                'studentid' => $input['sid'],
+                'subjectid' => $input['subject'],
+                'yearid' => $latestyear->id,
+                'grade' => $input['grade'],
+                'quarter' => $input['quarter'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=1&subject='.$input['subject'].'&section='.$input['section']);
+    }
 }

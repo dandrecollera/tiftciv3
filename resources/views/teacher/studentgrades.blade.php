@@ -37,27 +37,68 @@
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">1st</th>
-                            <th scope="col">2nd</th>
-                            <th scope="col"></th>
+                            <th scope="col">{{$subject->semester == "1st" ? '1st' : '3rd'}}</th>
+                            <th scope="col">{{$subject->semester == "1st" ? '2nd' : '4th'}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($students as $dbr)
-                        <tr class="">
+                        <tr>
                             <th scope="row">{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</th>
-                            <td>89</td>
-                            <td>78</td>
+                            @php
+                            $grades = DB::table('grades')
+                            ->where('studentid', $dbr->userid)
+                            ->where('subjectid', $qstring2['subject'])
+                            ->select('grades.grade', 'grades.quarter')
+                            ->get()
+                            ->toArray();
+                            $firstQuarterGrade = '';
+                            $secondQuarterGrade = '';
+                            foreach ($grades as $grade) {
+                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
+                            $firstQuarterGrade = $grade->grade;
+                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
+                            $secondQuarterGrade = $grade->grade;
+                            }
+                            }
+                            @endphp
                             <td>
+                                @if ($firstQuarterGrade)
+                                {{$firstQuarterGrade}}
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->userid}}"
+                                    <a class="btn btn-success btn-sm topedit" href="#" data-id="{{$dbr->userid}}"
+                                        data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
                                         data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-pen fa-xs"></i></a>
-                                    <a class="btn btn-danger btn-sm"
-                                        href="/adminstudent_delete_process?did={{$dbr->userid}}&{!!$qstring!!}"
-                                        onclick="return confirm('Are you sure you want to delete {{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}?\nPlease note this is unrecoverable.');"><i
-                                            class="fa-solid fa-trash fa-xs"></i></a>
+                                            class="fa-solid fa-pen"></i></a>
                                 </div>
+                                @else
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a class="btn btn-primary btn-sm topgrade" href="#" data-id="{{$dbr->userid}}"
+                                        data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
+                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
+                                            class="fa-solid fa-plus"></i></a>
+                                </div>
+
+                                @endif
+                            </td>
+                            <td>
+                                @if ($secondQuarterGrade)
+                                {{$secondQuarterGrade}}
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a class="btn btn-success btn-sm bottomedit" href="#" data-id="{{$dbr->userid}}"
+                                        data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
+                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
+                                            class="fa-solid fa-pen"></i></a>
+                                </div>
+                                @else
+
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a class="btn btn-primary btn-sm bottomgrade" href="#" data-id="{{$dbr->userid}}"
+                                        data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
+                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
+                                            class="fa-solid fa-plus"></i></a>
+                                </div>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -94,18 +135,43 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-    $('#addbutton').on('click', function() {
-        console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Student User');
-        $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
-    });
-    $('.dcc_edit').on('click', function() {
+    $('.topgrade').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
+        var quart = $(this).data("quarter");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Student User');
-        $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '1st' : '3rd'}}');
+        $('#addeditframe').attr('src', '/studentsgrades_add?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
+    });
+    $('.bottomgrade').on('click', function() {
+        console.log('edit button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var quart = $(this).data("quarter");
+        console.log(iid);
+        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '2nd' : '4th'}}');
+        $('#addeditframe').attr('src', '/studentsgrades_add?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
+    });
+
+
+    $('.topedit').on('click', function() {
+        console.log('edit button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var quart = $(this).data("quarter");
+        console.log(iid);
+        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '2nd' : '4th'}}');
+        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
+    });
+    $('.bottomedit').on('click', function() {
+        console.log('edit button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var quart = $(this).data("quarter");
+        console.log(iid);
+        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '2nd' : '4th'}}');
+        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
     });
 });
 

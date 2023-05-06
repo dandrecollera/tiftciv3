@@ -122,6 +122,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');
     Route::get('/section', [MainTeacherController::class, 'section'])->name('section');
     Route::get('/studentsgrades', [MainTeacherController::class, 'studentsgrades'])->name('studentsgrades');
+    Route::get('/studentsgrades_add', [MainTeacherController::class, 'studentsgrades_add'])->name('studentsgrades_add');
+    Route::post('/studentsgrades_add_process', [MainTeacherController::class, 'studentsgrades_add_process'])->name('studentsgrades_add_process');
 
 
 
