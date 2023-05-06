@@ -49,27 +49,33 @@
                             $grades = DB::table('grades')
                             ->where('studentid', $dbr->userid)
                             ->where('subjectid', $qstring2['subject'])
-                            ->select('grades.grade', 'grades.quarter')
+                            ->select('grades.grade', 'grades.quarter', 'grades.id')
                             ->get()
                             ->toArray();
                             $firstQuarterGrade = '';
                             $secondQuarterGrade = '';
+                            $firstquarterid = '';
+                            $secondquarterid = '';
                             foreach ($grades as $grade) {
                             if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
                             $firstQuarterGrade = $grade->grade;
+                            $firstquarterid = $grade->id;
                             } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
                             $secondQuarterGrade = $grade->grade;
+                            $secondquarterid = $grade->id;
                             }
                             }
                             @endphp
                             <td>
                                 @if ($firstQuarterGrade)
-                                {{$firstQuarterGrade}}
+
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="btn btn-success btn-sm topedit" href="#" data-id="{{$dbr->userid}}"
+                                    <a class="topedit" href="#" data-id="{{$dbr->userid}}"
+                                        data-grade="{{$firstquarterid}}"
                                         data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
-                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-pen"></i></a>
+                                        data-bs-toggle="modal" data-bs-target="#addeditmodal">
+                                        {{$firstQuarterGrade}}
+                                    </a>
                                 </div>
                                 @else
                                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -83,15 +89,14 @@
                             </td>
                             <td>
                                 @if ($secondQuarterGrade)
-                                {{$secondQuarterGrade}}
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="btn btn-success btn-sm bottomedit" href="#" data-id="{{$dbr->userid}}"
-                                        data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
-                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-pen"></i></a>
-                                </div>
-                                @else
 
+                                <a class="bottomedit" href="#" data-id="{{$dbr->userid}}"
+                                    data-grade="{{$secondquarterid}}"
+                                    data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
+                                    data-bs-toggle="modal" data-bs-target="#addeditmodal">
+                                    {{$secondQuarterGrade}}
+                                </a>
+                                @else
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a class="btn btn-primary btn-sm bottomgrade" href="#" data-id="{{$dbr->userid}}"
                                         data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
@@ -160,18 +165,20 @@
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         var quart = $(this).data("quarter");
+        var grade = $(this).data("grade");
         console.log(iid);
-        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '2nd' : '4th'}}');
-        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
+        $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '1st' : '3rd'}}');
+        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&grade='+grade+'&{!!$qstring!!}');
     });
     $('.bottomedit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         var quart = $(this).data("quarter");
+        var grade = $(this).data("grade");
         console.log(iid);
         $('#addeditmodalLabel').html('{{$subject->semester == "1st" ? '2nd' : '4th'}}');
-        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&{!!$qstring!!}');
+        $('#addeditframe').attr('src', '/studentsgrades_edit?id='+iid+'&quarter='+quart+'&grade='+grade+'&{!!$qstring!!}');
     });
 });
 

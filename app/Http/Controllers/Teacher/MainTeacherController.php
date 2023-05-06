@@ -127,7 +127,6 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-
         $input = $request->input();
 
         if(empty($input['grade'])){
@@ -152,6 +151,52 @@ class MainTeacherController extends Controller
                 'grade' => $input['grade'],
                 'quarter' => $input['quarter'],
                 'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect($this->default_url.'?n=1&subject='.$input['subject'].'&section='.$input['section']);
+    }
+
+    public function studentsgrades_edit(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+
+
+        $data['gid'] = $query['grade'];
+        $data['sid'] = $query['id'];
+        $data['subject'] = $query['subject'];
+        $data['section'] = $query['section'];
+        $data['quarter'] = $query['quarter'];
+        // dd($query);
+
+        $data['score'] = $score = DB::table('grades')
+            ->where('id', $query['grade'])
+            ->first();
+
+        $data['query'] = $query;
+        return view('teacher.studentgrades_edit', $data);
+    }
+
+    public function studentsgrades_edit_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        if(empty($input['grade'])){
+            return redirect($this->default_url.'?e=1&subject='.$input['subject'].'&section='.$input['section']);
+            die();
+        }
+
+        if($input['grade'] <= 0 || $input['grade'] > 100){
+            return redirect($this->default_url.'?e=1&subject='.$input['subject'].'&section='.$input['section']);
+            die();
+        }
+
+        DB::table('grades')
+            ->where('id', $input['gid'])
+            ->update([
+                'grade' => $input['grade'],
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
