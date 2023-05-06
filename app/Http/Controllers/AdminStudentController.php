@@ -49,7 +49,8 @@ class AdminStudentController extends Controller
             3 => 'Password has been changed.',
             4 => 'Student has been deleted.',
             5 => 'Image has been updated',
-            6 => 'Tuition has been updated.'
+            6 => 'Tuition has been updated.',
+            7 => 'Section has been changed',
         ];
         $data['notif'] = 0;
         if (!empty($_GET['n'])) {
@@ -400,7 +401,7 @@ class AdminStudentController extends Controller
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
-        return redirect($this->default_url.'?n=3');
+        return redirect($this->default_url.'?n=7');
     }
 
     public function adminstudent_pass_process(Request $request){
