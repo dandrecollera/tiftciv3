@@ -34,7 +34,7 @@
     <hr>
 
     <div class="row py-3">
-        <div class="col-lg-4 order-lg-first mb-3">
+        <div class="col-lg-4 order-lg-last mb-3">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Latest News</h6>
