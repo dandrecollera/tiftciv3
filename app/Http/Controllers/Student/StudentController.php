@@ -23,6 +23,16 @@ class StudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+
+        $data['news'] = $news = DB::table('wp_posts')
+            ->where('post_type', 'news')
+            ->orderby('id', 'desc')
+            ->limit(3)
+            ->get()
+            ->toArray();
+
+        // dd($news);
+
         $data['balance'] = $balance = DB::table('tuition')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])

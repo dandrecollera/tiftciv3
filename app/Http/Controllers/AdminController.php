@@ -44,7 +44,12 @@ class AdminController extends Controller
             ->where('accounttype', 'admin')
             ->count();
 
-
+        $data['news'] = $news = DB::table('wp_posts')
+            ->where('post_type', 'news')
+            ->orderby('id', 'desc')
+            ->limit(3)
+            ->get()
+            ->toArray();
 
         return view('admin.home', $data);
     }

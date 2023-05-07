@@ -36,9 +36,17 @@
     <div class="row py-3">
         <div class="col-lg-4 order-lg-last mb-3">
             <div class="card">
+                <h4 class="card-header">Latest News</h4>
                 <div class="card-body">
-                    <h6 class="card-title">Latest News</h6>
-                    <h6 class="card-title">No Recent News</h6>
+                    <ul class="list-group list-group-flush">
+                        @foreach ($news as $nw)
+                        <li class="list-group-item" aria-current="true">
+                            <a href="https://dandrecollera.com/news/{{$nw->post_name}}"
+                                target="_blank">{{$nw->post_title}}</a><br>
+                            <span style="font-size:10px">{{ date('m/d/Y g:iA', strtotime($nw->post_modified)) }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
