@@ -6,7 +6,7 @@
     <h1>Dashboard</h1>
     <div class="row py-3">
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
-            <div class="card text-center text-bg-success    ">
+            <div class="card text-center text-bg-secondary    ">
                 <div class="card-body">
                     <h6 class="card-title"># of Student</h6>
                     <h3 class="card-title">{{$studentcount}}</h3>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
-            <div class="card text-center text-bg-success">
+            <div class="card text-center text-bg-secondary">
                 <div class="card-body">
                     <h6 class="card-title"># of Teachers</h6>
                     <h3 class="card-title">{{$teachercount}}</h3>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
-            <div class="card text-center text-bg-success">
+            <div class="card text-center text-bg-secondary">
                 <div class="card-body">
                     <h6 class="card-title"># of Admins</h6>
                     <h3 class="card-title">{{$admincount}}</h3>

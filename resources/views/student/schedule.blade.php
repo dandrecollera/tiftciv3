@@ -11,7 +11,7 @@
                 @php
                 $day = request()->input('day');
                 @endphp
-                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">{{empty($day) ? "Filter to Day" : "Filter to ".$day}}</button>
                 <ul class="dropdown-menu">
                     @php
@@ -31,7 +31,7 @@
                 $query = request()->getQueryString();
 
                 @endphp
-                <a class="btn btn-primary" href="{{ $currentUrl }}" role="button">Reset</a>
+                <a class="btn btn-dark" href="{{ $currentUrl }}" role="button">Reset</a>
                 @endif
             </div>
         </form>

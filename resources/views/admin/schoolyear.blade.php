@@ -10,7 +10,8 @@
     <div class="">
         <a href="/adminschoolyear_add_process"
             onclick="return confirm('Are you sure you want to delete?\nPlease note this is unrecoverable.');">
-            <button type="button" id="addbutton" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-plus"></i>
+            <button type="button" id="addbutton" class="btn btn-secondary btn-sm"><i
+                    class="fa-solid fa-circle-plus"></i>
                 Add
                 A New School Year/Semester</button>
         </a>
@@ -43,16 +44,16 @@
         <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control bg-success-subtle"
+                    <input type="text" name="keyword" class="form-control bg-secondary-subtle"
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
-                    <button class="btn btn-success" type="submit">Go</button>
+                    <button class="btn btn-secondary" type="submit">Go</button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminschoolyear" role="button">Reset</a>
+                    <a class="btn btn-dark" href="/adminschoolyear" role="button">Reset</a>
                     @endif
                 </div>
                 <div class="input-group mb-3">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{$lpp}} Items</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
@@ -67,7 +68,7 @@
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
 
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
                     <ul class="dropdown-menu">
                         @foreach($orderbylist as $key => $odl)
@@ -132,7 +133,7 @@
         <div class="input-group mb-4">
             {!!$page_first_url!!}
             {!!$page_prev_url!!}
-            <span class="input-group-text bg-success-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            <span class="input-group-text bg-secondary-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
             {!!$page_next_url!!}
             {!!$page_last_url!!}
         </div>
