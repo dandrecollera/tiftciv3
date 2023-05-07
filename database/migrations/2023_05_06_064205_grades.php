@@ -18,12 +18,14 @@ class Grades extends Migration
             $table->unsignedBigInteger('studentid');
             $table->unsignedBigInteger('subjectid');
             $table->unsignedBigInteger('yearid');
+            $table->unsignedBigInteger('sectionid');
             $table->integer('grade');
             $table->string('quarter');
             $table->timestamps();
 
             $table->foreign('studentid')->references('id')->on('main_users')->onDelete('cascade');
             $table->foreign('subjectid')->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreign('sectionid')->references('id')->on('sections')->onDelete('cascade');
             $table->foreign('yearid')->references('id')->on('schoolyears')->onDelete('cascade');
         });
     }

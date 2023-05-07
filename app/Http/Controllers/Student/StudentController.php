@@ -33,14 +33,21 @@ class StudentController extends Controller
 
         // dd($news);
 
+        $latestYear = DB::table('schoolyears')
+            ->orderby('id', 'desc')
+            ->first();
+
+
+
         $data['balance'] = $balance = DB::table('tuition')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
+            ->where('yearid', $latestYear->id)
             ->first();
         $data['today'] = $today = Carbon::now()->format('l');
         $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
 
-
+        // dd($balance);
         $data['studentsection'] = $studentsection = DB::table('students')
             ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
             ->where('students.userid', $userinfo[0])

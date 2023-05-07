@@ -11,25 +11,41 @@
 
     @php
     $years = DB::table('schoolyears')->orderBy('id', 'desc')->get();
-    $startedyear = null;
+
+    $getYear = DB::table('tuition')
+    ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+    ->where('tuition.userid', $userinfo[0])
+    ->orderBy('yearid', 'asc')
+    ->first();
+
+    $startyear = $getYear->yearid;
+    $endyear = $startyear + 1;
     @endphp
 
     @foreach ($years as $year)
 
+    @if ($year->id == $startyear || $year->id == $endyear)
     @php
     $gradesInYear = DB::table('grades')->where('yearid', $year->id)->get();
     @endphp
 
     @if ($gradesInYear->count())
-
     @php
-    $startedyear = $year->id;
+    $availableGrade = DB::table('grades')
+    ->where('studentid', $userinfo[0])
+    ->where('yearid', $year->id)
+    ->select('grades.sectionid')
+    ->first();
+    $pastSubjects = DB::table('schedules')
+    ->where('sectionid', $availableGrade->sectionid)
+    ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+    ->get();
     @endphp
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
                 <div class="card-body overflow-scroll">
-                    <h5 class="card-title">{{$year->school_year}} Test</h5>
+                    <h5 class="card-title">{{$year->school_year}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
                     <table class="table">
                         <thead>
@@ -43,7 +59,7 @@
                             @php
                             $lastsubjectid = 999;
                             @endphp
-                            @foreach ($subjects as $subject)
+                            @foreach ($pastSubjects as $subject)
                             @if ($subject->semester == '1st' && $subject->subjectid != $lastsubjectid)
 
                             @php
@@ -103,7 +119,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($subjects as $subject)
+                            @foreach ($pastSubjects as $subject)
                             @if ($subject->semester == '2nd' && $subject->subjectid != $lastsubjectid)
                             @php
                             $grades = DB::table('grades')
@@ -158,13 +174,11 @@
     </div>
 
     @else
-
-    @if ($year->id > $startedyear)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
                 <div class="card-body overflow-scroll">
-                    <h5 class="card-title">{{$year->school_year}} Empty</h5>
+                    <h5 class="card-title">{{$year->school_year}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
                     <table class="table">
                         <thead>
@@ -189,7 +203,6 @@
                             ->select('grades.grade', 'grades.quarter', 'grades.id')
                             ->get()
                             ->toArray();
-
                             $firstQuarterGrade = '';
                             $secondQuarterGrade = '';
                             $firstquarterid = '';
@@ -245,10 +258,10 @@
                             $grades = DB::table('grades')
                             ->where('subjectid', $subject->subjectid)
                             ->where('studentid', $userinfo[0])
+                            ->where('yearid', $year->id)
                             ->select('grades.grade', 'grades.quarter', 'grades.id')
                             ->get()
                             ->toArray();
-                            // dd($grades);
                             $firstQuarterGrade = '';
                             $secondQuarterGrade = '';
                             $firstquarterid = '';
@@ -291,7 +304,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     @endif
@@ -301,6 +313,7 @@
 
 
     @endforeach
+
 
 
 </div>

@@ -148,6 +148,7 @@ class MainTeacherController extends Controller
                 'studentid' => $input['sid'],
                 'subjectid' => $input['subject'],
                 'yearid' => $latestyear->id,
+                'sectionid' => $input['section'],
                 'grade' => $input['grade'],
                 'quarter' => $input['quarter'],
                 'created_at' => Carbon::now()->toDateTimeString(),
