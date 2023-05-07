@@ -10,6 +10,7 @@ use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\AdminTransactionController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Alumni\AlumniController;
 use App\Http\Controllers\Teacher\MainTeacherController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Teacher\MainTeacherController;
 Route::get('/', [LoginController::class, 'index'])->name('loginScreen');
 Route::post('/login', [LoginController::class, 'login'])->name('loginProcess');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logoutProcess');
+Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');
 
 Route::group(['middleware' => 'axuauth'], function () {
 

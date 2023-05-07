@@ -239,9 +239,10 @@ class AdminStudentController extends Controller
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $path = $request->file('image')->storeAs($destinationPath, $imageName);
-            $photo = $imageName;
+            $extension = $image->getClientOriginalExtension();
+            $filename = $muserid . '.' . $extension;
+            $path = $request->file('image')->storeAs($destinationPath, $filename);
+            $photo = $filename;
         }
 
 
@@ -457,10 +458,17 @@ class AdminStudentController extends Controller
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            $imageName = $input['did'] . '.' . $extension;
+
+            if(Storage::exists($destinationPath.'/'.$imageName)){
+                Storage::delete($destinationPath.'/'.$imageName);
+            }
+
             $path = $request->file('image')->storeAs($destinationPath, $imageName);
             $photo = $imageName;
         } else {
+            return redirect($this->default_url_adminuser.'?e=7');
             die();
         }
 

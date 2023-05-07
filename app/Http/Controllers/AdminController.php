@@ -230,10 +230,10 @@ class AdminController extends Controller
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $path = $request->file('image')->storeAs($destinationPath,$imageName);
-
-            $photo = $imageName;
+            $extension = $image->getClientOriginalExtension();
+            $filename = $muserid . '.' . $extension;
+            $path = $request->file('image')->storeAs($destinationPath, $filename);
+            $photo = $filename;
         }
 
         DB::table('main_users_details')->insert([
@@ -358,30 +358,37 @@ class AdminController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
         $input = $request->input();
+
+        // Get the current photo to delete later
         $photo = DB::table('main_users_details')
             ->select('main_users_details.photo')
             ->where('userid', $input['did'])
             ->first();
 
-
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $path = $request->file('image')->storeAs($destinationPath,$imageName);
+            $extension = $image->getClientOriginalExtension();
+            $imageName = $input['did'] . '.' . $extension;
 
+            if(Storage::exists($destinationPath.'/'.$imageName)){
+                Storage::delete($destinationPath.'/'.$imageName);
+            }
+
+            $path = $request->file('image')->storeAs($destinationPath, $imageName);
             $photo = $imageName;
         } else {
             return redirect($this->default_url_adminuser.'?e=7');
             die();
         }
 
+
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->update([
                 'photo' => $photo,
                 'updated_at' => Carbon::now()->toDateTimeString()
-        ]);
+            ]);
 
         return redirect($this->default_url_adminuser.'?n=5');
     }

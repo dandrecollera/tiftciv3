@@ -31,6 +31,8 @@
 
     <script src="{{asset('js/jquery-3.6.4.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
+
+    @stack('jsscripts')
 </body>
 
 </html>
