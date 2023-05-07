@@ -355,8 +355,9 @@ class SubjectAdminController extends Controller
             die();
         }
 
-        DB::table('teachers')
+        $test = DB::table('teachers')
             ->where('userid', $input['did'])
+            ->where('subjectid', $input['sid'])
             ->delete();
 
         return redirect($this->default_url_sub.'?n=4&'.$qstring);

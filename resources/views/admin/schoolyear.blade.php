@@ -8,9 +8,13 @@
         </div>
     </div>
     <div class="">
-        <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New School
-            Year/Semester</button>
+        <a href="/adminschoolyear_add_process"
+            onclick="return confirm('Are you sure you want to delete?\nPlease note this is unrecoverable.');">
+            <button type="button" id="addbutton" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-plus"></i>
+                Add
+                A New School Year/Semester</button>
+        </a>
+
     </div>
     <hr>
     @if (!empty($error))
@@ -118,11 +122,6 @@
                                     onclick="return confirm('Are you sure you want to activate {{$dbr->school_year}}?');"><i
                                         class="fa-solid fa-lock-open fa-xs" style="color:white"></i></a>
                                 @endif
-
-                                <a class="btn btn-danger btn-sm"
-                                    href="/adminschoolyear_delete_process?sid={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->school_year}}?\nPlease note this is unrecoverable.');"><i
-                                        class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>

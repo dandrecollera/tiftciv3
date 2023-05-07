@@ -57,11 +57,16 @@ class AdminTransactionController extends Controller
 
         $data['schoolyear'] = $schoolyear = DB::table('schoolyears')
             ->leftjoin('tuition', 'tuition.yearid', '=', 'schoolyears.id')
+            ->orderBy('schoolyears.id', 'desc')
+            ->select('schoolyears.id', 'yearid', 'school_year')
             ->first();
+
+
 
         $data['dbresult'] = $transaction = DB::table('tuition')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+            ->where('yearid', $schoolyear->id)
             ->where('tuition.userid', $query['sid'])
             ->select(
                 'main_users_details.firstname',
@@ -75,6 +80,8 @@ class AdminTransactionController extends Controller
                 'schoolyears.school_year',
             )
             ->first();
+
+            // dd($transaction);
         return view('admin.transaction', $data);
     }
 

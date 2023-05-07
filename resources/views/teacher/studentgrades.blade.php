@@ -46,9 +46,15 @@
                         <tr>
                             <th scope="row">{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</th>
                             @php
+
+                            $latestyear = DB::table('schoolyears')
+                            ->orderBy('id', 'desc')
+                            ->first();
+
                             $grades = DB::table('grades')
                             ->where('studentid', $dbr->userid)
                             ->where('subjectid', $qstring2['subject'])
+                            ->where('yearid', $latestyear->id)
                             ->select('grades.grade', 'grades.quarter', 'grades.id')
                             ->get()
                             ->toArray();

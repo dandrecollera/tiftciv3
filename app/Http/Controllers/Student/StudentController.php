@@ -49,7 +49,7 @@ class StudentController extends Controller
 
         $data['schedules'] = $schedule = DB::table('students')
             ->leftjoin('schedules', 'schedules.sectionid', '=', 'students.sectionid')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.teacherid')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.sectionid')
             ->where('students.userid', $userinfo[0])
             ->where('schedules.day', $today)
@@ -111,7 +111,7 @@ class StudentController extends Controller
 
         $schedules = DB::table('schedules')
             ->where('sectionid', $studentsection->id)
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.teacherid')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
             ->select(
                 'main_users_details.firstname',
@@ -130,7 +130,7 @@ class StudentController extends Controller
         }
 
         $data['schedules'] = $schedules->get();
-
+        // dd($schedules);
         // dd($data['schedules']);
         $data['qstring'] = http_build_query($qstring);
         $data['qstring'] = $qstring;
@@ -145,6 +145,7 @@ class StudentController extends Controller
         $data['balance'] = $balance = DB::table('tuition')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
+            ->orderBy('tuition.id', 'desc')
             ->first();
         $data['today'] = $today = Carbon::now()->format('l');
         $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;

@@ -3,7 +3,11 @@
 @section('content')
 <div class="row">
     <h1 class="mb-3">My Subjects</h1>
+    @php
+    $lastsubjectid = 999
+    @endphp
     @foreach ($subjects as $subject)
+    @if ($subject->subjectid != $lastsubjectid)
     <div class="col-12 col-lg-4 mb-3">
         <div class="card">
             <div class="card-body">
@@ -14,6 +18,11 @@
             </div>
         </div>
     </div>
+    @php
+    $lastsubjectid = $subject->subjectid;
+    @endphp
+    @endif
+
     @endforeach
 
 </div>

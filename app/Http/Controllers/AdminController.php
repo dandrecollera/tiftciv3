@@ -212,8 +212,11 @@ class AdminController extends Controller
         //error: both password should be the same
         if ($input['password'] != $input['password2']) { return redirect($this->default_url_adminuser.'?e=3'); die(); }
         //check if email is existing
-        $chkemail = DB::table('main_users')->Where('email', $input['email'])->first();
-        if (!empty($chkemail->email)) { return redirect($this->default_url_adminuser.'?e=4'); die(); }
+        $chkemail = DB::table('main_users')->where('email', $input['email'])->first();
+        if (!empty($chkemail->email)) {
+            return redirect($this->default_url_adminuser.'?e=4');
+            die();
+        }
 
         $muserid = DB::table('main_users')->insertGetId([
             'email' => $input['email'],

@@ -324,6 +324,8 @@ class SectionController extends Controller
         $data['qstring'] = $qstring;
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
+
+        // dd($dbresult);
         return view('admin.schedules', $data);
     }
 

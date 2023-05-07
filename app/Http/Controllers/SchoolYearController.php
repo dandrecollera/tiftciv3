@@ -140,27 +140,67 @@ class SchoolYearController extends Controller
     public function adminschoolyear_add_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
-        $input = $request->input();
 
-        if(empty($input['schoolyear'])){
-            return redirect($this->default_url.'?e=1');
-            die();
-        }
 
-        $checkyear = DB::table('schoolyears')
-            ->where('school_year', $input['schoolyear'])
+        $currentyear = DB::table('schoolyears')
+            ->orderBy('id', 'desc')
             ->first();
-        if(!empty($checkyear->school_year)){
-            return redirect($this->default_url.'?e=2');
-            die();
-        }
+
+        $years = explode('-', $currentyear->school_year);
+        $newyear = intval($years[1]) + 1;
+        $newacademicyear = $years[1]. '-' . strval($newyear);
+
+        // dd($newacademicyear);
 
         $schoolyearid = DB::table('schoolyears')
             ->insertGetID([
-                'school_year' => $input['schoolyear'],
+                'school_year' => $newacademicyear,
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
+
+
+        $studentsdb = DB::table('main_users')
+            ->where('accounttype', 'student')
+            ->get()
+            ->toArray();
+
+        $voucher = 0;
+        $tuition = 0;
+        $registration = 0;
+        foreach ($studentsdb as $students => $student) {
+            $tuitiondb = DB::table('tuition')
+                ->where('userid', $student->id)
+                ->select('paymenttype')
+                ->first();
+
+            if($tuitiondb->paymenttype == 'public'){
+                $voucher = 17500.00;
+                $tuition = 0.00;
+                $registration = 1000.00;
+            } else if($tuitiondb->paymenttype == 'semi'){
+                $voucher = 14000.00;
+                $tuition = 3500.00;
+                $registration = 1000.00;
+            } else {
+                $voucher = 0.00;
+                $tuition = 17500.00;
+                $registration = 1000.00;
+            }
+
+            DB::table('tuition')
+            ->insert([
+                'userid' => $student->id,
+                'yearid' => $schoolyearid,
+                'paymenttype' => $tuitiondb->paymenttype,
+                'paymentmethod' => 'semestral',
+                'voucher' => $voucher,
+                'tuition' => $tuition,
+                'registration' => $registration,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+        }
 
         return redirect($this->default_url.'?n=1');
     }

@@ -22,9 +22,9 @@ class MainTeacherController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
 
-        $data['subjects'] = $subjects = DB::table('teachers')
+        $data['subjects'] = $subjects = DB::table('schedules')
             ->where('userid', $userinfo[0])
-            ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
             ->get()
             ->toArray();
 
