@@ -43,8 +43,8 @@
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <a class="btn btn-dark" href="/adminuser" role="button"><i
-                            class="fas fa-arrows-rotate fa-sm"></i></a>
+                    <button onclick="location.href='./adminuser'" type="button" class="btn btn-dark"><i
+                            class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
                 <div class="input-group mb-3">
