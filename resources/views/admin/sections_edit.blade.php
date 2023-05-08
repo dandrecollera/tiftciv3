@@ -16,10 +16,11 @@
         @csrf
         <div class="container-fluid">
 
-            <label for="emailInput" class="form-label">Section Name</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" value="{{ $dbdata->section_name}}" placeholder="Subject"
-                    name="sectionname" id="sectionInput" required>
+
+            <div class="form-outline mt-2 mb-2">
+                <input type="text" class="form-control" name="sectionname" id="sectionInput"
+                    value="{{ $dbdata->section_name}}" required>
+                <label for="sectionInput" class="form-label">Section Name:</label>
             </div>
 
             <label for="emailInput" class="form-label">Strand</label>

@@ -132,7 +132,7 @@
         <div class="input-group mb-4">
             {!!$page_first_url!!}
             {!!$page_prev_url!!}
-            <span class="input-group-text bg-secondary-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            <span class="input-group-text bg-dark text-white w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
             {!!$page_next_url!!}
             {!!$page_last_url!!}
         </div>

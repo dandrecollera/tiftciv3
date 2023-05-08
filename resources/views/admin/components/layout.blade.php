@@ -22,7 +22,7 @@
         integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
+    <link rel="icon" type="image/ico" href="{{ asset('favicon/favicon.ico') }}">
     <style>
         * {
             scrollbar-width: auto;
@@ -98,7 +98,7 @@
                 </div>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-bars" style="color:white;"></i>
                 </button>
             </div>
             <!-- Container wrapper -->

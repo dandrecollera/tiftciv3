@@ -16,11 +16,12 @@
         @csrf
         <div class="container-fluid">
 
-            <label for="emailInput" class="form-label">Subject Name</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Subject" name="subjectname" id="subjectInput"
-                    required>
+
+            <div class="form-outline mt-2 mb-2">
+                <input type="text" class="form-control" name="subjectname" id="Subject" required>
+                <label for="Subject" class="form-label">Subject Name:</label>
             </div>
+
 
             <label for="emailInput" class="form-label">Semester</label>
             <div class="input-group mb-3">
