@@ -16,46 +16,56 @@
         @csrf
         <div class="container-fluid">
 
-            <label for="emailInput" class="form-label">Email:</label>
-            <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email" name="email" id="emailInput" required>
+            <div class="form-outline mt-2 mb-2">
+                <input type="email" class="form-control" name="email" id="emailInput" required>
+                <label for="emailInput" class="form-label">Email:</label>
             </div>
 
-            <label class="form-label">Password: (8 Characters Long)</label>
             <div class="row">
+                <div class="pb-1">
+                    <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password" type="password" class="form-control" placeholder="Password" required>
+                    <div class="form-outline">
+                        <input name="password" type="password" class="form-control" id="password"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password">Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password2" type="password" class="form-control" placeholder="Retype Password"
-                            required>
+                    <div class="form-outline">
+                        <input name="password2" type="password" class="form-control" id="password2"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password2">Retype Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
             </div>
 
-            <label class="form-label">Name:</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="First Name" name="firstname" id="firstNameInput"
-                    required>
-                <input type="text" class="form-control" placeholder="Middle Name" name="middlename"
-                    id="middleNameInput">
-                <input type="text" class="form-control" placeholder="Last Name" name="lastname" id="lastNameInput"
-                    required>
+            <div class="input-group my-4 pt-2">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="firstname" id="firstNameInput" required>
+                    <label class="form-label" for="firstNameInput">First Name</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="middlename" id="middleNameInput">
+                    <label class="form-label overflow-x-scroll pe-2" for="middleNameInput">Middle Name</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="lastname" id="lastNameInput" required>
+                    <label class="form-label" for="lastNameInput">Last Name</label>
+                </div>
             </div>
 
-            <label for="mobilenumber" class="form-label">Contact Number:</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Contact Number" name="mobilenumber"
-                    id="contactInput">
+            <div class="form-outline my-4">
+                <input type="text" class="form-control" name="mobilenumber" id="contactInput">
+                <label class="form-label" for="contactInput">Mobile Number</label>
             </div>
 
-            <label for="address" class="form-label">Address:</label>
-            <div class="input-group mb-3">
-                <textarea class="form-control" name="address" id="addressInput" rows="3"
-                    placeholder="Address"></textarea>
+            <div class="form-outline mt-4 mb-2">
+                <textarea class="form-control" name="address" id="address" rows="4"></textarea>
+                <label class="form-label" for="address">Address</label>
             </div>
 
             <label for="address" class="form-label">Section:</label>

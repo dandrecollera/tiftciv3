@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="">
-        <button type="button" id="addbutton" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
             data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Student</button>
     </div>
     <hr>
@@ -38,16 +38,18 @@
         <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control bg-secondary-subtle"
+                    <input type="search" name="keyword" class="form-control"
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
-                    <button class="btn btn-secondary" type="submit">Go</button>
+                    <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <a class="btn btn-dark" href="/adminstudent" role="button">Reset</a>
+                    <button onclick="location.href='./adminstudent'" type="button" class="btn btn-dark"><i
+                            class="fas fa-search fa-rotate fa-sm"></i></button>
+
                     @endif
                 </div>
                 <div class="input-group mb-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{$lpp}} Items</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
@@ -62,7 +64,7 @@
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
 
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
                     <ul class="dropdown-menu">
                         @foreach($orderbylist as $key => $odl)
@@ -85,31 +87,31 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}">ID</span>
+                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}">Username/Email</span>
+                                class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}"><strong>Username/Email</strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Last Name' ? 'text-primary' : '' }}">Last
-                                Name</span></th>
+                                class="{{ $orderbylist[$sort]['display'] == 'Last Name' ? 'text-primary' : '' }}"><strong>Last
+                                    Name</strong></span></th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'First Name' ? 'text-primary' : '' }}">First
-                                Name</span></th>
+                                class="{{ $orderbylist[$sort]['display'] == 'First Name' ? 'text-primary' : '' }}"><strong>First
+                                    Name</strong></span></th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}">Middle
-                                Name</span></th>
+                                class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}"><strong>Middle
+                                    Name</strong></span></th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Section' ? 'text-primary' : '' }}">Section</span>
+                                class="{{ $orderbylist[$sort]['display'] == 'Section' ? 'text-primary' : '' }}"><strong>Section</strong></span>
                         </th>
-                        <th scope="col">Status</th>
+                        <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
-                        <th scope="row">{{$dbr->id}}</th>
+                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
                         <td>{{$dbr->email}}</td>
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
@@ -120,14 +122,14 @@
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-peso-sign fa-xs mx-1"></i></a>
+                                        class="fa-solid fa-peso-sign fa-xs"></i></a>
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm"
-                                    href="/adminstudent_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');"><i
-                                        class="fa-solid fa-trash fa-xs"></i></a>
+                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->email}}">
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -144,7 +146,7 @@
         <div class="input-group mb-4">
             {!!$page_first_url!!}
             {!!$page_prev_url!!}
-            <span class="input-group-text bg-secondary-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            <span class="input-group-text bg-dark text-white w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
             {!!$page_next_url!!}
             {!!$page_last_url!!}
         </div>
@@ -171,6 +173,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div>Delete This Student User</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
+                    Please note this is unrecoverable.
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -190,6 +216,16 @@
         console.log(iid);
         $('#addeditmodalLabel').html('Edit This Student User');
         $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
+    });
+    $('.dcc-delete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminstudent_delete_process?did='+iid+'&'+iqstring);
     });
 });
 

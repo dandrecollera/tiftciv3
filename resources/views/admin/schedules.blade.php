@@ -2,6 +2,10 @@
 
 @section('style')
 <style>
+    body {
+        background: rgba(236, 236, 236, 0.4);
+    }
+
     label {
         font-size: 14px;
         font-weight: 500;
@@ -55,7 +59,7 @@
     @endif
     <h4>{{ $section->section_name }} Subject/Schedule</h4>
     <div class="">
-        <button type="button" id="addbutton" class="btn btn-success btn-sm" data-bs-toggle="modal"
+        <button type="button" id="addbutton" class="btn btn-dark btn-sm" data-bs-toggle="modal"
             data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add Subject/Schedule</button>
     </div>
     <hr>
@@ -63,7 +67,7 @@
         <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
                     <ul class="dropdown-menu">
                         @foreach($orderbylist as $key => $odl)
@@ -81,7 +85,7 @@
                     @php
                     $day = request()->input('day');
                     @endphp
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{empty($day) ? "Filter to Day" : "Filter to ".$day}}</button>
                     <ul class="dropdown-menu">
                         @php
@@ -106,7 +110,7 @@
                     $query = request()->getQueryString();
                     $sid = request()->input('sid');
                     @endphp
-                    <a class="btn btn-primary" href="{{ $currentUrl }}?sid={{ $sid }}" role="button">Reset</a>
+                    <a class="btn btn-dark" href="{{ $currentUrl }}?sid={{ $sid }}" role="button">Reset</a>
                     @endif
                 </div>
             </form>
@@ -117,31 +121,34 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Subject</th>
+                        <th scope="col"><strong>Subject</strong></th>
                         <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Start' ? 'text-primary' : '' }}">
-                            Start</th>
-                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'End' ? 'text-primary' : '' }}">End
+                            <strong>Start</strong>
                         </th>
-                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Day' ? 'text-primary' : '' }}">Day
+                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'End' ? 'text-primary' : '' }}">
+                            <strong>End</strong>
                         </th>
-                        <th scope="col">Teacher</th>
+                        <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Day' ? 'text-primary' : '' }}">
+                            <strong>Day</strong>
+                        </th>
+                        <th scope="col"><strong>Teacher</strong></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
-                        <th>{{$dbr->subject_name}}</th>
+                        <th><strong>{{$dbr->subject_name}}</strong></th>
                         <td>{{$dbr->start_time}}</td>
                         <td>{{$dbr->end_time}}</td>
                         <td>{{$dbr->day}}</td>
                         <td>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-danger btn-sm"
-                                    href="/adminschedule_delete_process?did={{$dbr->id}}&sid={{$dbr->sectionid}}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}?\nPlease note this is unrecoverable.');"><i
-                                        class=" fa-solid fa-trash fa-xs"></i></a>
+                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-sid="{{$dbr->sectionid}}"
+                                    data-email="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}">
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -170,4 +177,46 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div>Delete This Teacher User</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
+                    Please note this is unrecoverable.
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('jsscripts')
+<script type="text/javascript">
+    $(document).ready(function(){
+    $('.dcc-delete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("sid");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminschedule_delete_process?did='+iid+'&sid='+iqstring);
+    });
+});
+</script>
+
+@endpush

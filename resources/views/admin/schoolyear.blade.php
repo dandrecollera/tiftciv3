@@ -8,13 +8,8 @@
         </div>
     </div>
     <div class="">
-        <a href="/adminschoolyear_add_process"
-            onclick="return confirm('Are you sure you want to delete?\nPlease note this is unrecoverable.');">
-            <button type="button" id="addbutton" class="btn btn-secondary btn-sm"><i
-                    class="fa-solid fa-circle-plus"></i>
-                Add
-                A New School Year/Semester</button>
-        </a>
+        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add New School Year</button>
 
     </div>
     <hr>
@@ -44,16 +39,17 @@
         <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control bg-secondary-subtle"
+                    <input type="search" name="keyword" class="form-control"
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
-                    <button class="btn btn-secondary" type="submit">Go</button>
+                    <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <a class="btn btn-dark" href="/adminschoolyear" role="button">Reset</a>
+                    <button onclick="location.href='./adminschoolyear'" type="button" class="btn btn-dark"><i
+                            class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
                 <div class="input-group mb-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{$lpp}} Items</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
@@ -68,7 +64,7 @@
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
 
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
                     <ul class="dropdown-menu">
                         @foreach($orderbylist as $key => $odl)
@@ -89,15 +85,15 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}">ID</span>
+                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}">School
-                                Year
+                                class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}"><strong>School
+                                    Year</strong>
                             </span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Status' ? 'text-primary' : '' }}">Status
+                                class="{{ $orderbylist[$sort]['display'] == 'Status' ? 'text-primary' : '' }}"><strong>Status</strong>
                             </span>
                         </th>
                         <th scope="col"></th>
@@ -106,22 +102,22 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
-                        <th scope="row">{{$dbr->id}}</th>
+                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
                         <td>{{$dbr->school_year}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
 
                                 @if ($dbr->status != 'inactive')
-                                <a class="btn btn-dark btn-sm"
-                                    href="/adminschoolyear_lock_process?sid={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to deactive {{$dbr->school_year}}?');"><i
-                                        class="fa-solid fa-lock fa-xs" style="color:white"></i></a>
+                                <a class="btn btn-dark btn-sm dcc_edit" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->school_year}}">
+                                    <i class="fa-solid fa-lock fa-xs"></i></a>
                                 @else
-                                <a class="btn btn-success btn-sm"
-                                    href="/adminschoolyear_activate_process?sid={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to activate {{$dbr->school_year}}?');"><i
-                                        class="fa-solid fa-lock-open fa-xs" style="color:white"></i></a>
+                                <a class="btn btn-success btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->school_year}}">
+                                    <i class="fa-solid fa-lock-open fa-xs"></i></a>
                                 @endif
                             </div>
                         </td>
@@ -133,7 +129,7 @@
         <div class="input-group mb-4">
             {!!$page_first_url!!}
             {!!$page_prev_url!!}
-            <span class="input-group-text bg-secondary-subtle w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            <span class="input-group-text bg-dark text-white w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
             {!!$page_next_url!!}
             {!!$page_last_url!!}
         </div>
@@ -147,19 +143,65 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
-                    <div>Modal title</div>
+                    <div>Add New School Year</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/adminschoolyear_add" width="100%" height="450px"
-                    style="border:none; height:80vh;"></iframe>
+                <h4>Warning</h4>
+                <p>
+                    Adding a new <strong>School Year</strong> will do the following functions.
+                <ul>
+                    <li><strong>Finalize</strong> all the student grades for the current year.</li>
+                    <li><strong>Finalize</strong> all the current transaction for the current year.</li>
+                </ul>
+                </p>
+
+                <hr>
+                <p>
+                    If you confirm the following changes, we suggest you the admin to do the following.
+                <ul>
+                    <li><strong>Update</strong> Schedule if there are changes.</li>
+                    <li><strong>Update</strong> Section of the enrolled students.</li>
+                    <li><strong>Edit Information</strong> of the current users.</li>
+                </ul>
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="/adminschoolyear_add_process" class="btn btn-primary">Confirm</a>
+                        <a class="btn btn-danger" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div><span id="titleact">Activate</span> This School Year</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to <span id="wordact">activate</span> <strong><span
+                            id="Email"></span></strong>?<br>
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-primary" id="DeleteButton">Confirm</a>
+                        <a class="btn btn-danger" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -173,12 +215,28 @@
         $('#addeditframe').attr('src', '/adminschoolyear_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
-        console.log('edit button clicked!');
+        console.log('delete button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Section');
-        $('#addeditframe').attr('src', '/adminsection_edit?id='+iid+'&{!!$qstring!!}');
+        $('#wordact').html('deactivate');
+        $('#titleact').html('Deactivate');
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminschoolyear_lock_process?sid='+iid+'&'+iqstring);
+    });
+    $('.dcc-delete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#wordact').html('activate');
+        $('#titleact').html('Activate');
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminschoolyear_activate_process?sid='+iid+'&'+iqstring);
     });
 });
 </script>

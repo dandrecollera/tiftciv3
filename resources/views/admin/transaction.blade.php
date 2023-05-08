@@ -58,7 +58,7 @@
     <hr>
     <div class="row fs-6">
         <div class="col overflow-scroll scrollable-container mb-2">
-            <form action="/admintransaction_deduct_process" method="POST" target="_parent">
+            <form action="/admintransaction_deduct_process" method="POST" target="_parent" id="myform">
                 @csrf
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Voucher</span>
@@ -83,8 +83,11 @@
                 </div>
 
                 <input type="hidden" name="did" value="{{$qsid}}">
-                <button type="submit" class="btn btn-primary float-end"
-                    onclick="return confirm('Confirm Amount?');">Confirm</button>
+                <button type="submit" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Teacher
+                    User</button>
+                {{-- <button type="submit" class="btn btn-primary float-end"
+                    onclick="return confirm('Confirm Amount?');">Confirm</button> --}}
             </form>
         </div>
 
@@ -97,16 +100,31 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
-                    <div>Add Teacher</div>
+                    <div>Confirm Transaction</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/subject_teacher_add?sid={{ $qsid }}" width="100%" height="450px"
-                    style="border:none; height:80vh;"></iframe>
+                Confirm Amount?
             </div>
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmBtn">Yes</button>
+            </div>
         </div>
     </div>
 </div>
 @endsection
+@push('jsscripts')
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#addbutton').on('click', function(e) {
+    e.preventDefault();
+    });
+
+    $('#confirmBtn').on('click', function() {
+        $('#myform').submit();
+    });
+});
+</script>
+@endpush
