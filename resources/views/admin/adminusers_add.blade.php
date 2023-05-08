@@ -16,22 +16,21 @@
         @csrf
         <div class="container-fluid">
 
-
-            <div class="form-outline my-4">
+            <div class="form-outline mt-2 mb-2">
                 <input type="email" class="form-control" name="email" id="emailInput" required>
                 <label for="emailInput" class="form-label">Email:</label>
             </div>
 
-            <div class="row my-4">
+            <div class="row">
+                <div class="pb-1">
+                    <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                </div>
                 <div class="col">
                     <div class="form-outline">
                         <input name="password" type="password" class="form-control" id="password"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password">Password</label>
                         <div class="form-helper"></div>
-                    </div>
-                    <div class="col-auto">
-                        <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
                     </div>
                 </div>
                 <div class="col">
@@ -44,15 +43,14 @@
                 </div>
             </div>
 
-
-            <div class="input-group my-4">
+            <div class="input-group my-4 pt-2">
                 <div class="form-outline">
                     <input type="text" class="form-control" name="firstname" id="firstNameInput" required>
                     <label class="form-label" for="firstNameInput">First Name</label>
                 </div>
                 <div class="form-outline">
                     <input type="text" class="form-control" name="middlename" id="middleNameInput">
-                    <label class="form-label" for="middleNameInput">Middle Name</label>
+                    <label class="form-label overflow-x-scroll pe-2" for="middleNameInput">Middle Name</label>
                 </div>
                 <div class="form-outline">
                     <input type="text" class="form-control" name="lastname" id="lastNameInput" required>
@@ -60,15 +58,12 @@
                 </div>
             </div>
 
-
             <div class="form-outline my-4">
                 <input type="text" class="form-control" name="mobilenumber" id="contactInput">
                 <label class="form-label" for="contactInput">Mobile Number</label>
             </div>
 
-
-
-            <div class="form-outline my-4">
+            <div class="form-outline mt-4 mb-2">
                 <textarea class="form-control" name="address" id="address" rows="4"></textarea>
                 <label class="form-label" for="address">Address</label>
             </div>

@@ -31,7 +31,7 @@
                 <div class="form-outline">
                     <input type="text" class="form-control" name="middlename" id="middleNameInput"
                         value="{{ !empty($dbdata->middlename) ? $dbdata->middlename : '' }}">
-                    <label class="form-label" for="middleNameInput">Middle Name</label>
+                    <label class="form-label overflow-x-scroll pe-2" for="middleNameInput">Middle Name</label>
                 </div>
                 <div class="form-outline">
                     <input type="text" class="form-control" name="lastname" id="lastNameInput"
@@ -73,16 +73,16 @@
         <div class="container-fluid mb-4">
 
             <h4>Change Password</h4>
-            <div class="row mt-4 mb-2">
+            <div class="row mt-4 mb-4">
+                <div class="pb-1">
+                    <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                </div>
                 <div class="col">
                     <div class="form-outline">
                         <input name="password" type="password" class="form-control" id="password"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password">Password</label>
                         <div class="form-helper"></div>
-                    </div>
-                    <div class="col-auto">
-                        <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
                     </div>
                 </div>
                 <div class="col">
