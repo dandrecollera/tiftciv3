@@ -79,10 +79,10 @@
         <!-- Sidebar -->
 
         <!-- Navbar -->
-        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-dark fixed-top">
             <!-- Container wrapper -->
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bolder ps-2" href="/admin">
+            <div class="container-fluid ">
+                <a class="navbar-brand fw-bolder ps-2 text-white" href="/admin">
                     <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Admin
                 </a>
                 <!-- Right links -->

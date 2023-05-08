@@ -15,4 +15,8 @@ class AppointmentController extends Controller
     public function index(Request $request){
         return view('appointment_add');
     }
+
+    public function appointment_add_process(Request $request){
+
+    }
 }
