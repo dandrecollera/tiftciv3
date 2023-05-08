@@ -15,36 +15,41 @@
         @csrf
         <div class="container-fluid mb-4">
 
-            <h4>Edit Details</h4>
-
-            <label for="emailInput" class="form-label">Email:</label>
-            <div class="input-group mb-3">
-                <input type="email" class="form-control" value="{{ $dbdata->email}}" name="email" id="emailInput"
+            <h4>Edit Teacher Details</h4>
+            <div class="form-outline my-4">
+                <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}"
                     readonly disabled>
+                <label for="emailInput" class="form-label">Email:</label>
             </div>
 
-            <label class="form-label">Name:</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="First Name" value="{{ $dbdata->firstname }}"
-                    name="firstname" id="firstNameInput" required>
-                <input type="text" class="form-control" placeholder="Middle Name"
-                    value="{{ !empty($dbdata->middlename) ? $dbdata->middlename : '' }}" name="middlename"
-                    id="middleNameInput">
-                <input type="text" class="form-control" placeholder="Last Name" value="{{ $dbdata->lastname }}"
-                    name="lastname" id="lastNameInput" required>
+            <div class="input-group my-4">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="firstname" id="firstNameInput"
+                        value="{{$dbdata->firstname}}" required>
+                    <label class="form-label" for="firstNameInput">First Name</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="middlename" id="middleNameInput"
+                        value="{{ !empty($dbdata->middlename) ? $dbdata->middlename : '' }}">
+                    <label class="form-label overflow-x-scroll pe-2" for="middleNameInput">Middle Name</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="lastname" id="lastNameInput"
+                        value="{{$dbdata->lastname}}" required>
+                    <label class="form-label" for="lastNameInput">Last Name</label>
+                </div>
             </div>
 
-            <label for="mobilenumber" class="form-label">Contact Number:</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Contact Number"
-                    value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}" name="mobilenumber"
-                    id="contactInput">
+            <div class="form-outline my-4">
+                <input type="text" class="form-control" name="mobilenumber" id="contactInput"
+                    value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
+                <label class="form-label" for="contactInput">Mobile Number</label>
             </div>
 
-            <label for="address" class="form-label">Address:</label>
-            <div class="input-group mb-3">
-                <textarea class="form-control" name="address" id="addressInput" rows="3"
-                    placeholder="Address">{{ !empty($dbdata->address) ? $dbdata->address : '' }}</textarea>
+            <div class="form-outline mt-4 mb-2">
+                <textarea class="form-control" name="address" id="address"
+                    rows="4">{{ !empty($dbdata->address) ? $dbdata->address : '' }}</textarea>
+                <label class="form-label" for="address">Address</label>
             </div>
 
             <label for="address" class="form-label">Status:</label>
@@ -68,17 +73,24 @@
         <div class="container-fluid mb-4">
 
             <h4>Change Password</h4>
-            <label class=" form-label">Password: (8 Characters Long)</label>
-            <div class="row">
+            <div class="row mt-4 mb-4">
+                <div class="pb-1">
+                    <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password" type="password" class="form-control" placeholder="Password" required>
+                    <div class="form-outline">
+                        <input name="password" type="password" class="form-control" id="password"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password">Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password2" type="password" class="form-control" placeholder="Retype Password"
-                            required>
+                    <div class="form-outline">
+                        <input name="password2" type="password" class="form-control" id="password2"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password2">Retype Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
             </div>
@@ -97,8 +109,7 @@
 
             <h4>Update Profile Picture</h4>
 
-            <label for="InputGroupFile01" class="form-label">Image: <span>{{ $dbdata->photo }}</span></label>
-            <div class="input-group mb-3">
+            <div class="input-group mt-3 mb-3">
                 <input type="file" name="image" class="form-control" id="inputGroupFile01">
             </div>
 

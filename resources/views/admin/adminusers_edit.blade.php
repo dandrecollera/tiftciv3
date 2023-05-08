@@ -15,7 +15,7 @@
         @csrf
         <div class="container-fluid mb-4">
 
-            <h4>Edit User Details</h4>
+            <h4>Edit Admin Details</h4>
             <div class="form-outline my-4">
                 <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}"
                     readonly disabled>
