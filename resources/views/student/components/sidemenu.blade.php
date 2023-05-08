@@ -30,7 +30,7 @@ $path = request()->path();
     <span>Feedback</span>
 </a>
 
-<a href="https://tiftci.com/login/index.php"
+<a href="https://tiftci.com/?"
     class="list-group-item list-group-item-warning py-2 {{$path == 'teacher' ? 'active' : ''}}">
     <span>Student LMS</span>
 </a>
