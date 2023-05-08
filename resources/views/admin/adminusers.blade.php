@@ -118,10 +118,10 @@
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm"
-                                    href="/adminuser_delete_process?did={{$dbr->id}}&{!!$qstring!!}"
-                                    onclick="return confirm('Are you sure you want to delete {{$dbr->email}}?\nPlease note this is unrecoverable.');"><i
-                                        class="fa-solid fa-trash fa-xs"></i></a>
+                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->email}}">
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -159,6 +159,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div>Delete This Admin User</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
+                    Please note this is unrecoverable.
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -178,6 +203,16 @@
         console.log(iid);
         $('#addeditmodalLabel').html('Edit This Admin User');
         $('#addeditframe').attr('src', '/adminuser_edit?id='+iid+'{!!$qstring!!}');
+    });
+    $('.dcc-delete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminuser_delete_process?did='+iid+'&'+iqstring);
     });
 });
 
