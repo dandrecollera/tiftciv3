@@ -62,22 +62,22 @@
                 @csrf
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Voucher</span>
-                    <input type="text" class="form-control" placeholder="Username" value="{{$dbresult->voucher}}"
-                        readonly disabled>
+                    <input type="text" class="form-control" placeholder="Username"
+                        value="₱{{ number_format($dbresult->voucher, 2, '.', ',') }}" readonly disabled>
                     <input name="voucher" type="text" class="form-control" placeholder="{{ $dbresult->voucher != 0.00 ? 'Enter Amount'
                         : 'Paid' }}" {{ $dbresult->voucher != 0.00 ? "" : ' readonly' }}>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Tuition</span>
-                    <input type="text" class="form-control" placeholder="Username" value="{{$dbresult->tuition}}"
-                        readonly disabled>
+                    <input type="text" class="form-control" placeholder="Username"
+                        value="₱{{ number_format($dbresult->tuition, 2, '.', ',') }}" readonly disabled>
                     <input name="tuition" type="text" class="form-control" placeholder="{{ $dbresult->tuition != 0.00 ? 'Enter Amount'
                         : 'Paid' }}" {{ $dbresult->tuition != 0.00 ? "" : ' readonly' }}>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Registration</span>
-                    <input type="text" class="form-control" placeholder="Username" value="{{$dbresult->registration}}"
-                        readonly disabled>
+                    <input type="text" class="form-control" placeholder="Username"
+                        value="₱{{ number_format($dbresult->registration, 2, '.', ',') }}" readonly disabled>
                     <input name="registration" type="text" class="form-control" placeholder="{{ $dbresult->registration != 0.00 ?
                     'Enter Amount' :  'Paid' }}" {{ $dbresult->registration != 0.00 ? "" : ' readonly' }}>
                 </div>

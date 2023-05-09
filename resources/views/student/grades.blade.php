@@ -45,14 +45,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body overflow-scroll">
-                    <h5 class="card-title">{{$year->school_year}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
+                    <h5 class="card-title"><strong>{{$year->school_year}}</strong></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><strong>1st Semester</strong></h6>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Subjects</th>
-                                <th>1st</th>
-                                <th>2nd</th>
+                                <th><strong>Subjects</strong></th>
+                                <th><strong>1st</strong></th>
+                                <th><strong>2nd</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,20 +86,24 @@
                             @endphp
 
                             <tr>
-                                <th>{{ $subject->subject_name }}</th>
+                                <th><strong>{{ $subject->subject_name }}</strong></th>
                                 <td>
-                                    @if ($firstQuarterGrade)
-                                    {{$firstQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($firstQuarterGrade)
+                                        {{$firstQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                                 <td>
-                                    @if ($secondQuarterGrade)
-                                    {{$secondQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                             </tr>
                             @php
@@ -109,13 +113,14 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <h6 class="card-subtitle mb-2 text-muted">2nd Semester</h6>
+                    <br>
+                    <h6 class="card-subtitle mb-2 text-muted"><strong>2nd Semester</strong></h6>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Subjects</th>
-                                <th>3rd</th>
-                                <th>4th</th>
+                                <th><strong>Subjects</strong></th>
+                                <th><strong>3rd</strong></th>
+                                <th><strong>4th</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,20 +150,24 @@
                             @endphp
 
                             <tr>
-                                <th>{{ $subject->subject_name }}</th>
+                                <th><strong>{{ $subject->subject_name }}</strong></th>
                                 <td>
-                                    @if ($firstQuarterGrade)
-                                    {{$firstQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($firstQuarterGrade)
+                                        {{$firstQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                                 <td>
-                                    @if ($secondQuarterGrade)
-                                    {{$secondQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                             </tr>
                             @php
@@ -178,14 +187,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body overflow-scroll">
-                    <h5 class="card-title">{{$year->school_year}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">1st Semester</h6>
+                    <h5 class="card-title"><strong>{{$year->school_year}}</strong></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><strong>1st Semester</strong></h6>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Subjects</th>
-                                <th>1st</th>
-                                <th>2nd</th>
+                                <th><strong>Subjects</strong></th>
+                                <th><strong>1st</strong></th>
+                                <th><strong>2nd</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,20 +228,24 @@
                             @endphp
 
                             <tr>
-                                <th>{{ $subject->subject_name }}</th>
+                                <th><strong>{{ $subject->subject_name }}</strong></th>
                                 <td>
-                                    @if ($firstQuarterGrade)
-                                    {{$firstQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($firstQuarterGrade)
+                                        {{$firstQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                                 <td>
-                                    @if ($secondQuarterGrade)
-                                    {{$secondQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                             </tr>
                             @php
@@ -242,13 +255,14 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <h6 class="card-subtitle mb-2 text-muted">2nd Semester</h6>
+                    <br>
+                    <h6 class="card-subtitle mb-2 text-muted"><strong>2nd Semester</strong></h6>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Subjects</th>
-                                <th>3rd</th>
-                                <th>4th</th>
+                                <th><strong>Subjects</strong></th>
+                                <th><strong>3rd</strong></th>
+                                <th><strong>4th</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -278,20 +292,24 @@
                             @endphp
 
                             <tr>
-                                <th>{{ $subject->subject_name }}</th>
+                                <th><strong>{{ $subject->subject_name }}</strong></th>
                                 <td>
-                                    @if ($firstQuarterGrade)
-                                    {{$firstQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($firstQuarterGrade)
+                                        {{$firstQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                                 <td>
-                                    @if ($secondQuarterGrade)
-                                    {{$secondQuarterGrade}}
-                                    @else
-                                    0
-                                    @endif
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
                                 </td>
                             </tr>
                             @php

@@ -125,8 +125,7 @@
 
             <h4>Update Profile Picture</h4>
 
-            <label for="InputGroupFile01" class="form-label">Image: <span>{{ $dbdata->photo }}</span></label>
-            <div class="input-group mb-3">
+            <div class="input-group mt-3 mb-3">
                 <input type="file" name="image" class="form-control" id="inputGroupFile01">
             </div>
 
