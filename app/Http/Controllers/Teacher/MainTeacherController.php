@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Storage;
 
 class MainTeacherController extends Controller
 {
+
+    public $default_url = 'studentsgrades';
+
     public function __construct(Request $request) {
         $this->middleware('axuteacher');
     }
@@ -49,7 +52,6 @@ class MainTeacherController extends Controller
 
         return view('teacher.home', $data);
     }
-
 
     public function grading(Request $request){
         $data = array();
@@ -138,7 +140,6 @@ class MainTeacherController extends Controller
         return view('teacher.studentgrades', $data);
     }
 
-
     public function studentsgrades_add(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
@@ -153,8 +154,6 @@ class MainTeacherController extends Controller
         $data['query'] = $query;
         return view('teacher.studentgrades_add', $data);
     }
-
-    public $default_url = 'studentsgrades';
 
     public function studentsgrades_add_process(Request $request){
         $data = array();
@@ -235,5 +234,88 @@ class MainTeacherController extends Controller
             ]);
 
         return redirect($this->default_url.'?n=1&subject='.$input['subject'].'&section='.$input['section']);
+    }
+
+
+    public function teacherschedule(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+        $qstring = array();
+
+        $day = '';
+        if(!empty($query['day'])){
+            $qstring['day'] = $day = $query['day'];
+            $data['day'] = $day;
+        }
+
+        $schedules = DB::table('schedules')
+            ->where('userid', $userinfo[0])
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
+            ->select(
+                'sections.section_name',
+                'subjects.subject_name',
+                'schedules.day',
+                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
+                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
+            )
+            ->orderBy('schedules.start_time', 'asc');
+
+        if(!empty($day)){
+            $schedules->where('schedules.day', 'like', "%$day%");
+        }
+
+        $data['schedules'] = $schedules->get()->toArray();
+
+        $data['qstring'] = http_build_query($qstring);
+        $data['qstring'] = $qstring;
+
+        return view('teacher.myschedule', $data);
+    }
+
+    public function studentlist(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        $data['sections'] = $sections = DB::table('schedules')
+            ->where('userid', $userinfo[0])
+            ->orderBy('sectionid', 'asc')
+            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
+            ->select(
+                'schedules.sectionid',
+                'sections.section_name',
+            )
+            ->get()
+            ->toArray();
+
+        // dd($sections);
+
+        return view('teacher.studentlist', $data);
+
+    }
+
+    public function students(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+        $sectionid = $query['sid'];
+
+        $data['section'] = $section = DB::table('sections')
+            ->where('id', $sectionid)
+            ->first();
+
+        $data['dbresult'] = $dbresult = DB::table('students')
+            ->where('sectionid', $sectionid)
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
+            ->get()
+            ->toArray();
+
+
+
+        // dd($dbresult);
+        return view('teacher.students', $data);
     }
 }

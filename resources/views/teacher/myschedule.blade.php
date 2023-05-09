@@ -1,9 +1,9 @@
 @extends('teacher.components.layout')
 
 @section('content')
-<h1>Schedule</h1>
 
 <div class="container-lg mt-2">
+    <h1>My Schedule</h1>
     <div class="row ">
         <div class="col-12">
             <div class="row">
@@ -14,7 +14,7 @@
                             @php
                             $day = request()->input('day');
                             @endphp
-                            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">{{empty($day) ? "Filter to Day"
                                 : "Filter to ".$day}}</button>
                             <ul class="dropdown-menu">
@@ -55,21 +55,21 @@
                     <table class="table ">
                         <thead>
                             <tr>
-                                <th scope="col"><strong>Subjects</strong></th>
+                                <th scope="col"><strong>Sections</strong></th>
                                 <th scope="col"><strong>Start</strong></th>
                                 <th scope="col"><strong>End</strong></th>
                                 <th scope="col"><strong>Day</strong></th>
-                                <th scope="col"><strong>Teacher</strong></th>
+                                <th scope="col"><strong>Subjects</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($schedules as $schedule)
                             <tr>
-                                <th scope="row"><strong>{{$schedule->subject_name}}</strong></th>
+                                <th scope="row"><strong>{{$schedule->section_name}}</strong></th>
                                 <td>{{$schedule->start_time}}</td>
                                 <td>{{$schedule->end_time}}</td>
                                 <td>{{$schedule->day}}</td>
-                                <td>{{$schedule->firstname}} {{$schedule->middlename}} {{$schedule->lastname}}</td>
+                                <td>{{$schedule->subject_name}}</td>
                             </tr>
                             @endforeach
                         </tbody>
