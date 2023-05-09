@@ -21,6 +21,39 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+        $data['news'] = $news = DB::table('wp_posts')
+            ->where('post_type', 'news')
+            ->orderby('id', 'desc')
+            ->limit(3)
+            ->get()
+            ->toArray();
+
+        $data['today'] = $today = Carbon::now()->format('l');
+        $data['schedules'] = $schedule = DB::table('schedules')
+            ->where('schedules.userid', $userinfo[0])
+            ->where('schedules.day', $today)
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
+            ->select(
+                'sections.section_name',
+                'subjects.subject_name',
+                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
+                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
+            )
+            ->orderBy('schedules.start_time', 'asc')
+            ->get()
+            ->toArray();
+
+        // dd($schedule);
+
+
+        return view('teacher.home', $data);
+    }
+
+
+    public function grading(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
 
         $data['subjects'] = $subjects = DB::table('schedules')
             ->where('userid', $userinfo[0])
@@ -28,7 +61,7 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        return view('teacher.home', $data);
+        return view('teacher.grades', $data);
     }
 
     public function section(Request $request){

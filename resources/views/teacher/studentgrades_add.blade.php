@@ -16,16 +16,16 @@
         @csrf
         <div class="container-fluid">
 
-            <label for="emailInput" class="form-label">Grade</label>
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" placeholder="School Year" name="grade" id="sectionInput"
-                    required>
+            <div class="form-outline mt-2 mb-5">
+                <input type="number" class="form-control" name="grade" id="grade" required>
+                <label for="grade" class="form-label">Grade:</label>
+                <div class="form-helper">Set the Student's Grade</div>
             </div>
 
-            <input type="text" name="sid" value="{{$sid}}">
-            <input type="text" name="subject" value="{{$subject}}">
-            <input type="text" name="section" value="{{$section}}">
-            <input type="text" name="quarter" value="{{$quarter}}">
+            <input type="hidden" name="sid" value="{{$sid}}">
+            <input type="hidden" name="subject" value="{{$subject}}">
+            <input type="hidden" name="section" value="{{$section}}">
+            <input type="hidden" name="quarter" value="{{$quarter}}">
             <button type="submit" class="btn btn-primary float-end">Set</button>
         </div>
     </form>

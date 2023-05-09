@@ -122,6 +122,8 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Teacher Portal
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');
+    Route::get('/grading', [MainTeacherController::class, 'grading'])->name('grading');
+
     Route::get('/section', [MainTeacherController::class, 'section'])->name('section');
     Route::get('/studentsgrades', [MainTeacherController::class, 'studentsgrades'])->name('studentsgrades');
     Route::get('/studentsgrades_add', [MainTeacherController::class, 'studentsgrades_add'])->name('studentsgrades_add');
