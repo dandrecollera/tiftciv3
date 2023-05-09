@@ -168,6 +168,12 @@ $sections = DB::table('sections')
                                     <input type="text" class="form-control" name="otherreason" id="otherreason">
                                     <label for="otherreason" class="form-label">Additional Reason:</label>
                                 </div>
+
+                                <div class="form-outline mt-4 mb-4">
+                                    <input type="date" id="appointeddate" name="appointeddate" class="form-control"
+                                        required>
+                                    <label for="appointeddate" class="form-label">Date of Appointment</label>
+                                </div>
                             </div>
                         </div>
                     </div>

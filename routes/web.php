@@ -110,6 +110,8 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Admin/Appointments
     Route::get('/adminappointments', [AdminAppointmentsController::class, 'adminappointments'])->name('adminappointments');
+    Route::get('/adminappointments_info', [AdminAppointmentsController::class, 'adminappointments_info'])->name('adminappointments_info');
+    Route::get('/adminappointments_delete_process', [AdminAppointmentsController::class, 'adminappointments_delete_process'])->name('adminappointments_delete_process');
 
 
     // Student Portal

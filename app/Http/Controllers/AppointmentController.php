@@ -15,6 +15,13 @@ class AppointmentController extends Controller
     public function index(Request $request){
         $data = array();
 
+        $data['errorlist'] = [
+            1 => 'Only Monday to Friday is Available',
+        ];
+        $data['error'] = 0;
+        if (!empty($_GET['e'])) {
+            $data['error'] = $_GET['e'];
+        }
         $data['notiflist'] = [
             1 => 'Request Form Sent',
             2 => 'Changes has been saved.',
@@ -85,6 +92,15 @@ class AppointmentController extends Controller
         }
 
         $forminput['otherreason'] = $otherreason = $input['otherreason'];
+        $appointeddate = $input['appointeddate'];
+        $dateparse = Carbon::parse($appointeddate);
+
+        if ($dateparse->isWeekend()){
+            return redirect('/appointment?e=1');
+            die();
+        }
+        $forminput['appointeddate'] = $appointeddate;
+        $forminput['otherreason'] = $otherreason = $input['otherreason'];
 
         DB::table('appointments')
             ->insert([
@@ -105,6 +121,7 @@ class AppointmentController extends Controller
                 'others' => $forminput['others'],
                 'otherdocument' => $forminput['otherdocument'],
                 'otherreason' => $forminput['otherreason'],
+                'appointeddate' => $forminput['appointeddate'],
                 'created_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString(),
                 'updated_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString()
             ]);

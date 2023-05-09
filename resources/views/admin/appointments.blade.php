@@ -4,12 +4,15 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h4>not functional: needed student function</h4>
-            <h1>Appointments</h1>
+            <h1>Sections</h1>
         </div>
     </div>
+    <div class="">
+        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Section</button>
+    </div>
     <hr>
-    {{-- @if (!empty($error))
+    @if (!empty($error))
     <div class="row">
         <div class="col">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -30,21 +33,22 @@
             </div>
         </div>
     </div>
-    @endif --}}
-    {{-- <div class="row">
+    @endif
+    <div class="row">
         <div class="col ">
             <form method="get">
                 <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control bg-success-subtle"
+                    <input type="search" name="keyword" class="form-control"
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
-                    <button class="btn btn-success" type="submit">Go</button>
+                    <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <a class="btn btn-primary" href="/adminstudent" role="button">Reset</a>
+                    <button onclick="location.href='./adminappointments'" type="button" class="btn btn-dark"><i
+                            class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
                 <div class="input-group mb-3">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{$lpp}} Items</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
@@ -58,76 +62,154 @@
                         <li><a class="dropdown-item" href="?lpp=200{{!empty($keyword) ? "
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
-
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
-                    <ul class="dropdown-menu">
-                        @foreach($orderbylist as $key => $odl)
-                        @php
-                        $qstring2['sort'] = $key;
-                        $sorturl = http_build_query($qstring2);
-                        @endphp
-                        <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
-                        @endforeach
-                    </ul>
                 </div>
-
             </form>
         </div>
-
-    </div> --}}
+    </div>
     <div class="row">
         <div class="col overflow-scroll scrollable-container mb-2">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"><span>ID</span>
+                        <th scope="col"><span
+                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
                         </th>
-
-                        <th scope="col">Name</th>
-                        <th scope="col" colspan="3">>Details</th>
-                        <th scope="col">Date</th>
+                        <th scope="col"><span
+                                class="{{ $orderbylist[$sort]['display'] == 'Email' ? 'text-primary' : '' }}"><strong>Email</strong>
+                            </span>
+                        </th>
+                        <th scope="col"><span
+                                class="{{ $orderbylist[$sort]['display'] == 'Inquiry' ? 'text-primary' : '' }}"><strong>Inquiry</strong>
+                            </span>
+                        </th>
+                        <th scope="col"><span
+                                class="{{ $orderbylist[$sort]['display'] == 'Appointed Date' ? 'text-primary' : '' }}"><strong>Appointed
+                                    Date</strong>
+                            </span>
+                        </th>
+                        <th scope="col"><span
+                                class="{{ $orderbylist[$sort]['display'] == 'Created Date' ? 'text-primary' : '' }}"><strong>Created
+                                    Date</strong>
+                            </span>
+                        </th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($dbresult as $dbr)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Dandre Mitchel R. Collera</td>
-                        <td colspan="3">Appointments: For enrollment</td>
-                        <td>5/02/2023</td>
+                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
+                        <td>{{$dbr->email}}</td>
+                        <td>{{$dbr->inquiry}}</td>
+                        <td>{{ date('m/d/Y l', strtotime($dbr->appointeddate)) }}</td>
+                        <td>{{ date_create($dbr->created_at)->format('m/d/Y h:i A') }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-success btn-sm"><i class="fa-solid fa-check fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm"> <i class="fa-solid fa-close fa-xs"></i></a>
+                                <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-caret-down fa-xs"></i></a>
+                                <a class="btn btn-success btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->email}}">
+                                    <i class="fa-solid fa-check fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Test Name</td>
-                        <td colspan="3">Appointments: For enrollment</td>
-                        <td>5/02/2023</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-success btn-sm"><i class="fa-solid fa-check fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm"> <i class="fa-solid fa-close fa-xs"></i></a>
-                            </div>
+                    <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
+                        <td colspan="6">
+                            <iframe id="" src="/adminappointments_info?sid={{$dbr->id}}" width="100%" height="500px"
+                                style="border:none;"></iframe>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="input-group mb-4">
+            {!!$page_first_url!!}
+            {!!$page_prev_url!!}
+            <span class="input-group-text bg-dark text-white w-auto" id="basic-addon3">{{$page}}/{{$totalpages}}</span>
+            {!!$page_next_url!!}
+            {!!$page_last_url!!}
         </div>
     </div>
 </div>
 
 
+<div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addeditmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addeditmodalLabel">
+                    <div>Modal title</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="addeditframe" src="/adminsection_add" width="100%" height="450px"
+                    style="border:none; height:80vh;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
+<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div>Complete This Appointment</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>
+                    Confirming will clear this appointment.
+                </p>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-success" id="DeleteButton">Confirm</a>
+                        <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
 @push('jsscripts')
 
+<script type="text/javascript">
+    $(document).ready(function(){
+    $('#addbutton').on('click', function() {
+        console.log('add button clicked!');
+        $('#addeditmodalLabel').html('Add A New Section');
+        $('#addeditframe').attr('src', '/adminsection_add?{!!$qstring!!}');
+    });
+    $('.dcc_edit').on('click', function() {
+        console.log('edit button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        console.log(iid);
+        $('#addeditmodalLabel').html('Edit This Section');
+        $('#addeditframe').attr('src', '/adminsection_edit?id='+iid+'&{!!$qstring!!}');
+    });
+    $('.dcc-delete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminappointments_delete_process?sid='+iid+'&'+iqstring);
+    });
+});
+</script>
 
 @endpush
