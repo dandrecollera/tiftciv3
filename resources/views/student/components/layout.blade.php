@@ -47,7 +47,7 @@
         }
 
         .list-group-item-spec {
-            background-color: #E5A01B;
+            background-color: #e6b34d;
         }
     </style>
 
@@ -56,9 +56,9 @@
 <body style="background-image: url('/asset/polka2.png')">
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-warning">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse list-group-item-spec">
 
-            <div class="position-sticky">
+            <div class=" position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-4">
 
                     @include('student.components.sidemenu')

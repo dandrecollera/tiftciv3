@@ -43,8 +43,8 @@ $path = request()->path();
 </a>
 
 <a href="https://tiftci.com/?"
-    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'teacher' ? 'active' : ''}}">
-    <i class="fas fa-laptop fa-fw me-3" style="{{$path == 'grades' ? 'color:#2D58A1;' : ''
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'lms' ? 'active' : ''}}">
+    <i class="fas fa-laptop fa-fw me-3" style="{{$path == 'lms' ? 'color:#2D58A1;' : ''
         }}"></i><span>Student LMS</span>
 </a>
 

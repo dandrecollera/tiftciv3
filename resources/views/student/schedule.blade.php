@@ -55,17 +55,17 @@
                     <table class="table ">
                         <thead>
                             <tr>
-                                <th scope="col">Subjects</th>
-                                <th scope="col">Start</th>
-                                <th scope="col">End</th>
-                                <th scope="col">Day</th>
-                                <th scope="col">Teacher</th>
+                                <th scope="col"><strong>Subjects</strong></th>
+                                <th scope="col"><strong>Start</strong></th>
+                                <th scope="col"><strong>End</strong></th>
+                                <th scope="col"><strong>Day</strong></th>
+                                <th scope="col"><strong>Teacher</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($schedules as $schedule)
                             <tr>
-                                <th scope="row">{{$schedule->subject_name}}</th>
+                                <th scope="row"><strong>{{$schedule->subject_name}}</strong></th>
                                 <td>{{$schedule->start_time}}</td>
                                 <td>{{$schedule->end_time}}</td>
                                 <td>{{$schedule->day}}</td>

@@ -47,6 +47,11 @@
         .dpcover {
             object-fit: cover;
         }
+
+        .list-group-item-spec {
+            background-color: #3b3737;
+            color: white;
+        }
     </style>
 
 </head>
@@ -54,7 +59,7 @@
 <body style="background-image: url('/asset/polka2.png')">
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-dark">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse list-group-item-spec">
 
             <div class="position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-4">

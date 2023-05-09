@@ -20,28 +20,28 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row"><strong>Voucherstrong</strong></th>
+                                <th scope="row"><strong>Voucher</strong></th>
                                 <td></td>
                                 <td></td>
-                                <td>{{ $balance->voucher}}</td>
+                                <td>₱{{ number_format($balance->voucher, 2, '.', ',') }}</td>
                             </tr>
                             <tr>
                                 <th scope="row"><strong>Tuition</strong></th>
                                 <td></td>
                                 <td></td>
-                                <td>{{ $balance->tuition}}</td>
+                                <td>₱{{ number_format($balance->tuition, 2, '.', ',') }}</td>
                             </tr>
                             <tr>
                                 <th scope="row"><strong>Registration</strong></th>
                                 <td></td>
                                 <td></td>
-                                <td>{{ $balance->registration}}</td>
+                                <td>₱{{ number_format($balance->registration, 2, '.', ',') }}</td>
                             </tr>
                             <tr>
                                 <th scope="row"><strong>Total</strong></th>
                                 <td></td>
                                 <td></td>
-                                <td>{{ $total }}</td>
+                                <td>₱{{ number_format($total, 2, '.', ',') }}</td>
                             </tr>
                         </tbody>
                     </table>
