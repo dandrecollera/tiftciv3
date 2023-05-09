@@ -37,6 +37,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     // Admin Home
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
+    Route::get('/adminsettings', [AdminController::class, 'adminsettings'])->name('adminsettings');
+
     // Admin/Accounts/Admin
     Route::get('/adminuser', [AdminController::class, 'adminuser'])->name('adminuser');
     Route::get('/adminuser_add', [AdminController::class, 'adminuser_add'])->name('adminusersAddPage');

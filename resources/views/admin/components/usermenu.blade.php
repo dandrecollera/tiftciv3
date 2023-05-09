@@ -3,5 +3,5 @@
     <hr class="dropdown-divider d-none d-lg-block">
 </li>
 <li><a class=" dropdown-item" href="#">My profile</a></li>
-<li><a class="dropdown-item" href="#">Settings</a></li>
+<li><a class="dropdown-item" href="/adminsettings">Settings</a></li>
 <li><a class="dropdown-item" href="/logout">Logout</a></li>

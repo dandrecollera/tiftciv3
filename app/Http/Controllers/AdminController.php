@@ -426,5 +426,12 @@ class AdminController extends Controller
 
         return redirect($this->default_url_adminuser.'?n=4&'.$qstring);
     }
+
+    public function adminsettings(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        return view('admin.components.settings', $data);
+    }
 }
 
