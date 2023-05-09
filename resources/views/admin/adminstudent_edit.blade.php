@@ -96,17 +96,24 @@
         <div class="container-fluid mb-4">
 
             <h4>Change Password</h4>
-            <label class=" form-label">Password: (8 Characters Long)</label>
-            <div class="row">
+            <div class="row mt-4 mb-4">
+                <div class="pb-1">
+                    <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password" type="password" class="form-control" placeholder="Password" required>
+                    <div class="form-outline">
+                        <input name="password" type="password" class="form-control" id="password"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password">Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <input name="password2" type="password" class="form-control" placeholder="Retype Password"
-                            required>
+                    <div class="form-outline">
+                        <input name="password2" type="password" class="form-control" id="password2"
+                            data-mdb-showcounter="true" maxlength="20" required>
+                        <label class="form-label" for="password2">Retype Password</label>
+                        <div class="form-helper"></div>
                     </div>
                 </div>
             </div>

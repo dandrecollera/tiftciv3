@@ -8,10 +8,19 @@ $myappointments = DB::table('appointments')
 @section('content')
 <h1>My Appointments</h1>
 <button type="button" id="addbutton" class="btn btn-warning shadow-sm btn-sm" data-bs-toggle="modal"
-    data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Appointment
-    User</button>
+    data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i>Add A New Appointment</button>
 <div class="container-lg mt-4">
-
+    @if (!empty($error))
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Error</h4>
+                <p>{{ $errorlist[(int) $error ] }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    @endif
     @if (!empty($notif))
     <div class="row">
         <div class="col">
@@ -36,8 +45,8 @@ $myappointments = DB::table('appointments')
                                 <th><strong>Inquiry<strong></th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
                                 <th><strong>Created<strong></th>
+                                <th><strong>Appointed Date</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,8 +55,8 @@ $myappointments = DB::table('appointments')
                                 <td><strong>{{$appointments->inquiry}}</td>
                                 <th></th>
                                 <th></th>
-                                <th></th>
                                 <td>{{ date_create($appointments->created_at)->format('m/d/Y h:i A') }}</td>
+                                <th>{{ date('m/d/Y l', strtotime($appointments->appointeddate)) }}</th>
                             </tr>
                             @endforeach
                         </tbody>

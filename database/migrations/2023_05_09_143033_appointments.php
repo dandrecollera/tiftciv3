@@ -33,6 +33,7 @@ class Appointments extends Migration
             $table->string('otherdocument')->nullable();
             $table->text('otherreason')->nullable();
             $table->boolean('active')->default(true);
+            $table->dateTime('appointeddate');
             $table->timestamps();
         });
     }

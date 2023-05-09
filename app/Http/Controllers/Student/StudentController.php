@@ -171,12 +171,17 @@ class StudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+        $data['errorlist'] = [
+            1 => 'Only Monday to Friday is Available',
+        ];
+        $data['error'] = 0;
+        if (!empty($_GET['e'])) {
+            $data['error'] = $_GET['e'];
+        }
+
+
         $data['notiflist'] = [
-            1 => 'New User has been saved.',
-            2 => 'Changes has been saved.',
-            3 => 'Password has been changed.',
-            4 => 'User has been deleted.',
-            5 => 'Image has been updated'
+            1 => 'Request Form Sent',
         ];
         $data['notif'] = 0;
         if(!empty($_GET['n'])){
@@ -249,7 +254,16 @@ class StudentController extends Controller
         }
 
         $forminput['otherreason'] = $otherreason = $input['otherreason'];
+        $appointeddate = $input['appointeddate'];
+        $dateparse = Carbon::parse($appointeddate);
 
+        if ($dateparse->isWeekend()){
+            return redirect('/studentappointment?e=1');
+            die();
+        }
+
+
+        $forminput['appointeddate'] = $appointeddate;
 
         DB::table('appointments')
         ->insert([
@@ -270,6 +284,7 @@ class StudentController extends Controller
             'others' => $forminput['others'],
             'otherdocument' => $forminput['otherdocument'],
             'otherreason' => $forminput['otherreason'],
+            'appointeddate' => $forminput['appointeddate'],
             'created_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString(),
             'updated_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString()
         ]);

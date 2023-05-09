@@ -83,9 +83,8 @@
                 </div>
 
                 <input type="hidden" name="did" value="{{$qsid}}">
-                <button type="submit" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Teacher
-                    User</button>
+                <button type="submit" id="addbutton" class="btn btn-dark shadow-sm btn-sm  float-end"
+                    data-bs-toggle="modal" data-bs-target="#addeditmodal">Confirm</button>
                 {{-- <button type="submit" class="btn btn-primary float-end"
                     onclick="return confirm('Confirm Amount?');">Confirm</button> --}}
             </form>

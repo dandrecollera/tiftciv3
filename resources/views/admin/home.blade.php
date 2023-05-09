@@ -2,6 +2,14 @@
 
 @section('content')
 
+@php
+$latestappointments = DB::table('appointments')
+->orderBy('id', 'desc')
+->limit(4)
+->get()
+->toArray();
+@endphp
+
 <div class="container-xl mt-4">
     <h1>
         <strong>Dashboard</strong>
@@ -58,22 +66,21 @@
                 <table class="table table-hover overflow-scroll">
                     <thead>
                         <tr>
-                            <th scope="col"><span>ID</span>
-                            </th>
-
-                            <th scope="col">Name</th>
-                            <th scope="col" colspan="3">Details</th>
-                            <th scope="col">Date</th>
-
+                            <th scope="col"><strong>ID</strong></th>
+                            <th scope="col"><strong>Email</strong></th>
+                            <th scope="col"><strong>Details</strong></th>
+                            <th scope="col"><strong>Date</strong></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($latestappointments as $appointments)
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Dandre Mitchel R. Collera</td>
-                            <td colspan="3">Appointments: For enrollment</td>
-                            <td>5/02/2023</td>
+                            <td><strong>{{$appointments->id}}</strong></td>
+                            <td>{{$appointments->email}}</td>
+                            <td>{{$appointments->inquiry}}</td>
+                            <td>{{ date('m/d/Y l', strtotime($appointments->appointeddate)) }}</td>
                         </tr>
+                        @endforeach
 
                     </tbody>
                 </table>
