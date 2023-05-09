@@ -37,9 +37,10 @@ $path = request()->path();
     </div>
 </a>
 
-<a href="/feedback" class="list-group-item list-group-item-spec py-2 ripple {{$path == 'feedback' ? 'active' : ''}}">
-    <i class="fas fa-comment fa-fw me-3" style="{{$path == 'feedback' ? 'color:#2D58A1;' : ''
-        }}"></i><span>Feedback</span>
+<a href="/studentappointment"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentappointment' ? 'active' : ''}}">
+    <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentappointment' ? 'color:#2D58A1;' : ''
+        }}"></i><span>Appointment</span>
 </a>
 
 <a href="https://tiftci.com/?"

@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', env('WEB_TITLE'))</title>
-    <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet" crossorigin="anonymous">
-    <link href="{{ asset('css/sidenavtop.css')}}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/sidenavtop.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/mdb.min.css')}}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/fontawesome.min.css"
         integrity="sha512-cHxvm20nkjOUySu7jdwiUxgGy11vuVPE9YeK89geLMLMMEOcKFyS2i+8wo0FOwyQO/bL8Bvq1KMsqK4bbOsPnA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -23,14 +24,17 @@
 
 </head>
 
-<body>
+<body style="background-image: url('/asset/polka2.png')">
 
 
     @yield('content')
 
 
-    <script src="{{asset('js/jquery-3.6.4.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
+    <script src="{{asset('js/jquery-3.6.4.min.js')}}"></script>
+    <script src="{{asset('js/mdb.min.js')}}"></script>
+
+    @stack('jsscripts')
 </body>
 
 </html>

@@ -167,9 +167,114 @@ class StudentController extends Controller
         return view('student.hmv', $data);
     }
 
-    public function feedback(Request $request){
+    public function studentappointment(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['notiflist'] = [
+            1 => 'New User has been saved.',
+            2 => 'Changes has been saved.',
+            3 => 'Password has been changed.',
+            4 => 'User has been deleted.',
+            5 => 'Image has been updated'
+        ];
+        $data['notif'] = 0;
+        if(!empty($_GET['n'])){
+            $data['notif'] = $_GET['n'];
+        }
+
+        $query = $request->query();
+        $qstring = array();
+
+
+        $data['qstring'] = http_build_query($qstring);
+        $data['qstring2'] = $qstring;
+
         return view('student.feedback', $data);
+    }
+
+    public function studentappointment_add(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        return view('student.appointment_add', $data);
+    }
+
+    public function studentappointment_add_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+        $sections = DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->first();
+
+        $myself = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.id', $userinfo[0])
+            ->first();
+
+        $currentyear = DB::table('schoolyears')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $forminput['inquiry'] = $inquiry = $input['inquiry'];
+
+        $forminput['goodmoral'] = $goodmoral = false;
+        $forminput['f137'] = $f137 = false;
+        $forminput['f138'] = $f138 = false;
+        $forminput['diploma'] = $diploma = false;
+        $forminput['others'] = $others = false;
+        $forminput['otherdocument'] = $otherdocument = '';
+        if($inquiry == 'Document Request'){
+
+            if(!empty($input['goodmoral'])){
+                $forminput['goodmoral'] = $goodmoral = true;
+            }
+            if(!empty($input['f137'])){
+                $forminput['f137'] = $f137 = true;
+            }
+            if(!empty($input['f138'])){
+                $forminput['f138'] = $f138 = true;
+            }
+            if(!empty($input['diploma'])){
+                $forminput['diploma'] = $diploma = true;
+            }
+            if(!empty($input['others'])){
+                if(!empty($input['otherdocument'])){
+                    $forminput['others'] = $others = true;
+                    $forminput['otherdocument'] = $otherdocument = $input['otherdocument'];
+                }
+            }
+        }
+
+        $forminput['otherreason'] = $otherreason = $input['otherreason'];
+
+
+        DB::table('appointments')
+        ->insert([
+            'email' => $myself->email,
+            'firstname' => $myself->firstname,
+            'middlename' =>  $myself->middlename,
+            'lastname' =>  $myself->lastname,
+            'mobilenumber' => $myself->mobilenumber,
+            'address' => $myself->address,
+            'graduate' => 'No',
+            'yearattended' => $currentyear->school_year,
+            'section' => $sections->section_name,
+            'inquiry' => $forminput['inquiry'],
+            'goodmoral' => $forminput['goodmoral'],
+            'f137' => $forminput['f137'],
+            'f138' => $forminput['f138'],
+            'diploma' => $forminput['diploma'],
+            'others' => $forminput['others'],
+            'otherdocument' => $forminput['otherdocument'],
+            'otherreason' => $forminput['otherreason'],
+            'created_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString(),
+            'updated_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString()
+        ]);
+
+
+        return redirect('/studentappointment?n=1');
     }
 }

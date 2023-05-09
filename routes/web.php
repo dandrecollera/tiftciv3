@@ -12,7 +12,6 @@ use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Student\StudentController;
-use App\Http\Controllers\Alumni\AlumniController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 
 /*
@@ -30,6 +29,8 @@ Route::get('/', [LoginController::class, 'index'])->name('loginScreen');
 Route::post('/login', [LoginController::class, 'login'])->name('loginProcess');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logoutProcess');
 Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');
+Route::get('/appointment_add', [AppointmentController::class, 'appointment_add'])->name('appointment_add');
+Route::post('/appointment_add_process', [AppointmentController::class, 'appointment_add_process'])->name('appointment_add_process');
 
 Route::group(['middleware' => 'axuauth'], function () {
 
@@ -117,7 +118,9 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
     Route::get('/hmv', [StudentController::class, 'hmv'])->name('hmv');
-    Route::get('/feedback', [StudentController::class, 'feedback'])->name('feedback');
+    Route::get('/studentappointment', [StudentController::class, 'studentappointment'])->name('studentappointment');
+    Route::get('/studentappointment_add', [StudentController::class, 'studentappointment_add'])->name('studentappointment_add');
+    Route::post('/studentappointment_add_process', [StudentController::class, 'studentappointment_add_process'])->name('studentappointment_add_process');
 
 
     // Teacher Portal
@@ -132,12 +135,4 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/studentsgrades_add_process', [MainTeacherController::class, 'studentsgrades_add_process'])->name('studentsgrades_add_process');
     Route::get('/studentsgrades_edit', [MainTeacherController::class, 'studentsgrades_edit'])->name('studentsgrades_edit');
     Route::post('/studentsgrades_edit_process', [MainTeacherController::class, 'studentsgrades_edit_process'])->name('studentsgrades_edit_process');
-
-
-
-    // Alumni Portal
-    Route::get('/alumni', [AlumniController::class, 'alumni'])->name('alumni');
-    Route::get('/ahmv', [AlumniController::class, 'ahmv'])->name('ahmv');
-    Route::get('/afeedback', [AlumniController::class, 'afeedback'])->name('afeedback');
-
 });

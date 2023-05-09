@@ -42,7 +42,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th><strong>Name</strong></th>
                     </tr>
                 </thead>
                 <tbody>

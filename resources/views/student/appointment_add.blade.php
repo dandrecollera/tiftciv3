@@ -13,14 +13,25 @@
 @section('content')
 
 @php
-$sections = DB::table('sections')
-->get()
-->toArray();
+$sections = DB::table('students')
+->where('userid', $userinfo[0])
+->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+->first();
+
+$myself = DB::table('main_users')
+->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+->where('main_users.id', $userinfo[0])
+->first();
+
+$currentyear = DB::table('schoolyears')
+->orderBy('id', 'desc')
+->first();
+
 @endphp
 
 
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/appointment_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/studentappointment_add_process" method="POST" target="_parent" enctype="multipart/form-data">
         @csrf
         <div class="container-fluid">
 
@@ -32,35 +43,40 @@ $sections = DB::table('sections')
                                 <h3 class="card-title">Personal Information</h3>
 
                                 <div class="form-outline mt-2 mb-2">
-                                    <input type="email" class="form-control" name="email" id="email" required>
+                                    <input type="email" class="form-control" name="email" id="email"
+                                        value="{{$myself->email}}" readonly>
                                     <label for="email" class="form-label">Email*</label>
                                 </div>
 
                                 <div class="input-group my-4 pt-2">
                                     <div class="form-outline">
                                         <input type="text" class="form-control" name="firstname" id="firstname"
-                                            required>
+                                            value="{{$myself->firstname}}" readonly>
                                         <label class="form-label" for="firstname">First Name*</label>
                                     </div>
                                     <div class="form-outline">
-                                        <input type="text" class="form-control" name="middlename" id="middlename">
+                                        <input type="text" class="form-control" name="middlename" id="middlename"
+                                            value="{{$myself->middlename}}" readonly>
                                         <label class="form-label overflow-x-scroll pe-2" for="middlename">Middle
                                             Name</label>
                                     </div>
                                     <div class="form-outline">
-                                        <input type="text" class="form-control" name="lastname" id="lastname" required>
+                                        <input type="text" class="form-control" name="lastname" id="lastname"
+                                            value="{{$myself->lastname}}" readonly>
                                         <label class="form-label" for="lastname">Last Name*</label>
                                     </div>
                                 </div>
 
 
                                 <div class="form-outline my-4">
-                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber">
+                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
+                                        value="{{$myself->mobilenumber}}" readonly>
                                     <label class="form-label" for="mobilenumber">Mobile Number</label>
                                 </div>
 
                                 <div class="form-outline mt-4 mb-2">
-                                    <textarea class="form-control" name="address" id="address" rows="4"></textarea>
+                                    <textarea class="form-control" name="address" id="address" rows="4"
+                                        readonly>{{$myself->address}}</textarea>
                                     <label class="form-label" for="address">Address</label>
                                 </div>
 
@@ -72,43 +88,25 @@ $sections = DB::table('sections')
                             <div class="card-body">
                                 <h3 class="card-title">School Information</h3>
 
-                                <label for="graduate" class="form-label">Graduate?*</label>
-                                <div class="input-group mb-3">
-                                    <select name="graduate" id="graduate" class="form-select" required>
-                                        <option selected hidden value="">Select Option</option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
+                                <div class="form-outline my-4">
+                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
+                                        value="No" readonly>
+                                    <label class="form-label" for="mobilenumber">Graduate</label>
                                 </div>
 
-                                <div id="yearsAttended" hidden>
-                                    <label for="lastyearattended" class="form-label" id="labelYearAttended">Last Year
-                                        Attended:*</label>
-                                    <div class="input-group mb-3">
-                                        <select name="lastyearattended" id="lastyearattended" class="form-select"
-                                            required>
-                                            <option selected hidden value="">Select Option</option>
-                                            @php
-                                            $currentYear = date('Y');
-                                            $startYear = 1990;
-                                            @endphp
 
-                                            @for ($year = $currentYear; $year >= $startYear; $year--)
-                                            <option value="{{ $year }}">{{ $year }}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
+                                <div class="form-outline my-4">
+                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
+                                        value="{{$currentyear->school_year}}" readonly>
+                                    <label class="form-label" for="mobilenumber">School Year</label>
                                 </div>
 
-                                <label for="emailInput" class="form-label">Section*</label>
-                                <div class="input-group mb-3">
-                                    <select name="strand" id="strandInput" class="form-select" required>
-                                        <option selected hidden value="">Select Option</option>
-                                        @foreach ($sections as $section)
-                                        <option value="{{$section->section_name}}">{{$section->section_name}}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="form-outline my-4">
+                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
+                                        value="{{$sections->section_name}}" readonly>
+                                    <label class="form-label" for="mobilenumber">Section</label>
                                 </div>
+
 
                             </div>
                         </div>
@@ -174,7 +172,8 @@ $sections = DB::table('sections')
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary float-end">Submit</button>
+            <button type="submit" class="btn btn-primary float-end mb-4">Submit</button>
+
         </div>
     </form>
 </div>
