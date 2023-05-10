@@ -312,7 +312,8 @@ class StudentController extends Controller
             5 => 'This user does not exist',
             6 => 'Status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
-            8 => 'Enter right amount.'
+            8 => 'Enter right amount.',
+            9 => 'Image is over 2MB.',
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -461,6 +462,15 @@ class StudentController extends Controller
             ->select('main_users_details.photo')
             ->where('userid', $input['did'])
             ->first();
+
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect('studentsettings?e=9');
+                die();
+            }
+        }
 
         if($request->hasFile('image')){
             $destinationPath = 'public/images';

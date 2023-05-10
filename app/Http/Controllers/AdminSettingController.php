@@ -138,6 +138,16 @@ class AdminSettingController extends Controller
             ->where('userid', $input['did'])
             ->first();
 
+
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect('adminsettings?e=9');
+                die();
+            }
+        }
+
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');

@@ -132,7 +132,8 @@ $dbdata = DB::table('main_users')
                         <h4>Update Profile Picture</h4>
 
                         <div class="input-group mt-3 mb-3">
-                            <input type="file" name="image" class="form-control" id="inputGroupFile01">
+                            <input type="file" name="image" class="form-control" id="inputGroupFile01"
+                                accept="image/jpeg,image/png">
                         </div>
 
                         <input type="hidden" name="did" value="{{ $dbdata->id }}">

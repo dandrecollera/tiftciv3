@@ -71,6 +71,7 @@ class AdminController extends Controller
             5 => 'This user doed not exist',
             6 => 'Status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
+            8 => 'Image is over 2MB'
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -216,6 +217,15 @@ class AdminController extends Controller
         if (!empty($chkemail->email)) {
             return redirect($this->default_url_adminuser.'?e=4');
             die();
+        }
+
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect($this->default_url_adminuser.'?e=8');
+                die();
+            }
         }
 
         $muserid = DB::table('main_users')->insertGetId([
@@ -366,6 +376,16 @@ class AdminController extends Controller
             ->where('userid', $input['did'])
             ->first();
 
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect($this->default_url_adminuser.'?e=8');
+                die();
+            }
+        }
+
+
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
             $image = $request->file('image');
@@ -441,7 +461,8 @@ class AdminController extends Controller
             5 => 'This user does not exist',
             6 => 'Status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
-            8 => 'Enter right amount.'
+            8 => 'Enter right amount.',
+            9 => 'Image is over 2MB.',
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {

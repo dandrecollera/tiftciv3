@@ -33,6 +33,7 @@ class TeacherController extends Controller
             5 => 'This user does not exist',
             6 => 'status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
+            8 => 'Image is over 2MB',
         ];
 
         $data['error'] = 0;
@@ -188,6 +189,15 @@ class TeacherController extends Controller
             die();
         }
 
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect($this->default_url.'?e=8');
+                die();
+            }
+        }
+
         $muserid = DB::table('main_users')
             ->insertGetID([
                 'email' => $input['email'],
@@ -338,6 +348,16 @@ class TeacherController extends Controller
             ->select('main_users_details.photo')
             ->where('userid', $input['did'])
             ->first();
+
+        $maxSize = 2 * 1024 * 1024;
+        if($request->hasFile('image')){
+            $size = $request->file('image')->getSize();
+            if($size > $maxSize){
+                return redirect($this->default_url.'?e=8');
+                die();
+            }
+        }
+
 
         if($request->hasFile('image')){
             $destinationPath = 'public/images';
