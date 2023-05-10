@@ -4,13 +4,10 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Sections</h1>
+            <h1>Appointments</h1>
         </div>
     </div>
-    <div class="">
-        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Section</button>
-    </div>
+
     <hr>
     @if (!empty($error))
     <div class="row">
