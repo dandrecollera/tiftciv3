@@ -101,20 +101,20 @@ class TeacherController extends Controller
             $countdata = DB::table('main_users')
                 ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
                 ->where('accounttype', $this->default_accounttype)
-                ->where('main_users.email', 'like', "%$keyword%")
-                ->orwhere('main_users_details.firstname', 'like', "%$keyword%")
-                ->orwhere('main_users_details.middlename', 'like', "%$keyword%")
-                ->orwhere('main_users_details.lastname', 'like', "%$keyword%")
-                ->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")
-                ->orwhere('main_users_details.address', 'like', "%$keyword%")
+                ->where('main_users.email', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
+                ->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
+                ->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
+                ->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
+                ->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
+                ->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype)
                 ->count();
 
-            $dbdata->where('main_users.email', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%");
+            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
+            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
+            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
+            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
+            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
+            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', $this->default_accounttype);
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
