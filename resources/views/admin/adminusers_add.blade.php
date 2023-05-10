@@ -86,7 +86,8 @@
 
             <label for="InputGroupFile01" class="form-label">Image:</label>
             <div class="input-group mb-3">
-                <input type="file" name="image" class="form-control" id="inputGroupFile01">
+                <input type="file" name="image" class="form-control" id="inputGroupFile01" accept="image/jpeg,image/png"
+                    maxlength="10485760">
             </div>
 
             <button type="submit" class="btn btn-primary float-end ripple">Save</button>
