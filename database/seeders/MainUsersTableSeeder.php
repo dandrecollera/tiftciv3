@@ -23,9 +23,9 @@ class MainUsersTableSeeder extends Seeder
             array (
                 'accounttype' => 'admin',
                 'created_at' => '2023-04-23 18:18:31',
-                'email' => 'mainadmin@admin.com',
+                'email' => 'masteradmin@tiftci.com',
                 'id' => 1,
-                'password' => '0192023a7bbd73250516f069df18b500',
+                'password' => 'c8550856c4834da6c1ca3251f5fe264f',
                 'status' => 'active',
                 'updated_at' => '2023-04-23 18:18:31',
             ),
@@ -33,9 +33,9 @@ class MainUsersTableSeeder extends Seeder
             array (
                 'accounttype' => 'admin',
                 'created_at' => '2023-04-25 07:24:24',
-                'email' => 'admin1@admin.com',
+                'email' => 'dandrecollera-admin@tiftci.com',
                 'id' => 2,
-                'password' => '0192023a7bbd73250516f069df18b500',
+                'password' => '5f1e0eb76cb20a0da22764ca38ecc978',
                 'status' => 'active',
                 'updated_at' => '2023-04-25 07:24:24',
             ),
@@ -43,7 +43,7 @@ class MainUsersTableSeeder extends Seeder
             array (
                 'accounttype' => 'admin',
                 'created_at' => '2023-04-25 07:25:02',
-                'email' => 'admin2@admin.com',
+                'email' => 'jaymielyncruz-admin@tiftci.com',
                 'id' => 3,
                 'password' => '0192023a7bbd73250516f069df18b500',
                 'status' => 'active',
@@ -51,83 +51,23 @@ class MainUsersTableSeeder extends Seeder
             ),
             3 => 
             array (
-                'accounttype' => 'teacher',
-                'created_at' => '2023-04-25 07:25:38',
-                'email' => 'mainteacher@teacher.com',
+                'accounttype' => 'admin',
+                'created_at' => '2023-04-25 07:25:02',
+                'email' => 'ralphextra-admin@tiftci.com',
                 'id' => 4,
-                'password' => 'a426dcf72ba25d046591f81a5495eab7',
+                'password' => '0192023a7bbd73250516f069df18b500',
                 'status' => 'active',
-                'updated_at' => '2023-04-25 07:25:38',
+                'updated_at' => '2023-04-25 07:25:02',
             ),
             4 => 
             array (
-                'accounttype' => 'teacher',
-                'created_at' => '2023-04-25 07:28:29',
-                'email' => 'teacher1@teacher.com',
+                'accounttype' => 'admin',
+                'created_at' => '2023-04-25 07:25:02',
+                'email' => 'alapostadero-admin@tiftci.com',
                 'id' => 5,
-                'password' => 'a426dcf72ba25d046591f81a5495eab7',
+                'password' => '0192023a7bbd73250516f069df18b500',
                 'status' => 'active',
-                'updated_at' => '2023-04-25 07:28:29',
-            ),
-            5 => 
-            array (
-                'accounttype' => 'teacher',
-                'created_at' => '2023-04-25 07:28:54',
-                'email' => 'teacher2@teacher.com',
-                'id' => 6,
-                'password' => 'a426dcf72ba25d046591f81a5495eab7',
-                'status' => 'active',
-                'updated_at' => '2023-04-25 07:28:54',
-            ),
-            6 => 
-            array (
-                'accounttype' => 'student',
-                'created_at' => '2023-05-04 18:50:48',
-                'email' => 'student1@student.com',
-                'id' => 7,
-                'password' => 'ad6a280417a0f533d8b670c61667e1a0',
-                'status' => 'active',
-                'updated_at' => '2023-05-04 18:50:48',
-            ),
-            7 => 
-            array (
-                'accounttype' => 'student',
-                'created_at' => '2023-05-04 19:12:15',
-                'email' => 'student2@student.com',
-                'id' => 8,
-                'password' => '213ee683360d88249109c2f92789dbc3',
-                'status' => 'active',
-                'updated_at' => '2023-05-04 19:12:15',
-            ),
-            8 => 
-            array (
-                'accounttype' => 'student',
-                'created_at' => '2023-05-04 19:13:51',
-                'email' => 'student3@student.com',
-                'id' => 9,
-                'password' => 'ad6a280417a0f533d8b670c61667e1a0',
-                'status' => 'active',
-                'updated_at' => '2023-05-04 19:13:51',
-            ),
-            9 => 
-            array (
-                'accounttype' => 'teacher',
-                'created_at' => '2023-05-05 05:54:31',
-                'email' => 'teacher3@teacher.com',
-                'id' => 10,
-                'password' => 'a426dcf72ba25d046591f81a5495eab7',
-                'status' => 'active',
-                'updated_at' => '2023-05-05 05:54:31',
-            ),
-            10 => 
-            array (
-                'accounttype' => 'teacher',
-                'created_at' => '2023-05-05 05:54:54',
-                'email' => 'teacher5@teacher.com',
-                'id' => 11,
-                'password' => 'a426dcf72ba25d046591f81a5495eab7',
-                'status' => 'active',
-                'updated_at' => '2023-05-05 05:54:54',
+                'updated_at' => '2023-04-25 07:25:02',
             ),
         ));
         

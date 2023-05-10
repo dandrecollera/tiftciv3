@@ -65,7 +65,8 @@
             <div class="form-outline my-4">
                 <input maxlength="11" min="0" data-mdb-showcounter="true" type="number" pattern="/^-?\d+\.?\d*$/"
                     onKeyPress="if(this.value.length==11) return false;" class="form-control" name="mobilenumber"
-                    id="contactInput" value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
+                    onkeydown="return event.keyCode !== 69 && event.keyCode !== 187" id="contactInput"
+                    value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
                 <label class="form-label" for="contactInput">Mobile Number</label>
                 <div class="form-helper"></div>
             </div>
