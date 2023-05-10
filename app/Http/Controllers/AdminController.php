@@ -431,6 +431,36 @@ class AdminController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+
+        $data['errorlist'] = [
+            1 => 'All forms are required please try again.',
+            2 => 'Your password is too short, it should be at least 8 characters long.',
+            3 => 'Both password and retype password are not the same.',
+            4 => 'The email already existed, please try to check the user on the list.',
+            5 => 'This user does not exist',
+            6 => 'Status should only be Active or Inactive',
+            7 => 'No Image has been Uploaded',
+            8 => 'Enter right amount.'
+        ];
+        $data['error'] = 0;
+        if (!empty($_GET['e'])) {
+            $data['error'] = $_GET['e'];
+        }
+
+        $data['notiflist'] = [
+            1 => 'New Student has been saved.',
+            2 => 'Changes has been saved.',
+            3 => 'Password has been changed.',
+            4 => 'Student has been deleted.',
+            5 => 'Image has been updated',
+            6 => 'Tuition has been updated.',
+            7 => 'Section has been changed',
+        ];
+        $data['notif'] = 0;
+        if (!empty($_GET['n'])) {
+            $data['notif'] = $_GET['n'];
+        }
+
         return view('admin.components.settings', $data);
     }
 }

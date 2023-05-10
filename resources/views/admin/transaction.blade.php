@@ -2,6 +2,10 @@
 
 @section('style')
 <style>
+    body {
+        background: rgba(236, 236, 236, 0.4);
+    }
+
     label {
         font-size: 14px;
         font-weight: 500;

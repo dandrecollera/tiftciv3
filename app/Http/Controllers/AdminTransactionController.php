@@ -99,6 +99,7 @@ class AdminTransactionController extends Controller
 
         $tuitionamount = DB::table('tuition')
             ->where('userid', $input['did'])
+            ->orderBy('id', 'desc')
             ->first();
 
         if($input['voucher'] > $tuitionamount->voucher){

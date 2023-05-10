@@ -7,12 +7,33 @@ $dbdata = DB::table('main_users')
 ->where('main_users.id', $userinfo[0])
 ->first();
 @endphp
-
+@if (!empty($error))
+<div class="row">
+    <div class="col">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <p>{{ $errorlist[(int) $error ] }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+@endif
+@if (!empty($notif))
+<div class="row">
+    <div class="col">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Success</h4>
+            <p>{{ $notiflist[(int) $notif ] }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+@endif
 <div class="row mb-4">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="/adminuser_edit_process" method="POST" target="_parent">
+                <form action="/adminsetting_edit_process" method="POST" target="_parent">
                     @csrf
                     <div class="container-fluid mb-4">
 
@@ -56,67 +77,66 @@ $dbdata = DB::table('main_users')
 
                         <input type="hidden" name="did" value="{{ $dbdata->id }}">
                         <button type="submit" class="btn btn-primary float-end">Save</button>
+                    </div>
+                </form>
+                <br>
+                <hr>
+
+                <form action="/adminsetting_pass_process" method="POST" target="_parent">
+                    @csrf
+                    <div class="container-fluid mb-4">
+
+                        <h4>Change Password</h4>
+                        <div class="row mt-4 mb-4">
+                            <div class="pb-1">
+                                <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input name="password" type="password" class="form-control" id="password"
+                                        data-mdb-showcounter="true" maxlength="20" required>
+                                    <label class="form-label" for="password">Password</label>
+                                    <div class="form-helper"></div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input name="password2" type="password" class="form-control" id="password2"
+                                        data-mdb-showcounter="true" maxlength="20" required>
+                                    <label class="form-label" for="password2">Retype Password</label>
+                                    <div class="form-helper"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="did" value="{{ $dbdata->id }}">
+                        <button type="submit" class="btn btn-primary float-end">Save</button>
                         <br>
-                        <hr>
-
-                        <form action="/adminuser_pass_process" method="POST" target="_parent">
-                            @csrf
-                            <div class="container-fluid mb-4">
-
-                                <h4>Change Password</h4>
-                                <div class="row mt-4 mb-4">
-                                    <div class="pb-1">
-                                        <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-outline">
-                                            <input name="password" type="password" class="form-control" id="password"
-                                                data-mdb-showcounter="true" maxlength="20" required>
-                                            <label class="form-label" for="password">Password</label>
-                                            <div class="form-helper"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-outline">
-                                            <input name="password2" type="password" class="form-control" id="password2"
-                                                data-mdb-showcounter="true" maxlength="20" required>
-                                            <label class="form-label" for="password2">Retype Password</label>
-                                            <div class="form-helper"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="did" value="{{ $dbdata->id }}">
-                                <button type="submit" class="btn btn-primary float-end">Save</button>
-                                <br>
-                            </div>
-                        </form>
-
-
-                        <hr>
-
-                        <form action="/adminuser_image_process" method="post" target="_parent"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <div class="container-fluid">
-
-                                <h4>Update Profile Picture</h4>
-
-                                <div class="input-group mt-3 mb-3">
-                                    <input type="file" name="image" class="form-control" id="inputGroupFile01">
-                                </div>
-
-                                <input type="hidden" name="did" value="{{ $dbdata->id }}">
-                                <button type="submit" class="btn btn-primary float-end">Save</button>
-
-                            </div>
-                        </form>
                     </div>
                 </form>
 
+
+                <hr>
+
+                <form action="/adminsetting_image_process" method="post" target="_parent" enctype="multipart/form-data">
+                    @csrf
+                    <div class="container-fluid">
+
+                        <h4>Update Profile Picture</h4>
+
+                        <div class="input-group mt-3 mb-3">
+                            <input type="file" name="image" class="form-control" id="inputGroupFile01">
+                        </div>
+
+                        <input type="hidden" name="did" value="{{ $dbdata->id }}">
+                        <button type="submit" class="btn btn-primary float-end">Save</button>
+
+                    </div>
+                </form>
             </div>
         </div>
-
     </div>
+
+</div>
 </div>
 
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 
@@ -33,11 +34,12 @@ Route::get('/appointment_add', [AppointmentController::class, 'appointment_add']
 Route::post('/appointment_add_process', [AppointmentController::class, 'appointment_add_process'])->name('appointment_add_process');
 
 Route::group(['middleware' => 'axuauth'], function () {
-
     // Admin Home
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-
     Route::get('/adminsettings', [AdminController::class, 'adminsettings'])->name('adminsettings');
+    Route::post('/adminsetting_edit_process', [AdminSettingController::class, 'adminsetting_edit_process'])->name('adminsetting_edit_process');
+    Route::post('/adminsetting_pass_process', [AdminSettingController::class, 'adminsetting_pass_process'])->name('adminsetting_pass_process');
+    Route::post('/adminsetting_image_process', [AdminSettingController::class, 'adminsetting_image_process'])->name('adminsetting_image_process');
 
     // Admin/Accounts/Admin
     Route::get('/adminuser', [AdminController::class, 'adminuser'])->name('adminuser');
@@ -66,12 +68,10 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminsubject_edit', [SubjectAdminController::class, 'adminsubject_edit'])->name('adminSubjectEditPage');
     Route::post('/adminsubject_edit_process', [SubjectAdminController::class, 'adminsubject_edit_process'])->name('adminSubjectEditProcess');
     Route::get('/adminsubject_delete_process', [SubjectAdminController::class, 'adminsubject_delete_process'])->name('adminSubjectDeleteProcess');
-
     Route::get('/subject_teacher', [SubjectAdminController::class, 'admin_teacher'])->name('adminSubjectTeacher');
     Route::get('/subject_teacher_add', [SubjectAdminController::class, 'admin_teacher_add'])->name('adminSubjectTeacherAdd');
     Route::post('/subject_teacher_add_process', [SubjectAdminController::class, 'admin_teacher_add_process'])->name('adminSubjectTeacherAddProcess');
     Route::get('/subject_teacher_delete_process', [SubjectAdminController::class, 'admin_teacher_delete_process'])->name('adminSubjectTeacherDeleteProcess');
-
 
     //Admin/Sections
     Route::get('/adminsection', [SectionController::class, 'adminsection'])->name('adminSectionPage');
@@ -109,12 +109,10 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/admintransaction', [AdminTransactionController::class, 'admintransaction'])->name('admintransaction');
     Route::post('/admintransaction_deduct_process', [AdminTransactionController::class, 'admintransaction_deduct_process'])->name('admintransaction_deduct_process');
 
-
     // Admin/Appointments
     Route::get('/adminappointments', [AdminAppointmentsController::class, 'adminappointments'])->name('adminappointments');
     Route::get('/adminappointments_info', [AdminAppointmentsController::class, 'adminappointments_info'])->name('adminappointments_info');
     Route::get('/adminappointments_delete_process', [AdminAppointmentsController::class, 'adminappointments_delete_process'])->name('adminappointments_delete_process');
-
 
     // Student Portal
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
@@ -125,7 +123,6 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/studentappointment', [StudentController::class, 'studentappointment'])->name('studentappointment');
     Route::get('/studentappointment_add', [StudentController::class, 'studentappointment_add'])->name('studentappointment_add');
     Route::post('/studentappointment_add_process', [StudentController::class, 'studentappointment_add_process'])->name('studentappointment_add_process');
-
 
     // Teacher Portal
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');
