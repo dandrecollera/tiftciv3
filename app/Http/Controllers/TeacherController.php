@@ -247,7 +247,7 @@ class TeacherController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['did']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['did']) || empty($input['email'])  || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
@@ -276,6 +276,7 @@ class TeacherController extends Controller
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->update([
+                'email' => $input['email'],
                 'firstname' => $input['firstname'],
                 'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
                 'lastname' => $input['lastname'],

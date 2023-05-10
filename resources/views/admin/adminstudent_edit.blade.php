@@ -17,8 +17,7 @@
 
             <h4>Edit Student Details</h4>
             <div class="form-outline my-4">
-                <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}"
-                    readonly disabled>
+                <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}">
                 <label for="emailInput" class="form-label">Email:</label>
             </div>
 
