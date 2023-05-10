@@ -138,20 +138,20 @@ class AdminController extends Controller
         if (!empty($keyword)) {
 
             $countdata = DB::table('main_users')->leftJoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')->where('accounttype', 'admin')
-                ->Where('main_users.email', 'like', "%$keyword%")
-                ->orWhere('main_users_details.firstname', 'like', "%$keyword%")
-                ->orWhere('main_users_details.lastname', 'like', "%$keyword%")
-                ->orWhere('main_users_details.middlename', 'like', "%$keyword%")
-                ->orWhere('main_users_details.mobilenumber', 'like', "%$keyword%")
-                ->orWhere('main_users_details.address', 'like', "%$keyword%")
+                ->Where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'admin')
+                ->orWhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'admin')
+                ->orWhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'admin')
+                ->orWhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'admin')
+                ->orWhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'admin')
+                ->orWhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'admin')
                 ->count();
 
-            $dbdata->Where('main_users.email', 'like', "%$keyword%");
-            $dbdata->orWhere('main_users_details.firstname', 'like', "%$keyword%");
-            $dbdata->orWhere('main_users_details.lastname', 'like', "%$keyword%");
-            $dbdata->orWhere('main_users_details.middlename', 'like', "%$keyword%");
-            $dbdata->orWhere('main_users_details.mobilenumber', 'like', "%$keyword%");
-            $dbdata->orWhere('main_users_details.address', 'like', "%$keyword%");
+            $dbdata->Where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'admin');
+            $dbdata->orWhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'admin');
+            $dbdata->orWhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'admin');
+            $dbdata->orWhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'admin');
+            $dbdata->orWhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'admin');
+            $dbdata->orWhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'admin');
 
         }
         //orderby
