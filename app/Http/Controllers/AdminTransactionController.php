@@ -102,25 +102,36 @@ class AdminTransactionController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        if($input['voucher'] > $tuitionamount->voucher){
+        $transact = array();
+        if(!empty($input['voucher'])){
+            $transact['voucher'] = intval(str_replace(',', '', $input['voucher']));
+        }
+        if(!empty($input['tuition'])){
+            $transact['tuition'] = intval(str_replace(',', '', $input['tuition']));
+        }
+        if(!empty($input['voucher'])){
+            $transact['registration'] = intval(str_replace(',', '', $input['registration']));
+        }
+
+        if($transact['voucher'] > $tuitionamount->voucher){
             return redirect($this->default_url.'?e=8');
             die();
         }
 
-        if($input['tuition'] > $tuitionamount->tuition){
+        if($transact['tuition'] > $tuitionamount->tuition){
             return redirect($this->default_url.'?e=8');
             die();
         }
 
-        if($input['registration'] > $tuitionamount->registration){
+        if($transact['registration'] > $tuitionamount->registration){
             return redirect($this->default_url.'?e=8');
             die();
         }
 
 
-        $voucher = $tuitionamount->voucher - $input['voucher'];
-        $tuition = $tuitionamount->tuition - $input['tuition'];
-        $registration = $tuitionamount->registration - $input['registration'];
+        $voucher = $tuitionamount->voucher - $transact['voucher'];
+        $tuition = $tuitionamount->tuition - $transact['tuition'];
+        $registration = $tuitionamount->registration - $transact['registration'];
 
         DB::table('tuition')
             ->where('userid', $input['did'])
