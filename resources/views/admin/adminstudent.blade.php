@@ -65,7 +65,7 @@
 
                     <div class="input-group">
                         <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'ID' ? 'SORT' :
+                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'Default' ? 'SORT' :
                             $orderbylist[$sort]['display'] }} </button>
                         <ul class="dropdown-menu">
                             @foreach($orderbylist as $key => $odl)
@@ -93,7 +93,7 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
+                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong></strong></span>
                         </th>
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Username/Email' ? 'text-primary' : '' }}"><strong>Username/Email</strong></span>

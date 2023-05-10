@@ -73,7 +73,7 @@ class TeacherController extends Controller
 
         $data['sort'] = 0;
         $data['orderbylist'] = [
-            ['display'=>'ID', 'field'=>'main_users.id'],
+            ['display'=>'Default', 'field'=>'main_users.id'],
             ['display'=>'Email', 'field'=>'main_users.email'],
             ['display'=>'Last Name', 'field'=>'main_users_details.lastname'],
             ['display'=>'First Name', 'field'=>'main_users_details.firstname'],
