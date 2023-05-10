@@ -25,6 +25,7 @@
         * {
             scrollbar-width: auto;
             scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+            transition: .1s;
         }
 
         /* Chrome, Edge, and Safari */
@@ -48,6 +49,16 @@
 
         .list-group-item-spec {
             background-color: #e6b34d;
+        }
+
+        .newsclass {
+            color: rgb(0, 0, 0);
+            transition: .2s;
+        }
+
+        .newsclass:hover {
+            color: #b9b9b9;
+            transition: .2s;
         }
     </style>
 

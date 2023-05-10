@@ -291,8 +291,6 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        // dd($sections);
-
         return view('teacher.studentlist', $data);
 
     }
@@ -312,8 +310,6 @@ class MainTeacherController extends Controller
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
             ->get()
             ->toArray();
-
-
 
         // dd($dbresult);
         return view('teacher.students', $data);

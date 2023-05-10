@@ -292,4 +292,221 @@ class StudentController extends Controller
 
         return redirect('/studentappointment?n=1');
     }
+
+    public function studentprofile(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        return view('student.components.studentprofile', $data);
+    }
+
+    public function studentsettings(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        $data['errorlist'] = [
+            1 => 'All forms are required please try again.',
+            2 => 'Your password is too short, it should be at least 8 characters long.',
+            3 => 'Both password and retype password are not the same.',
+            4 => 'The email already existed, please try to check the user on the list.',
+            5 => 'This user does not exist',
+            6 => 'Status should only be Active or Inactive',
+            7 => 'No Image has been Uploaded',
+            8 => 'Enter right amount.'
+        ];
+        $data['error'] = 0;
+        if (!empty($_GET['e'])) {
+            $data['error'] = $_GET['e'];
+        }
+
+        $data['notiflist'] = [
+            1 => 'New Student has been saved.',
+            2 => 'Changes has been saved.',
+            3 => 'Password has been changed.',
+            4 => 'Student has been deleted.',
+            5 => 'Image has been updated',
+            6 => 'Tuition has been updated.',
+            7 => 'Section has been changed',
+        ];
+        $data['notif'] = 0;
+        if (!empty($_GET['n'])) {
+            $data['notif'] = $_GET['n'];
+        }
+
+        return view('student.components.settings', $data);
+    }
+
+    public function studentsetting_edit_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+        if(empty($input['did']) || empty($input['firstname']) || empty($input['lastname'])){
+            return redirect('studentsettings?e=1');
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->first();
+        if(empty($logindata)){
+            return redirect('studentsettings?e=5');
+            die();
+        }
+
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'firstname' => $input['firstname'],
+                'lastname' => $input['lastname'],
+                'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
+                'mobilenumber' => !empty($input['mobilenumber']) ? $input['mobilenumber'] : '',
+                'address' => !empty($input['address']) ? $input['address'] : '',
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+
+        $newuser = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.id', $userinfo[0])
+            ->first();
+
+        $userkey = [
+            $newuser->id,
+            $newuser->firstname,
+            $newuser->middlename,
+            $newuser->lastname,
+            $newuser->email,
+            $newuser->accounttype,
+            $newuser->photo,
+            date('ymdHis')
+        ];
+
+        $user_id = encrypt(implode($userkey, ','));
+        $request->session()->put('sessionkey', $user_id);
+        session(['sessionkey' => $user_id]);
+
+        return redirect('studentsettings?n=2');
+    }
+
+    public function studentsetting_pass_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+
+        if(empty($input['did']) || empty($input['password']) || empty($input['password2'])){
+            return redirect('studentsettings?e=1');
+            die();
+        }
+
+        if(strlen($input['password']) < 8){
+            return redirect('studentsettings?e=2');
+            die();
+        }
+
+        if($input['password'] != $input['password2']){
+            return redirect('studentsettings?e=3');
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->first();
+
+        if(empty($logindata)){
+            return redirect('studentsettings?e=5');
+            die();
+        }
+
+        DB::table('main_users')
+            ->where('id', $input['did'])
+            ->update([
+                'password' => md5($input['password']),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+
+        $newuser = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.id', $userinfo[0])
+            ->first();
+
+        $userkey = [
+            $newuser->id,
+            $newuser->firstname,
+            $newuser->middlename,
+            $newuser->lastname,
+            $newuser->email,
+            $newuser->accounttype,
+            $newuser->photo,
+            date('ymdHis')
+        ];
+
+        $user_id = encrypt(implode($userkey, ','));
+        $request->session()->put('sessionkey', $user_id);
+        session(['sessionkey' => $user_id]);
+
+        return redirect('studentsettings?n=3');
+    }
+
+    public function studentsetting_image_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $input = $request->input();
+
+        // Get the current photo to delete later
+        $photo = DB::table('main_users_details')
+            ->select('main_users_details.photo')
+            ->where('userid', $input['did'])
+            ->first();
+
+        if($request->hasFile('image')){
+            $destinationPath = 'public/images';
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $imageName = $input['did'] . '.' . $extension;
+
+            if(Storage::exists($destinationPath.'/'.$imageName)){
+                Storage::delete($destinationPath.'/'.$imageName);
+            }
+
+            $path = $request->file('image')->storeAs($destinationPath, $imageName);
+            $photo = $imageName;
+        } else {
+            return redirect('studentsettings?e=7');
+            die();
+        }
+
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'photo' => $photo,
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        $newuser = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.id', $userinfo[0])
+            ->first();
+
+        $userkey = [
+            $newuser->id,
+            $newuser->firstname,
+            $newuser->middlename,
+            $newuser->lastname,
+            $newuser->email,
+            $newuser->accounttype,
+            $newuser->photo,
+            date('ymdHis')
+        ];
+
+        $user_id = encrypt(implode($userkey, ','));
+        $request->session()->put('sessionkey', $user_id);
+        session(['sessionkey' => $user_id]);
+
+        return redirect('studentsettings?n=5');
+    }
 }

@@ -117,6 +117,12 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Student Portal
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
+    Route::get('/studentprofile', [StudentController::class, 'studentprofile'])->name('studentprofile');
+    Route::get('/studentsettings', [StudentController::class, 'studentsettings'])->name('studentsettings');
+    Route::post('/studentsetting_edit_process', [StudentController::class, 'studentsetting_edit_process'])->name('studentsetting_edit_process');
+    Route::post('/studentsetting_pass_process', [StudentController::class, 'studentsetting_pass_process'])->name('studentsetting_pass_process');
+    Route::post('/studentsetting_image_process', [StudentController::class, 'studentsetting_image_process'])->name('studentsetting_image_process');
+
     Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
     Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
