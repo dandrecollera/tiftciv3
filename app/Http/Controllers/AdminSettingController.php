@@ -22,11 +22,6 @@ class AdminSettingController extends Controller
             die();
         }
 
-        if($input['status'] != 'active' && $input['status'] != 'inactive'){
-            return redirect('adminsettings?e=6');
-            die();
-        }
-
         $logindata = DB::table('main_users')->where('id', $input['did'])->where('accounttype', 'admin')->first();
         if(empty($logindata)){
             return redirect('adminsettings?e=5');
