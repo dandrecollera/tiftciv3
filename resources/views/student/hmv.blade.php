@@ -95,7 +95,7 @@
         </div>
     </div>
 </div>
-<div class="container-lg mt-4">
+<div class="container-lg mt-4 mb-4">
     <div class="row">
         <div class="col-12">
             <div class="card">
