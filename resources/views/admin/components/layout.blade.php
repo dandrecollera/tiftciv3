@@ -52,6 +52,16 @@
             background-color: #3b3737;
             color: white;
         }
+
+        .newsclass {
+            color: white;
+            transition: .4s;
+        }
+
+        .newsclass:hover {
+            color: rgb(180, 180, 180);
+            transition: .4s;
+        }
     </style>
 
 </head>
