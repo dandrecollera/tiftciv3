@@ -21,14 +21,14 @@
                 <label for="emailInput" class="form-label">Email:</label>
             </div>
 
-            <div class="row">
+            <div class="row" id="conpass">
                 <div class="pb-1">
                     <span id="textExample2" class="form-text"> Must be 8-20 characters long. </span>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <a id="show1" href="#" style="color: inherit;"><i class="fas fa-eye-slash trailing pe-auto"
-                                id="eye1"></i></a>
+                        <a id="show1" href="#conpass" style="color: inherit;"><i
+                                class="fas fa-eye-slash trailing pe-auto" id="eye1"></i></a>
                         <input name="password" type="password" class="form-control" id="password"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password">Password</label>
@@ -37,8 +37,8 @@
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <a id="show2" href="#" style="color: inherit;"><i class="fas fa-eye-slash trailing pe-auto"
-                                id="eye2"></i></a>
+                        <a id="show2" href="#conpass" style="color: inherit;"><i
+                                class="fas fa-eye-slash trailing pe-auto" id="eye2"></i></a>
                         <input name="password2" type="password" class="form-control" id="password2"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password2">Retype Password</label>

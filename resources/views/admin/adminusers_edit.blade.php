@@ -70,7 +70,7 @@
 
     <hr>
 
-    <form action="/adminuser_pass_process" method="POST" target="_parent">
+    <form action="/adminuser_pass_process" method="POST" target="_parent" id="conpass">
         @csrf
         <div class="container-fluid mb-4">
 
@@ -81,8 +81,8 @@
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <a id="show1" href="#" style="color: inherit;"><i class="fas fa-eye-slash trailing pe-auto"
-                                id="eye1"></i></a>
+                        <a id="show1" href="#conpass" style="color: inherit;"><i
+                                class="fas fa-eye-slash trailing pe-auto" id="eye1"></i></a>
                         <input name="password" type="password" class="form-control" id="password"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password">Password</label>
@@ -91,8 +91,8 @@
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <a id="show2" href="#" style="color: inherit;"><i class="fas fa-eye-slash trailing pe-auto"
-                                id="eye2"></i></a>
+                        <a id="show2" href="#conpass" style="color: inherit;"><i
+                                class="fas fa-eye-slash trailing pe-auto" id="eye2"></i></a>
                         <input name="password2" type="password" class="form-control" id="password2"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password2">Retype Password</label>
