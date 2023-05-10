@@ -3,13 +3,37 @@
 
 <head>
     <title>Login Form</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-    <link rel="stylesheet" href="{{ asset('css/sidenavtop.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/mdb.min.css')}}">
+        input[type="email"],
+        input[type="password"],
+        button[type="submit"] {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 300px;
+        }
 
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
 </head>
 
-<body>
+<body style="background-image: url('/asset/polka2.png')">
 
     <form action="/login" method="post">
         @csrf
@@ -23,10 +47,6 @@
         <input type="password" name="password" placeholder="Password">
         <button type="submit">Log in</button>
     </form>
-
-    .div
-
-
 </body>
 
 </html>
