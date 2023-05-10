@@ -133,13 +133,13 @@ class AdminStudentController extends Controller
             ->orwhere('sections.section_name', 'like', "%$keyword%")
             ->count();
 
-            $dbdata->where('main_users.email', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%");
-            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%");
-            $dbdata->orwhere('sections.section_name', 'like', "%$keyword%");
+            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->orwhere('sections.section_name', 'like', "%$keyword%")->where('accounttype', 'student');
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
