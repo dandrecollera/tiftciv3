@@ -7,7 +7,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">History</h3>
+                    <h3 class="card-title">
+                        <center>History</center>
+                    </h3>
                     <hr>
                     <p>
                         <center>
@@ -80,7 +82,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Vision</h3>
+                    <h3 class="card-title">
+                        <center>Vision</center>
+                    </h3>
                     <hr>
                     <p>
                         <center>
@@ -100,7 +104,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Mission</h3>
+                    <h3 class="card-title">
+                        <center>Mission</center>
+                    </h3>
                     <hr>
                     <p>
                         <center>
