@@ -33,6 +33,33 @@ Route::get('/appointment', [AppointmentController::class, 'index'])->name('appoi
 Route::get('/appointment_add', [AppointmentController::class, 'appointment_add'])->name('appointment_add');
 Route::post('/appointment_add_process', [AppointmentController::class, 'appointment_add_process'])->name('appointment_add_process');
 
+
+Route::get('handbook', function () {
+    $pathToFile = public_path('files/handbook.pdf');
+
+    return response()->file($pathToFile);
+});
+Route::get('strandoffered', function () {
+    $pathToFile = public_path('files/strandoffered.png');
+
+    return response()->file($pathToFile);
+});
+Route::get('DownloadsEnrollmentFees', function () {
+    $pathToFile = public_path('files/DownloadsEnrollmentFees.pdf');
+
+    return response()->file($pathToFile);
+});
+Route::get('DownloadsEnrollmentSHSRegForm', function () {
+    $pathToFile = public_path('files/DownloadsEnrollmentSHSRegForm.pdf');
+
+    return response()->file($pathToFile);
+});
+Route::get('DownloadsEnrollmentStudentProfile', function () {
+    $pathToFile = public_path('files/DownloadsEnrollmentStudentProfile.pdf');
+
+    return response()->file($pathToFile);
+});
+
 Route::group(['middleware' => 'axuauth'], function () {
     // Admin Home
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
