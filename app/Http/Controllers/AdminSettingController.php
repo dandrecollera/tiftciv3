@@ -17,7 +17,7 @@ class AdminSettingController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['did']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['did']) || empty($input['firstname']) || empty($input['lastname'])){
             return redirect('adminsettings?e=1');
             die();
         }
