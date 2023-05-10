@@ -56,12 +56,12 @@
 
         .newsclass {
             color: white;
-            transition: .4s;
+            transition: .2s;
         }
 
         .newsclass:hover {
             color: rgb(180, 180, 180);
-            transition: .4s;
+            transition: .2s;
         }
     </style>
 
