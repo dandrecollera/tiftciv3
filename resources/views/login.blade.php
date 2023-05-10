@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="{{ asset('css/mdb.min.css')}}">
-
-    <title>Document</title>
+    <link rel="icon" type="image/ico" href="{{ asset('favicon/favicon.ico') }}">
+    <title>@yield('title', env('WEB_TITLE'))</title>
 
     <style>
         video {
