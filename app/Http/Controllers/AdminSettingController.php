@@ -28,13 +28,6 @@ class AdminSettingController extends Controller
             die();
         }
 
-        DB::table('main_users')
-            ->where('id', $input['did'])
-            ->update([
-                'status' => $input['status'],
-                'updated_at' => Carbon::now()->toDateTimeString()
-            ]);
-
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->update([
