@@ -132,7 +132,7 @@ class AdminController extends Controller
         }
         $qstring['page'] = $page;
         $countdata = DB::table('main_users')->leftJoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')->where('accounttype', 'admin')->count();
-        $dbdata = DB::table('main_users')->select('main_users.*', 'main_users_details.firstname', 'main_users_details.lastname', 'main_users_details.middlename', 'main_users_details.mobilenumber', 'main_users_details.address',)
+        $dbdata = DB::table('main_users')->select('main_users.*', 'main_users_details.firstname', 'main_users_details.lastname', 'main_users_details.middlename', 'main_users_details.mobilenumber', 'main_users_details.address', 'main_users_details.photo')
             ->leftJoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->where('accounttype', 'admin');
         if (!empty($keyword)) {
