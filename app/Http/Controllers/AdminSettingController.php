@@ -28,6 +28,7 @@ class AdminSettingController extends Controller
             die();
         }
 
+
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->update([

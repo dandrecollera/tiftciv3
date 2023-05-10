@@ -64,9 +64,12 @@ $dbdata = DB::table('main_users')
                         </div>
 
                         <div class="form-outline my-4">
-                            <input type="text" class="form-control" name="mobilenumber" id="contactInput"
+                            <input maxlength="11" min="0" data-mdb-showcounter="true" type="number"
+                                pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==11) return false;"
+                                class="form-control" name="mobilenumber" id="contactInput"
                                 value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
                             <label class="form-label" for="contactInput">Mobile Number</label>
+                            <div class="form-helper"></div>
                         </div>
 
                         <div class="form-outline mt-4 mb-2">
@@ -93,6 +96,8 @@ $dbdata = DB::table('main_users')
                             </div>
                             <div class="col">
                                 <div class="form-outline">
+                                    <a id="show1" href="#" style="color: inherit;"><i
+                                            class="fas fa-eye-slash trailing pe-auto" id="eye1"></i></a>
                                     <input name="password" type="password" class="form-control" id="password"
                                         data-mdb-showcounter="true" maxlength="20" required>
                                     <label class="form-label" for="password">Password</label>
@@ -101,6 +106,8 @@ $dbdata = DB::table('main_users')
                             </div>
                             <div class="col">
                                 <div class="form-outline">
+                                    <a id="show2" href="#" style="color: inherit;"><i
+                                            class="fas fa-eye-slash trailing pe-auto" id="eye2"></i></a>
                                     <input name="password2" type="password" class="form-control" id="password2"
                                         data-mdb-showcounter="true" maxlength="20" required>
                                     <label class="form-label" for="password2">Retype Password</label>
@@ -113,7 +120,6 @@ $dbdata = DB::table('main_users')
                         <br>
                     </div>
                 </form>
-
 
                 <hr>
 
@@ -135,14 +141,38 @@ $dbdata = DB::table('main_users')
             </div>
         </div>
     </div>
-
 </div>
-</div>
-
-
-
-
-
-
 
 @endsection
+
+@push('jsscripts')
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+    $('#show1').on('click', function() {
+        if($('#password').attr('type') == "text"){
+            $('#password').attr('type', 'password');
+            $('#eye1').addClass( "fa-eye-slash" );
+            $('#eye1').removeClass( "fa-eye" );
+        } else{
+            $('#password').attr('type', 'text');
+            $('#eye1').addClass( "fa-eye" );
+            $('#eye1').removeClass( "fa-eye-slash" );
+        }
+    });
+    $('#show2').on('click', function() {
+        if($('#password2').attr('type') == "text"){
+            $('#password2').attr('type', 'password');
+            $('#eye2').addClass( "fa-eye-slash" );
+            $('#eye2').removeClass( "fa-eye" );
+        } else{
+            $('#password2').attr('type', 'text');
+            $('#eye2').addClass( "fa-eye" );
+            $('#eye2').removeClass( "fa-eye-slash" );
+        }
+    });
+});
+</script>
+
+@endpush

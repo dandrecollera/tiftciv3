@@ -103,13 +103,16 @@ class AdminTransactionController extends Controller
             ->first();
 
         $transact = array();
+        $transact['voucher'] = 0;
+        $transact['tuition'] = 0;
+        $transact['registration'] = 0;
         if(!empty($input['voucher'])){
             $transact['voucher'] = intval(str_replace(',', '', $input['voucher']));
         }
         if(!empty($input['tuition'])){
             $transact['tuition'] = intval(str_replace(',', '', $input['tuition']));
         }
-        if(!empty($input['voucher'])){
+        if(!empty($input['registration'])){
             $transact['registration'] = intval(str_replace(',', '', $input['registration']));
         }
 

@@ -49,7 +49,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">{{$lpp}} Items</button>
+                        aria-expanded="false">{{$lpp == 25 ? 'ITEMS' : $lpp}}</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
                                 Lines Per Page</a></li>
@@ -63,17 +63,24 @@
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
 
-                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">Sorted By {{$orderbylist[$sort]['display']}} </button>
-                    <ul class="dropdown-menu">
-                        @foreach($orderbylist as $key => $odl)
-                        @php
-                        $qstring2['sort'] = $key;
-                        $sorturl = http_build_query($qstring2);
-                        @endphp
-                        <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
-                        @endforeach
-                    </ul>
+                    <div class="input-group">
+                        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'ID' ? 'SORT' :
+                            $orderbylist[$sort]['display'] }}</button>
+                        <ul class="dropdown-menu">
+                            @foreach($orderbylist as $key => $odl)
+                            @php
+                            $qstring2['sort'] = $key;
+                            $sorturl = http_build_query($qstring2);
+                            @endphp
+                            <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
+                            @endforeach
+                        </ul>
+                        @if (!empty($sort))
+                        <button onclick="location.href='./adminsection'" type="button" class="btn btn-dark"><i
+                                class="fas fa-search fa-rotate fa-sm"></i></button>
+                        @endif
+                    </div>
                 </div>
             </form>
         </div>

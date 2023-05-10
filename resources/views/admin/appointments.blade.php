@@ -46,7 +46,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">{{$lpp}} Items</button>
+                        aria-expanded="false">{{$lpp == 25 ? 'ITEMS' : $lpp}}</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="?lpp=3{{!empty($keyword) ? " &keyword=".$keyword : ''}}">3
                                 Lines Per Page</a></li>
