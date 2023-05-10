@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/mdb.min.css')}}">
     <link rel="icon" type="image/ico" href="{{ asset('favicon/favicon.ico') }}">
-    <title>@yield('title', env('WEB_TITLE'))</title>
+    <title>TIFTCI</title>
 
     <style>
         video {
