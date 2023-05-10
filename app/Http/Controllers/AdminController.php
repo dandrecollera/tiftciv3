@@ -463,5 +463,14 @@ class AdminController extends Controller
 
         return view('admin.components.settings', $data);
     }
+
+    public function adminprofile(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        return view('admin.components.adminprofile', $data);
+    }
+
 }
 

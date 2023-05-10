@@ -37,6 +37,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     // Admin Home
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     Route::get('/adminsettings', [AdminController::class, 'adminsettings'])->name('adminsettings');
+    Route::get('/adminprofile', [AdminController::class, 'adminprofile'])->name('adminprofile');
     Route::post('/adminsetting_edit_process', [AdminSettingController::class, 'adminsetting_edit_process'])->name('adminsetting_edit_process');
     Route::post('/adminsetting_pass_process', [AdminSettingController::class, 'adminsetting_pass_process'])->name('adminsetting_pass_process');
     Route::post('/adminsetting_image_process', [AdminSettingController::class, 'adminsetting_image_process'])->name('adminsetting_image_process');
