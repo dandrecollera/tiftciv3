@@ -113,6 +113,7 @@ class AdminStudentController extends Controller
                 'main_users_details.lastname',
                 'main_users_details.mobilenumber',
                 'main_users_details.address',
+                'main_users_details.photo',
                 'sections.section_name',
                 'sections.strand',
                 'sections.yearlevel',
