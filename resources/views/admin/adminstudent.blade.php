@@ -117,9 +117,9 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
-                        <th scope="row"><strong>{{$dbr->id}}<img src="{{ asset('/storage/images/' . $dbr->photo) }}"
-                                    class="rounded-circle me-lg-0 me-2 dpcover" height="40" width="40" alt=""
-                                    loading="lazy" /></strong></th>
+                        <th scope="row"><img src="{{ asset('/storage/images/' . $dbr->photo) }}"
+                                class="rounded-circle me-lg-0 me-2 dpcover" height="40" width="40" alt=""
+                                loading="lazy" /></th>
                         <td>{{$dbr->email}}</td>
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
