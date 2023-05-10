@@ -294,6 +294,7 @@ class AdminController extends Controller
         DB::table('main_users')
             ->where('id', $input['did'])
             ->update([
+                'email' => $input['email'],
                 'status' => $input['status'],
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -301,7 +302,6 @@ class AdminController extends Controller
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->update([
-                'email' => $input['email'],
                 'firstname' => $input['firstname'],
                 'lastname' => $input['lastname'],
                 'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
