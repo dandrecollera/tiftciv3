@@ -21,6 +21,14 @@
                 <label for="emailInput" class="form-label">Email:</label>
             </div>
 
+            <div class="form-outline mt-4 mb-2">
+                <input type="number" class="form-control" name="lrn" id="lrn" maxlength="12" min="0"
+                    data-mdb-showcounter="true" type="number" pattern="/^-?\d+\.?\d*$/"
+                    onKeyPress="if(this.value.length==12) return false;" value="{{$dbdata->lrn}}" required>
+                <label for="lrn" class="form-label">Learner Reference Number:</label>
+                <div class="form-helper"></div>
+            </div>
+
             <div class="input-group my-4">
                 <div class="form-outline">
                     <input type="text" class="form-control" name="firstname" id="firstNameInput"

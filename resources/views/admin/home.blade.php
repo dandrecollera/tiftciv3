@@ -18,7 +18,7 @@ $latestappointments = DB::table('appointments')
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
             <div class="card text-center text-bg-dark    ">
                 <div class="card-body">
-                    <h6 class="card-title"># of Student</h6>
+                    <h6 class="card-title">Number of Students</h6>
                     <h3 class="card-title">{{$studentcount}}</h3>
                 </div>
             </div>
@@ -26,7 +26,7 @@ $latestappointments = DB::table('appointments')
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
             <div class="card text-center text-bg-dark">
                 <div class="card-body">
-                    <h6 class="card-title"># of Teachers</h6>
+                    <h6 class="card-title">Number of Teachers</h6>
                     <h3 class="card-title">{{$teachercount}}</h3>
                 </div>
             </div>
@@ -34,7 +34,7 @@ $latestappointments = DB::table('appointments')
         <div class="col-12 col-sm-4 mb-sm-0 mb-3">
             <div class="card text-center text-bg-dark">
                 <div class="card-body">
-                    <h6 class="card-title"># of Admins</h6>
+                    <h6 class="card-title">Number of Admins</h6>
                     <h3 class="card-title">{{$admincount}}</h3>
                 </div>
             </div>

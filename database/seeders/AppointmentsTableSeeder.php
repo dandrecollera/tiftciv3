@@ -14,11 +14,9 @@ class AppointmentsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('appointments')->delete();
-        
-        
-        
+
     }
 }

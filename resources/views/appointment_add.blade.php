@@ -55,8 +55,14 @@ $sections = DB::table('sections')
 
 
                                 <div class="form-outline my-4">
-                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber">
-                                    <label class="form-label" for="mobilenumber">Mobile Number</label>
+                                    <input maxlength="11" min="0" data-mdb-showcounter="true" type="number"
+                                        pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==11) return false;"
+                                        class="form-control" name="mobilenumber"
+                                        onkeydown="return event.keyCode !== 69 && event.keyCode !== 187"
+                                        id="contactInput"
+                                        value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
+                                    <label class="form-label" for="contactInput">Mobile Number</label>
+                                    <div class="form-helper"></div>
                                 </div>
 
                                 <div class="form-outline mt-4 mb-2">
@@ -72,7 +78,7 @@ $sections = DB::table('sections')
                             <div class="card-body">
                                 <h3 class="card-title">School Information</h3>
 
-                                <label for="graduate" class="form-label">Graduate?*</label>
+                                <label for="graduate" class="form-label">Graduate*</label>
                                 <div class="input-group mb-3">
                                     <select name="graduate" id="graduate" class="form-select" required>
                                         <option selected hidden value="">Select Option</option>
@@ -100,13 +106,22 @@ $sections = DB::table('sections')
                                     </div>
                                 </div>
 
-                                <label for="emailInput" class="form-label">Section*</label>
+                                <div class="form-outline mt-4 mb-2">
+                                    <input type="number" class="form-control" name="lrn" id="lrn" maxlength="12" min="0"
+                                        data-mdb-showcounter="true" type="number" pattern="/^-?\d+\.?\d*$/"
+                                        onKeyPress="if(this.value.length==12) return false;" required>
+                                    <label for="lrn" class="form-label">Learner Reference Number:</label>
+                                    <div class="form-helper"></div>
+                                </div>
+
+                                <label for="emailInput" class="form-label">Strand*</label>
                                 <div class="input-group mb-3">
                                     <select name="strand" id="strandInput" class="form-select" required>
                                         <option selected hidden value="">Select Option</option>
-                                        @foreach ($sections as $section)
-                                        <option value="{{$section->section_name}}">{{$section->section_name}}</option>
-                                        @endforeach
+                                        <option value="ABM">ABM</option>
+                                        <option value="HE">HE</option>
+                                        <option value="ICT">ICT</option>
+                                        <option value="GAS">GAS</option>
                                     </select>
                                 </div>
 

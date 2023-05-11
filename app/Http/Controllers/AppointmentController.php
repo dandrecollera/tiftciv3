@@ -51,6 +51,7 @@ class AppointmentController extends Controller
 
 
         $forminput['email'] = $email = $input['email'];
+        $forminput['lrn'] = $email = $input['lrn'];
         $forminput['firstname'] = $firstname = $input['firstname'];
         $forminput['middlename'] = $middlename = empty($input['middlename']) ? '' : $input['middlename'];
         $forminput['lastname'] = $lastname = $input['lastname'];
@@ -118,6 +119,7 @@ class AppointmentController extends Controller
                 'f137' => $forminput['f137'],
                 'f138' => $forminput['f138'],
                 'diploma' => $forminput['diploma'],
+                'lrn' => $forminput['lrn'],
                 'others' => $forminput['others'],
                 'otherdocument' => $forminput['otherdocument'],
                 'otherreason' => $forminput['otherreason'],

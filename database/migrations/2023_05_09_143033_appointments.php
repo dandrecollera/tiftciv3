@@ -23,8 +23,9 @@ class Appointments extends Migration
             $table->string('address')->nullable();;
             $table->string('graduate');
             $table->string('yearattended');
-            $table->string('section');
+            $table->string('section')->nullable();
             $table->string('inquiry');
+            $table->string('lrn');
             $table->boolean('goodmoral')->default(false);
             $table->boolean('f137')->default(false);
             $table->boolean('f138')->default(false);
@@ -32,7 +33,8 @@ class Appointments extends Migration
             $table->boolean('others')->default(false);
             $table->string('otherdocument')->nullable();
             $table->text('otherreason')->nullable();
-            $table->boolean('active')->default(true);
+            $table->string('active')->default("Pending");
+            $table->boolean('seen')->default("0");
             $table->dateTime('appointeddate');
             $table->timestamps();
         });

@@ -273,6 +273,7 @@ class StudentController extends Controller
             'lastname' =>  $myself->lastname,
             'mobilenumber' => $myself->mobilenumber,
             'address' => $myself->address,
+            'lrn' => $myself->lrn,
             'graduate' => 'No',
             'yearattended' => $currentyear->school_year,
             'section' => $sections->section_name,

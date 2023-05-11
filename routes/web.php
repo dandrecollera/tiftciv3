@@ -162,9 +162,9 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');
     Route::get('/teacherprofile', [MainTeacherController::class, 'teacherprofile'])->name('teacherprofile');
     Route::get('/teachersettings', [MainTeacherController::class, 'teachersetting'])->name('teachersetting');
-    Route::post('/studentsetting_edit_process', [MainTeacherController::class, 'studentsetting_edit_process'])->name('studentsetting_edit_process');
-    Route::post('/studentsetting_pass_process', [MainTeacherController::class, 'studentsetting_pass_process'])->name('studentsetting_pass_process');
-    Route::post('/studentsetting_image_process', [MainTeacherController::class, 'studentsetting_image_process'])->name('studentsetting_image_process');
+    Route::post('/teachersetting_edit_process', [MainTeacherController::class, 'teachersetting_edit_process'])->name('teachersetting_edit_process');
+    Route::post('/teachersetting_pass_process', [MainTeacherController::class, 'teachersetting_pass_process'])->name('teachersetting_pass_process');
+    Route::post('/teachersetting_image_process', [MainTeacherController::class, 'teachersetting_image_process'])->name('teachersetting_image_process');
     Route::get('/grading', [MainTeacherController::class, 'grading'])->name('grading');
     Route::get('/section', [MainTeacherController::class, 'section'])->name('section');
     Route::get('/teacherschedule', [MainTeacherController::class, 'teacherschedule'])->name('teacherschedule');

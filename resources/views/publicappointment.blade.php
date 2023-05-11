@@ -64,7 +64,8 @@
             <!-- Container wrapper -->
             <div class="container-fluid ">
                 <a class="navbar-brand fw-bolder ps-2 text-white" href="https://dandrecollera.com/">
-                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />
+                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" /> <span style="line-height:1.2">Alumni
+                        Document<br>Request</span>
                 </a>
                 <!-- Right links -->
 

@@ -33,11 +33,11 @@ $dbdata = DB::table('main_users')
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="/studentsetting_edit_process" method="POST" target="_parent">
+                <form action="/teachersetting_edit_process" method="POST" target="_parent">
                     @csrf
                     <div class="container-fluid mb-4">
 
-                        <h4>Edit Admin Details</h4>
+                        <h4>Edit Details</h4>
                         <div class="form-outline my-4">
                             <input type="email" class="form-control" name="email" id="emailInput"
                                 value="{{$dbdata->email}}" readonly disabled>
@@ -86,7 +86,7 @@ $dbdata = DB::table('main_users')
                 <br>
                 <hr>
 
-                <form action="/studentsetting_pass_process" method="POST" target="_parent" id="conpass">
+                <form action="/teachersetting_pass_process" method="POST" target="_parent" id="conpass">
                     @csrf
                     <div class="container-fluid mb-4">
 
@@ -124,7 +124,7 @@ $dbdata = DB::table('main_users')
 
                 <hr>
 
-                <form action="/studentsetting_image_process" method="post" target="_parent"
+                <form action="/teachersetting_image_process" method="post" target="_parent"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="container-fluid">

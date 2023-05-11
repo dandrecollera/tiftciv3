@@ -359,7 +359,7 @@ class MainTeacherController extends Controller
         return view('teacher.components.settings', $data);
     }
 
-    public function studentsetting_edit_process(Request $request){
+    public function teachersetting_edit_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -412,7 +412,7 @@ class MainTeacherController extends Controller
         return redirect('teachersettings?n=2');
     }
 
-    public function studentsetting_pass_process(Request $request){
+    public function teachersetting_pass_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -473,7 +473,7 @@ class MainTeacherController extends Controller
         return redirect('teachersettings?n=3');
     }
 
-    public function studentsetting_image_process(Request $request){
+    public function teachersetting_image_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 

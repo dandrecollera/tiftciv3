@@ -21,6 +21,7 @@ class MainUsersDetails extends Migration
             $table->string('lastname');
             $table->string('mobilenumber');
             $table->longText('address');
+            $table->string('lrn')->nullable();
             $table->string('photo')->default('blank.jpg');
             $table->timestamps();
 

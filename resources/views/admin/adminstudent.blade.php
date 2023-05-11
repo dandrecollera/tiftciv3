@@ -110,6 +110,7 @@
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Section' ? 'text-primary' : '' }}"><strong>Section</strong></span>
                         </th>
+                        <th scope="col"><strong>LRN</strong></th>
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
@@ -125,6 +126,7 @@
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
                         <td>{{$dbr->section_name}}</td>
+                        <td>{{$dbr->lrn}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
