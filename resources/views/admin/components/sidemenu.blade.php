@@ -55,7 +55,7 @@ $path = request()->path();
 </a>
 
 <a href="https://dandrecollera.com/wp-login.php"
-    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminappointments' ? 'active' : ''}}">
-    <i class="fas fa-brands fa-wordpress fa-fw me-3" style="{{$path == 'adminappointments' ? 'color:#2D58A1;' : ''
-        }}"></i><span>CMS</span>
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'wordpress' ? 'active' : ''}}">
+    <i class="fas fa-brands fa-wordpress fa-fw me-3" style="{{$path == 'wordpress' ? 'color:#2D58A1;' : ''
+        }}"></i><span>CMS Public</span>
 </a>

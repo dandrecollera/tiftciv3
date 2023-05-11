@@ -14,11 +14,11 @@ class SchedulesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('schedules')->delete();
-        
-        
-        
+
+
+
     }
 }

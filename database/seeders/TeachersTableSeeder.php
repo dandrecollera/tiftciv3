@@ -14,11 +14,11 @@ class TeachersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('teachers')->delete();
-        
-        
-        
+
+
+
     }
 }

@@ -109,6 +109,10 @@
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
                                     <i class="fa-solid fa-check fa-xs"></i></a>
+                                <a class="btn btn-success btn-sm dcc-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->email}}">
+                                    <i class="fa-solid fa-check fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -158,7 +162,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Complete This Appointment</div>
+                    <div id="modtitle"></div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

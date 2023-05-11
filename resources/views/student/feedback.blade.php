@@ -47,16 +47,19 @@ $myappointments = DB::table('appointments')
                                 <th></th>
                                 <th><strong>Created<strong></th>
                                 <th><strong>Appointed Date</strong></th>
+                                <th><strong>Status</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($myappointments as $appointments)
-                            <tr>
+                            <tr
+                                style="background-color:{{$appointments->active == 'Completed' ? 'rgb(195, 255, 195)' : ''}} {{$appointments->active == 'Denied' ? 'rgb(255, 195, 195)' : ''}}">
                                 <td><strong>{{$appointments->inquiry}}</td>
-                                <th></th>
+                                <th style=""></th>
                                 <th></th>
                                 <td>{{ date_create($appointments->created_at)->format('m/d/Y h:i A') }}</td>
                                 <th>{{ date('m/d/Y l', strtotime($appointments->appointeddate)) }}</th>
+                                <td><strong>{{$appointments->active}}</td>
                             </tr>
                             @endforeach
                         </tbody>
