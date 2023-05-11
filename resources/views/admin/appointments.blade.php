@@ -89,35 +89,47 @@
                                     Date</strong>
                             </span>
                         </th>
+                        <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr>
+                    <tr
+                        style="background-color: {{ $dbr->active == 'Pending' ? 'rgb(236, 236, 191)' : ''}} {{ $dbr->active == 'Completed' ? 'rgb(201, 236, 191)' : ''}} {{ $dbr->active == 'Declined' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Cancelled' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Approved' ? 'rgb(212, 238, 232)' : ''}}">
+                        <div style="background-color:rgb(238, 212, 218)"></div>
                         <th scope="row"><strong>{{$dbr->id}}</strong></th>
                         <td>{{$dbr->email}}</td>
                         <td>{{$dbr->inquiry}}</td>
                         <td>{{ date('m/d/Y l', strtotime($dbr->appointeddate)) }}</td>
                         <td>{{ date_create($dbr->created_at)->format('m/d/Y h:i A') }}</td>
+                        <td>{{ $dbr->active }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-caret-down fa-xs"></i></a>
-                                <a class="btn btn-success btn-sm dcc-delete" data-bs-toggle="modal"
+                                @if ( $dbr->active == "Pending")
+                                <a class="btn btn-success btn-sm dcc-approve" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
                                     <i class="fa-solid fa-check fa-xs"></i></a>
-                                <a class="btn btn-success btn-sm dcc-delete" data-bs-toggle="modal"
+                                <a class="btn btn-danger btn-sm dcc-decline" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->email}}">
+                                    <i class="fa-solid fa-close fa-xs"></i></a>
+                                @endif
+                                @if ($dbr->active == "Approved")
+                                <a class="btn btn-success btn-sm dcc-complete" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
                                     <i class="fa-solid fa-check fa-xs"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="6">
+                        <td colspan="7">
                             <iframe id="" src="/adminappointments_info?sid={{$dbr->id}}" width="100%" height="500px"
                                 style="border:none;"></iframe>
                         </td>
@@ -167,8 +179,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>
-                    Confirming will clear this appointment.
+                <p id="modbod">
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -187,28 +198,47 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-    $('#addbutton').on('click', function() {
-        console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Section');
-        $('#addeditframe').attr('src', '/adminsection_add?{!!$qstring!!}');
-    });
-    $('.dcc_edit').on('click', function() {
-        console.log('edit button clicked!');
-        console.log( $(this).data("id") );
-        var iid = $(this).data("id");
-        console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Section');
-        $('#addeditframe').attr('src', '/adminsection_edit?id='+iid+'&{!!$qstring!!}');
-    });
-    $('.dcc-delete').on('click', function() {
+    $('.dcc-approve').on('click', function() {
         console.log('delete button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
         console.log(iid);
+        $('#modtitle').html('Approve this appointment?');
+        $('#modbod').html('Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>');
         $('#Email').html(iemail);
+        $('#DeleteButton').removeClass('btn-danger').addClass('btn-success');
+        $('#DeleteButton').html('Approve');
         $('#DeleteButton').prop('href', '/adminappointments_delete_process?sid='+iid+'&'+iqstring);
+    });
+    $('.dcc-decline').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#modtitle').html('Decline this appointment?');
+        $('#modbod').html('Are you sure you want to decline this appointment by <strong><span id="Email"></span></strong>?<br>');
+        $('#Email').html(iemail);
+        $('#DeleteButton').addClass('btn-danger').removeClass('btn-success');
+        $('#DeleteButton').html('Decline');
+        $('#DeleteButton').prop('href', '/adminappointments_decline_process?sid='+iid+'&'+iqstring);
+    });
+    $('.dcc-complete').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#modtitle').html('Complete this appointment?');
+        $('#modbod').html('Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>');
+        $('#Email').html(iemail);
+        $('#DeleteButton').removeClass('btn-danger').addClass('btn-success');
+        $('#DeleteButton').html('Complete');
+        $('#DeleteButton').prop('href', '/adminappointments_complete_process?sid='+iid+'&'+iqstring);
     });
 });
 </script>

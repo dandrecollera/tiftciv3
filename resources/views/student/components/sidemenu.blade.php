@@ -26,17 +26,6 @@ $path = request()->path();
 
 <br>
 <h5>Other</h5>
-<a href="/hmv"
-    class="list-group-item list-group-item-spec py-2 ripple d-flex flex-row align-items-center {{$path == 'hmv' ? 'active' : ''}}">
-    <div>
-        <i class="fas fa-monument fa-fw me-3" style="vertical-align: middle;{{$path == 'hmv' ? 'color:#2D58A1;' : ''
-    }}"></i>
-    </div>
-    <div>
-        History, Mission & Vision
-    </div>
-</a>
-
 <a href="/studentappointment"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentappointment' ? 'active' : ''}}">
     <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentappointment' ? 'color:#2D58A1;' : ''
@@ -48,11 +37,3 @@ $path = request()->path();
     <i class="fas fa-laptop fa-fw me-3" style="{{$path == 'lms' ? 'color:#2D58A1;' : ''
         }}"></i><span>Student LMS</span>
 </a>
-
-{{-- <a href="/about" class="list-group-item list-group-item-warning py-2">
-    <span>About</span>
-</a>
-
-<a href="/FAQs" class="list-group-item list-group-item-warning py-2">
-    <span>FAQs</span>
-</a> --}}

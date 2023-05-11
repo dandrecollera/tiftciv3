@@ -35,9 +35,9 @@ class AdminAppointmentsController extends Controller
         }
 
         $data['notiflist'] = [
-            1 => 'Appointment Complete.',
-            2 => 'Section successfully edited.',
-            3 => 'Section does not exist.',
+            1 => 'Appointment Approved.',
+            2 => 'Appointment Declined.',
+            3 => 'Appointment Completed.',
             4 => 'Section has been deleted.'
         ];
         $data['notif'] = 0;
@@ -85,7 +85,7 @@ class AdminAppointmentsController extends Controller
         $countdata = DB::table('appointments')
             ->count();
         $dbdata = DB::table('appointments')
-            ->select('id', 'email', 'inquiry', 'created_at', 'appointeddate');
+            ->select('id', 'email', 'inquiry', 'created_at', 'appointeddate', 'active');
 
 
 
@@ -174,8 +174,62 @@ class AdminAppointmentsController extends Controller
 
         DB::table('appointments')
             ->where('id', $input['sid'])
-            ->delete();
+            ->update([
+                'active' => "Approved",
+            ]);
 
         return redirect('/adminappointments?n=1');
+    }
+
+    public function adminappointments_decline_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this-> default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : ''
+        ]);
+
+        if(empty($input['sid'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->update([
+                'active' => "Declined",
+            ]);
+
+        return redirect('/adminappointments?n=2');
+    }
+
+    public function adminappointments_complete_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this-> default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : ''
+        ]);
+
+        if(empty($input['sid'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->update([
+                'active' => "Completed",
+            ]);
+
+        return redirect('/adminappointments?n=3');
     }
 }

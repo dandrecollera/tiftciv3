@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AdminSettingController;
+use App\Http\Controllers\EmailUpdateController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 
@@ -26,6 +27,7 @@ use App\Http\Controllers\Teacher\MainTeacherController;
 |
 */
 
+Route::get('/testmail', [EmailUpdateController::class, 'index'])->name('testemail');
 Route::get('/', [LoginController::class, 'index'])->name('loginScreen');
 Route::post('/login', [LoginController::class, 'login'])->name('loginProcess');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logoutProcess');
@@ -141,6 +143,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminappointments', [AdminAppointmentsController::class, 'adminappointments'])->name('adminappointments');
     Route::get('/adminappointments_info', [AdminAppointmentsController::class, 'adminappointments_info'])->name('adminappointments_info');
     Route::get('/adminappointments_delete_process', [AdminAppointmentsController::class, 'adminappointments_delete_process'])->name('adminappointments_delete_process');
+    Route::get('/adminappointments_decline_process', [AdminAppointmentsController::class, 'adminappointments_decline_process'])->name('adminappointments_decline_process');
+    Route::get('/adminappointments_complete_process', [AdminAppointmentsController::class, 'adminappointments_complete_process'])->name('adminappointments_complete_process');
 
     // Student Portal
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
