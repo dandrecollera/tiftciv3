@@ -63,7 +63,7 @@
         <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-warning fixed-top">
             <!-- Container wrapper -->
             <div class="container-fluid ">
-                <a class="navbar-brand fw-bolder ps-2 text-white" href="https://dandrecollera.com/">
+                <a class="navbar-brand fw-bolder ps-2 text-white" href="https://tiftci.org/">
                     <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" /> <span style="line-height:1.2">Alumni
                         Document<br>Request</span>
                 </a>

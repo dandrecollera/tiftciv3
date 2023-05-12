@@ -97,7 +97,7 @@
                     @foreach ($dbresult as $dbr)
                     <tr
                         style="background-color: {{ $dbr->active == 'Pending' ? 'rgb(236, 236, 191)' : ''}} {{ $dbr->active == 'Completed' ? 'rgb(201, 236, 191)' : ''}} {{ $dbr->active == 'Declined' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Cancelled' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Approved' ? 'rgb(212, 238, 232)' : ''}}">
-                        <div style="background-color:rgb(238, 212, 218)"></div>
+                        <div></div>
                         <th scope="row"><strong>{{$dbr->id}}</strong></th>
                         <td>{{$dbr->email}}</td>
                         <td>{{$dbr->inquiry}}</td>

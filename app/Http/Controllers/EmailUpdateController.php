@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Storage;
 class EmailUpdateController extends Controller
 {
     public function index(Request $request){
-        $user = "dandre";
-        $status = "active";
-        Mail::to('dandrecollera@gmail.com')->send(new UpdateUser($user, $status));
+        $user = "Jaymie";
+        $status = "Approved";
+        $request = "Document Request";
+        $date = "Document Request";
+        Mail::to('dandrecollera@gmail.com')->send(new UpdateUser($user, $status, $request, $date));
     }
 }

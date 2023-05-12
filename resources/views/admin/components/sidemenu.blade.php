@@ -54,7 +54,7 @@ $path = request()->path();
         }}"></i><span>Appointments</span>
 </a>
 
-<a href="https://dandrecollera.com/wp-login.php"
+<a href="https://tiftci.org/wp-login.php"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'wordpress' ? 'active' : ''}}">
     <i class="fas fa-brands fa-wordpress fa-fw me-3" style="{{$path == 'wordpress' ? 'color:#2D58A1;' : ''
         }}"></i><span>CMS Public</span>

@@ -16,10 +16,12 @@ class UpdateUser extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $status)
+    public function __construct($user, $status, $request, $date)
     {
         $this->user = $user;
         $this->status = $status;
+        $this->request = $request;
+        $this->date = $date;
     }
 
     /**
@@ -30,10 +32,12 @@ class UpdateUser extends Mailable
     public function build()
     {
         return $this->view('email.update')
-        ->from('announcement@tiftci.org', 'Test')
+        ->from('announcement@tiftci.org', 'Appointment Updates')
                 ->with([
                     'user' => $this->user,
                     'status' => $this->status,
+                    'request' => $this->request,
+                    'date' => $this->date,
                 ]);
     }
 }

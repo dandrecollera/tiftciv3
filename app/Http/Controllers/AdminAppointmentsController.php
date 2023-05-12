@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\UpdateUser;
+use Illuminate\Support\Facades\Mail;
 
 
 class AdminAppointmentsController extends Controller
@@ -178,6 +180,18 @@ class AdminAppointmentsController extends Controller
                 'active' => "Approved",
             ]);
 
+        $emailInfo = DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+
         return redirect('/adminappointments?n=1');
     }
 
@@ -204,6 +218,19 @@ class AdminAppointmentsController extends Controller
                 'active' => "Declined",
             ]);
 
+        $emailInfo = DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+
+
         return redirect('/adminappointments?n=2');
     }
 
@@ -229,6 +256,19 @@ class AdminAppointmentsController extends Controller
             ->update([
                 'active' => "Completed",
             ]);
+
+        $emailInfo = DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+
 
         return redirect('/adminappointments?n=3');
     }
