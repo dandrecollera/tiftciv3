@@ -68,7 +68,7 @@ class AdminAppointmentsController extends Controller
 
         $data['sort'] = 0;
         $data['orderbylist'] = [
-            ['display' => 'ID', 'field' => 'appointments.id'],
+            ['display' => 'Default', 'field' => 'appointments.id'],
             ['display' => 'Email', 'field' => 'appointments.email'],
             ['display' => 'Inquiry', 'field' => 'appointments.inquiry'],
             ['display' => 'Appointed Date', 'field' => 'appointments.appointeddate'],
@@ -105,7 +105,11 @@ class AdminAppointmentsController extends Controller
             $dbdata->orwhere('appointments.appointeddate', 'like', "%$keyword%");
         }
 
-        $dbdata->orderBy('id', 'desc');
+        $arrange = "asc";
+        if($data['sort'] == 0){
+            $arrange = "desc";
+        }
+        $dbdata->orderBy($data['orderbylist'][$data['sort']]['field'] , $arrange);
 
         $data['totalpages'] = ceil($countdata / $lpp);
         $data['page'] = $page;

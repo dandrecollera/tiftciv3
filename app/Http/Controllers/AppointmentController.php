@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\UpdateUser;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -127,6 +129,19 @@ class AppointmentController extends Controller
                 'created_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString(),
                 'updated_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString()
             ]);
+
+        $emailInfo = DB::table('appointments')
+            ->where('email', $forminput['email'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
 
         return redirect('/appointment?n=1');
     }

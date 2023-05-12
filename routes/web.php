@@ -161,6 +161,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/studentappointment', [StudentController::class, 'studentappointment'])->name('studentappointment');
     Route::get('/studentappointment_add', [StudentController::class, 'studentappointment_add'])->name('studentappointment_add');
     Route::post('/studentappointment_add_process', [StudentController::class, 'studentappointment_add_process'])->name('studentappointment_add_process');
+    Route::get('/studentappointment_cancel_process', [StudentController::class, 'studentappointment_cancel_process'])->name('studentappointment_cancel_process');
 
     // Teacher Portal
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');

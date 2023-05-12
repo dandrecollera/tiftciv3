@@ -1,6 +1,17 @@
 @extends('admin.components.layout')
 
 @section('content')
+
+@php
+$seenstatus = DB::table('appointments')
+->where('active', '=', 'Pending')
+->where('adminseen', '=', 0)
+->update([
+'adminseen' => 1
+]);
+
+@endphp
+
 <div class="container-xl">
     <div class="row">
         <div class="col">
@@ -59,6 +70,25 @@
                         <li><a class="dropdown-item" href="?lpp=200{{!empty($keyword) ? "
                                 &keyword=".$keyword : ''}}">200 Lines Per Page</a></li>
                     </ul>
+
+                    <div class="input-group">
+                        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'Default' ? 'SORT' :
+                            $orderbylist[$sort]['display'] }}</button>
+                        <ul class="dropdown-menu">
+                            @foreach($orderbylist as $key => $odl)
+                            @php
+                            $qstring2['sort'] = $key;
+                            $sorturl = http_build_query($qstring2);
+                            @endphp
+                            <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
+                            @endforeach
+                        </ul>
+                        @if (!empty($sort))
+                        <button onclick="location.href='./adminappointments'" type="button" class="btn btn-dark"><i
+                                class="fas fa-search fa-rotate fa-sm"></i></button>
+                        @endif
+                    </div>
                 </div>
             </form>
         </div>
@@ -68,9 +98,6 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
-                        </th>
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Email' ? 'text-primary' : '' }}"><strong>Email</strong>
                             </span>
@@ -95,11 +122,13 @@
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr
-                        style="background-color: {{ $dbr->active == 'Pending' ? 'rgb(236, 236, 191)' : ''}} {{ $dbr->active == 'Completed' ? 'rgb(201, 236, 191)' : ''}} {{ $dbr->active == 'Declined' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Cancelled' ? 'rgb(238, 212, 218)' : ''}} {{ $dbr->active == 'Approved' ? 'rgb(212, 238, 232)' : ''}}">
+                    <tr style="background-color: {{ $dbr->active == 'Pending' ? 'rgb(236, 236, 191)' : ''}}
+                        {{ $dbr->active == 'Completed' ? 'rgb(201, 236, 191)' : ''}}
+                        {{ $dbr->active == 'Declined' ? 'rgb(238, 212, 218)' : ''}}
+                        {{ $dbr->active == 'Cancelled' ? 'rgb(238, 212, 218)' : ''}}
+                        {{ $dbr->active == 'Approved' ? 'rgb(212, 238, 232)' : ''}}">
                         <div></div>
-                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
-                        <td>{{$dbr->email}}</td>
+                        <td><strong>{{$dbr->email}}</strong></td>
                         <td>{{$dbr->inquiry}}</td>
                         <td>{{ date('m/d/Y l', strtotime($dbr->appointeddate)) }}</td>
                         <td>{{ date_create($dbr->created_at)->format('m/d/Y h:i A') }}</td>

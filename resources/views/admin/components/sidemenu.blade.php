@@ -48,11 +48,31 @@ $path = request()->path();
         }}"></i><span>Students</span>
 </a>
 
+
+@php
+$seenstatus = DB::table('appointments')->where('active', '=', 'Pending')->where('adminseen', '=', 0)->count();
+@endphp
+
 <a href="/adminappointments"
-    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminappointments' ? 'active' : ''}}">
-    <i class="fas fa-calendar-check fa-fw me-3" style="{{$path == 'adminappointments' ? 'color:#2D58A1;' : ''
-        }}"></i><span>Appointments</span>
+    class="list-group-item list-group-item-spec py-2 ripple d-flex flex-row align-items-center justify-content-betwee {{$path == 'adminappointments' ? 'active' : ''}}">
+    <div>
+        <i class="fas fa-calendar-check fa-fw me-3"
+            style="{{$path == 'adminappointments' ? 'color:#2D58A1;' : ''}}"></i>
+    </div>
+    <div>
+        Appointments
+        @if ($seenstatus > 0)
+        <span
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger overflow-visible"
+            style="z-index:3;">
+            {{ $seenstatus }}
+        </span>
+        @endif
+    </div>
 </a>
+
+
+
 
 <a href="https://tiftci.org/wp-login.php"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'wordpress' ? 'active' : ''}}">

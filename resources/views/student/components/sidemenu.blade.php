@@ -23,6 +23,17 @@ $path = request()->path();
     <i class="fas fa-peso-sign fa-fw me-3" style="{{$path == 'balance' ? 'color:#2D58A1;' : ''
         }}"></i><span>Balance</span>
 </a>
+@php
+$seenstatus = DB::table('appointments')
+->where('email', '=', $userinfo[4])
+->where(function ($query) {
+$query->where('active', '=', 'Approved')
+->orWhere('active', '=', 'Declined')
+->orWhere('active', '=', 'Completed');
+})
+->where('seen', '=', 0)
+->count();
+@endphp
 
 <br>
 <h5>Other</h5>
@@ -30,7 +41,15 @@ $path = request()->path();
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentappointment' ? 'active' : ''}}">
     <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentappointment' ? 'color:#2D58A1;' : ''
         }}"></i><span>Appointment</span>
+    @if ($seenstatus > 0)
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger overflow-visible"
+        style="z-index:3;">
+        {{$seenstatus}}
+    </span>
+    @endif
 </a>
+
+
 
 <a href="https://tiftci.com/?"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'lms' ? 'active' : ''}}">

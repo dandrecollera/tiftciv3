@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\UpdateUser;
+use Illuminate\Support\Facades\Mail;
 
 
 class StudentController extends Controller
@@ -170,7 +172,8 @@ class StudentController extends Controller
     public function studentappointment(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
-
+        $query = $request->query();
+        $qstring = array();
         $data['errorlist'] = [
             1 => 'Only Monday to Friday is Available',
         ];
@@ -179,21 +182,78 @@ class StudentController extends Controller
             $data['error'] = $_GET['e'];
         }
 
-
         $data['notiflist'] = [
             1 => 'Request Form Sent',
+            2 => 'Appointment cancelled.'
         ];
         $data['notif'] = 0;
         if(!empty($_GET['n'])){
             $data['notif'] = $_GET['n'];
         }
 
-        $query = $request->query();
-        $qstring = array();
+        $page = 1;
+        if(!empty($query['page'])){
+            $page = $query['page'];
+        }
+        $qstring['page'] = $page;
 
 
+        $data['sort'] = 0;
+        $data['orderbylist'] = [
+            ['display' => 'Default', 'field' => 'appointments.id'],
+            ['display' => 'Status', 'field' => 'appointments.active'],
+            ['display' => 'Inquiry', 'field' => 'appointments.inquiry'],
+            ['display' => 'Appointed Date', 'field' => 'appointments.appointeddate'],
+            ['display' => 'Created Date', 'field' => 'appointments.created_at']
+        ];
+        if(!empty($query['sort'])){
+            $data['sort'] = $qstring['sort'] = $query['sort'];
+        }
+
+        $myappointments = DB::table('appointments')
+            ->where('email', $userinfo[4]);
+        $countz = DB::table('appointments')
+            ->where('email', $userinfo[4])
+            ->count();
+
+        $arrange = "asc";
+        if($data['sort'] == 0){
+            $arrange = "desc";
+        }
+        $myappointments->orderBy($data['orderbylist'][$data['sort']]['field'] , $arrange);
+
+
+        $data['totalpages'] = ceil($countz / 10);
+        $data['page'] = $page;
+        $data['totalitems'] = $countz;
+        $dataoffset = ($page*10)-10;
+
+        $myappointments->offset($dataoffset)->limit(10);
         $data['qstring'] = http_build_query($qstring);
         $data['qstring2'] = $qstring;
+
+        if ($page < 2) {
+            //disabled URLS of first and previous button
+            $data['page_first_url'] = '<a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-left fa-xs"></i> </a>';
+            $data['page_prev_url'] = '<a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-left fa-xs"></i> </a>';
+        } else {
+            $urlvar = $qstring; $urlvar['page'] = 1; //firstpage
+            $data['page_first_url'] = '<a class="btn btn-warning" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-left fa-xs"></i> </a>';
+            $urlvar = $qstring; $urlvar['page'] = $urlvar['page'] - 1; // current page minus 1 for prev
+            $data['page_prev_url'] = '<a class="btn btn-warning" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-left fa-xs"></i> </a>';
+        }
+        if ($page >= $data['totalpages']) {
+            //disabled URLS on next and last button
+            $data['page_last_url'] = '<a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angles-right fa-xs"></i> </a>';
+            $data['page_next_url'] = '<a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true" style="padding-top: 10px;"><i class="fa-solid fa-angle-right fa-xs"></i> </a>';
+        } else {
+            $urlvar = $qstring; $urlvar['page'] = $data['totalpages']; //lastpage
+            $data['page_last_url'] = '<a class="btn btn-warning" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angles-right fa-xs"></i> </a>';
+            $urlvar = $qstring; $urlvar['page'] = $urlvar['page'] + 1; //nest page
+            $data['page_next_url'] = '<a class="btn btn-warning" href="?'.http_build_query($urlvar).'" role="button" style="padding-top: 10px;"><i class="fa-solid fa-angle-right fa-xs"></i> </a>';
+        }
+
+        $data['myappointments'] = $myappointments->get()->toArray();
 
         return view('student.feedback', $data);
     }
@@ -290,8 +350,60 @@ class StudentController extends Controller
             'updated_at' => Carbon::now()->tz('Asia/Manila')->toDateTimeString()
         ]);
 
+        $emailInfo = DB::table('appointments')
+            ->where('email', $myself->email)
+            ->orderBy('id', 'desc')
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+
 
         return redirect('/studentappointment?n=1');
+    }
+
+    public function studentappointment_cancel_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : 25,
+            'page' => !empty($input['page']) ? $input['page'] : 1,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : ''
+        ]);
+
+        if(empty($input['sid'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->update([
+                'active' => "Cancelled",
+            ]);
+
+        $emailInfo = DB::table('appointments')
+            ->where('id', $input['sid'])
+            ->first();
+
+
+        $Mail = $emailInfo->email;
+        $userMail = $emailInfo->firstname. ' '.$emailInfo->lastname;
+        $statusMail = $emailInfo->active;
+        $requestMail = $emailInfo->inquiry;
+        $dateMail = $emailInfo->appointeddate;
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+
+
+        return redirect('/studentappointment?n=2');
     }
 
     public function studentprofile(Request $request){
@@ -520,4 +632,6 @@ class StudentController extends Controller
 
         return redirect('studentsettings?n=5');
     }
+
+
 }

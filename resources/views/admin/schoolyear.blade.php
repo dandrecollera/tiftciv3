@@ -92,26 +92,21 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
-                        </th>
-                        <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}"><strong>School
                                     Year</strong>
                             </span>
                         </th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Status' ? 'text-primary' : '' }}"><strong>Status</strong>
-                            </span>
-                        </th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
-                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
-                        <td>{{$dbr->school_year}}</td>
-                        <td>{{$dbr->status}}</td>
+                        <td><strong>{{$dbr->school_year}}</strong></td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
 

@@ -35,6 +35,7 @@ class Appointments extends Migration
             $table->text('otherreason')->nullable();
             $table->string('active')->default("Pending");
             $table->boolean('seen')->default("0");
+            $table->boolean('adminseen')->default("0");
             $table->dateTime('appointeddate');
             $table->timestamps();
         });
