@@ -19,9 +19,11 @@ class MainUsersDetails extends Migration
             $table->string('firstname');
             $table->string('middlename')->nullable();
             $table->string('lastname');
-            $table->string('mobilenumber');
-            $table->longText('address');
+            $table->string('mobilenumber')->nullable();
+            $table->longText('address')->nullable();
             $table->string('lrn')->nullable();
+            $table->string('strand')->nullable();
+            $table->string('yearlevel')->default('11');
             $table->string('photo')->default('blank.jpg');
             $table->timestamps();
 

@@ -7,9 +7,12 @@
             <h1>Students</h1>
         </div>
     </div>
-    <div class="">
+    <div class="btn-group">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
             data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Student</button>
+
+        <button type="button" id="massAdd" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Batch Add Students</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -218,6 +221,11 @@
         console.log('add button clicked!');
         $('#addeditmodalLabel').html('Add A New Student User');
         $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
+    });
+    $('#massAdd').on('click', function() {
+        console.log('add button clicked!');
+        $('#addeditmodalLabel').html('Batch Add Students');
+        $('#addeditframe').attr('src', '/adminstudent_batchadd?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');

@@ -10,6 +10,16 @@
     <link rel="icon" type="image/ico" href="{{ asset('favicon/favicon.ico') }}">
     <title>TIFTCI</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/fontawesome.min.css"
+        integrity="sha512-cHxvm20nkjOUySu7jdwiUxgGy11vuVPE9YeK89geLMLMMEOcKFyS2i+8wo0FOwyQO/bL8Bvq1KMsqK4bbOsPnA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/brands.min.css"
+        integrity="sha512-L+sMmtHht2t5phORf0xXFdTC0rSlML1XcraLTrABli/0MMMylsJi3XA23ReVQkZ7jLkOEIMicWGItyK4CAt2Xw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         video {
             height: 100%;
@@ -23,23 +33,6 @@
             align-items: center;
             justify-content: center;
             height: 90vh;
-        }
-
-        input[type="email"],
-        input[type="password"],
-        button[type="submit"] {
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: #fff;
-            cursor: pointer;
         }
     </style>
 
@@ -60,9 +53,22 @@
                             {{ !empty($errors[$err][0]) ? $errors[$err][0] : 'error' }}
                         </div>
                         @endisset
-                        <input type="email" name="email" placeholder="Email">
-                        <input type="password" name="password" placeholder="Password">
-                        <button type="submit">Log in</button>
+
+                        <div class="form-outline mt-2 mb-3" style="width:300px">
+                            <input type="email" id="email" class="form-control" name="email" />
+                            <label class="form-label" for="form12">Email</label>
+                        </div>
+                        <div class="form-outline mb-3" style="width:300px">
+                            <a id="show1" href="#" style="color: inherit;"><i class="fas fa-eye-slash trailing pe-auto"
+                                    id="eye1"></i></a>
+                            <input type="password" id="password" class="form-control" name="password" required />
+                            <label class="form-label" for="form12">Password</label>
+                        </div>
+
+
+
+
+                        <button type="submit" class="btn btn-warning">Log in</button>
                     </form>
                 </div>
             </div>
@@ -87,7 +93,33 @@
 
     <script src="{{asset('js/jquery-3.6.4.min.js')}}"></script>
     <script src="{{asset('js/mdb.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
 
+        $('#show1').on('click', function() {
+            if($('#password').attr('type') == "text"){
+                $('#password').attr('type', 'password');
+                $('#eye1').addClass( "fa-eye-slash" );
+                $('#eye1').removeClass( "fa-eye" );
+            } else{
+                $('#password').attr('type', 'text');
+                $('#eye1').addClass( "fa-eye" );
+                $('#eye1').removeClass( "fa-eye-slash" );
+            }
+        });
+        $('#show2').on('click', function() {
+            if($('#password2').attr('type') == "text"){
+                $('#password2').attr('type', 'password');
+                $('#eye2').addClass( "fa-eye-slash" );
+                $('#eye2').removeClass( "fa-eye" );
+            } else{
+                $('#password2').attr('type', 'text');
+                $('#eye2').addClass( "fa-eye" );
+                $('#eye2').removeClass( "fa-eye-slash" );
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

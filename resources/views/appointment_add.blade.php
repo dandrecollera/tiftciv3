@@ -20,7 +20,8 @@ $sections = DB::table('sections')
 
 
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/appointment_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/appointment_add_process" method="POST" target="_parent" enctype="multipart/form-data"
+        id="appointmentGo">
         @csrf
         <div class="container-fluid">
 
@@ -195,7 +196,7 @@ $sections = DB::table('sections')
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary float-end">Submit</button>
+            <button type="submit" class="btn btn-primary float-end" id="submitGo">Submit</button>
         </div>
     </form>
 </div>
@@ -232,6 +233,10 @@ $sections = DB::table('sections')
             else {
                 $('#otherdocumentcontainer').attr('hidden', true);
             }
+        })
+        $('#submitGo').click(function() {
+            $(this).prop('disabled', true);
+            $('#appointmentGo').submit();
         })
     });
 </script>

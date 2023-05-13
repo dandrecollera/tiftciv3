@@ -128,6 +128,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminstudent', [AdminStudentController::class, 'adminstudent'])->name('adminstudentPage');
     Route::get('/adminstudent_add', [AdminStudentController::class, 'adminstudent_add'])->name('adminstudent_add');
     Route::post('/adminstudent_add_process', [AdminStudentController::class, 'adminstudent_add_process'])->name('adminstudent_add_process');
+    Route::get('/adminstudent_batchadd', [AdminStudentController::class, 'adminstudent_batchadd'])->name('adminstudent_batchadd');
+    Route::post('/adminstudent_batchadd_process', [AdminStudentController::class, 'adminstudent_batchadd_process'])->name('adminstudent_batchadd_process');
     Route::get('/adminstudent_edit', [AdminStudentController::class, 'adminstudent_edit'])->name('adminstudent_edit');
     Route::post('/adminstudent_edit_process', [AdminStudentController::class, 'adminstudent_edit_process'])->name('adminstudent_edit_process');
     Route::post('/adminstudent_section_process', [AdminStudentController::class, 'adminstudent_section_process'])->name('adminstudent_section_process');

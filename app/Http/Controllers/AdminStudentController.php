@@ -315,6 +315,51 @@ class AdminStudentController extends Controller
         return redirect($this->default_url.'?n=1');
     }
 
+
+    public function adminstudent_batchadd(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        return view('admin.adminstudent_batchadd', $data);
+    }
+
+    public function adminstudent_batchadd_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $sample = array();
+        if($request->hasFile('csvupload')){
+            $file = $request->file('csvupload');
+            $handle = fopen($file, 'r');
+
+            $header =fgetcsv($handle);
+
+            while(($data = fgetcsv($handle)) !== false){
+                $sample['firstname'] = $data[0];
+                $sample['middlename'] = $data[1];
+                $sample['lastname'] = $data[2];
+                $sample['mobilenumber'] = $data[3];
+                $sample['address'] = $data[4];
+                $sample['lrn'] = $data[5];
+                $sample['strand'] = $data[6];
+
+                $emailfirst_parts = explode(' ', $data[0]);
+                $emailfirst = strtolower($emailfirst_parts[0]);
+                $emaillast = strtolower(str_replace(' ', '', $data[2]));
+                $sample['email'] = $emailfirst . $emaillast . '-student@tiftci.org';
+                $sample['password'] = md5('student123');
+                $sample['accounttype'] = 'student';
+            }
+
+            fclose($handle);
+
+            dd($sample);
+        }
+
+
+        return redirect($this->default_url.'?n=1');
+    }
+
     public function adminstudent_edit(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');

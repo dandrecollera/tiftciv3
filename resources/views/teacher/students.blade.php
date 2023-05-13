@@ -42,13 +42,25 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th></th>
+                        <th><strong>Email</strong></th>
+                        <th><strong>LRN</strong></th>
                         <th><strong>Name</strong></th>
+                        <th><strong>Contact No.</strong></th>
+                        <th colspan="4"><strong>Address</strong></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
-                        <th><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong></th>
+                        <th><img src="{{ asset('/storage/images/' . $dbr->photo) }}"
+                                class="rounded-circle me-lg-0 me-2 dpcover" height="40" width="40" alt=""
+                                loading="lazy" /></th>
+                        <th><strong>{{$dbr->email}}</strong></th>
+                        <th>{{$dbr->lrn}}</th>
+                        <th>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</th>
+                        <th>{{$dbr->mobilenumber}}</th>
+                        <th colspan="4">{{$dbr->address}}</th>
                     </tr>
                     @endforeach
                 </tbody>

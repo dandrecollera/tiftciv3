@@ -73,8 +73,11 @@ class SubjectAdminController extends Controller
 
         $data['sort'] = 0;
         $data['orderbylist'] = [
-            ['display' => 'ID', 'field' => 'subjects.id'],
-            ['display' => 'Subject', 'field' => 'subjects.subject_name']
+            ['display' => 'Default', 'field' => 'subjects.id'],
+            ['display' => 'Subject', 'field' => 'subjects.subject_name'],
+            ['display' => 'Strand', 'field' => 'subjects.strand'],
+            ['display' => 'Semester', 'field' => 'subjects.semester'],
+            ['display' => 'Year Level', 'field' => 'subjects.yearlevel'],
         ];
         if(!empty($query['sort'])){
             $data['sort'] = $qstring['sort'] = $query['sort'];

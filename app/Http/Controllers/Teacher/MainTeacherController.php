@@ -308,6 +308,8 @@ class MainTeacherController extends Controller
         $data['dbresult'] = $dbresult = DB::table('students')
             ->where('sectionid', $sectionid)
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
+            ->leftjoin('main_users', 'main_users.id', '=', 'students.userid')
+            ->orderBy('lastname', 'asc')
             ->get()
             ->toArray();
 

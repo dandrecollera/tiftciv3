@@ -31,7 +31,8 @@ $currentyear = DB::table('schoolyears')
 
 
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/studentappointment_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/studentappointment_add_process" method="POST" target="_parent" enctype="multipart/form-data"
+        id="appointmentGo">
         @csrf
         <div class="container-fluid">
 
@@ -187,7 +188,7 @@ $currentyear = DB::table('schoolyears')
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary float-end mb-4">Submit</button>
+            <button type="submit" class="btn btn-primary float-end mb-4" id="submitGo">Submit</button>
 
         </div>
     </form>
@@ -225,6 +226,10 @@ $currentyear = DB::table('schoolyears')
             else {
                 $('#otherdocumentcontainer').attr('hidden', true);
             }
+        })
+        $('#submitGo').click(function() {
+            $(this).prop('disabled', true);
+            $('#appointmentGo').submit();
         })
     });
 </script>

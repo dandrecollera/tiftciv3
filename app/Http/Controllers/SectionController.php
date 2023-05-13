@@ -152,13 +152,13 @@ class SectionController extends Controller
             die();
         }
 
-        $checksection = DB::table('sections')
-            ->where('section_name', $input['sectionname'])
-            ->first();
-        if(!empty($checksection->section_name)){
-            return redirect($this->default_url.'?e=2');
-            die();
-        }
+        // $checksection = DB::table('sections')
+        //     ->where('section_name', $input['sectionname'])
+        //     ->first();
+        // if(!empty($checksection->section_name)){
+        //     return redirect($this->default_url.'?e=2');
+        //     die();
+        // }
 
         $sectionid = DB::table('sections')
             ->insertGetID([

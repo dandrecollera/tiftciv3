@@ -65,7 +65,7 @@
 
                     <div class="input-group">
                         <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'ID' ? 'SORT' :
+                            aria-expanded="false">{{$orderbylist[$sort]['display'] == 'Default' ? 'SORT' :
                             $orderbylist[$sort]['display'] }}</button>
                         <ul class="dropdown-menu">
                             @foreach($orderbylist as $key => $odl)
@@ -92,39 +92,39 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
-                        </th>
-                        <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Subject' ? 'text-primary' : '' }}"><strong>Subject
                                     Name</strong></span>
                         </th>
+                        <th scope="col"><strong>Strand</strong></th>
                         <th scope="col"><strong>Semester</strong></th>
+                        <th scope="col"><strong>yearlevel</strong></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
-                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
-                        <td>{{$dbr->subject_name}}</td>
-                        <td>{{$dbr->semester}}</td>
+                        <td><strong>{{$dbr->subject_name}}</strong></td>
+                        <td><strong>{{$dbr->strand}}</strong></td>
+                        <td><strong>{{$dbr->semester}}</strong></td>
+                        <td><strong>{{$dbr->yearlevel}}</strong></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-caret-down fa-xs"></i></a>
-                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
+                                {{-- <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->subject_name}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a>
+                                    <i class="fa-solid fa-trash fa-xs"></i></a> --}}
                             </div>
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="4">
+                        <td colspan="5">
                             <iframe id="" src="/subject_teacher?sid={{$dbr->id}}" width="100%" height="500px"
                                 style="border:none;"></iframe>
                         </td>

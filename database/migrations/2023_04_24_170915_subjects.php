@@ -17,6 +17,8 @@ class Subjects extends Migration
             $table->bigIncrements('id');
             $table->string('subject_name');
             $table->string('semester');
+            $table->string('strand');
+            $table->string('yearlevel');
             $table->timestamps();
         });
     }
