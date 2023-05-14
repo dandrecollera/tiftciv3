@@ -82,13 +82,38 @@
         @csrf
         <div class="container-fluid mb-4">
             <h4>Change Section</h4>
-            <label for="address" class="form-label">Section:</label>
+
+            <label for="strand" class="form-label">Strand:</label>
             <div class="input-group mb-3">
-                <select name="section" id="statusInput" class="form-select">
-                    @foreach ($sections as $section)
-                    <option value="{{$section->id}}" {{$dbdata->section_name == $section->section_name ? 'selected' :
-                        ''}}>{{$section->id}}: {{$section->section_name}}</option>
-                    @endforeach
+                <select name="strand" id="strand" class="form-select">
+                    <option value="ABM" {{ $dbdata->strand == 'ABM' ? 'selected' : ''}}>ABM</option>
+                    <option value="HE" {{ $dbdata->strand == 'HE' ? 'selected' : ''}}>HE</option>
+                    <option value="ICT" {{ $dbdata->strand == 'ICT' ? 'selected' : ''}}>ICT</option>
+                    <option value="GAS" {{ $dbdata->strand == 'GAS' ? 'selected' : ''}}>GAS</option>
+                </select>
+            </div>
+
+            <label for="yearlevel" class="form-label">Year Level:</label>
+            <div class="input-group mb-3">
+                <select name="yearlevel" id="yearlevel" class="form-select">
+                    <option value="11" {{ $dbdata->yearlevel == '11' ? 'selected' : ''}}>11</option>
+                    <option value="12" {{ $dbdata->yearlevel == '12' ? 'selected' : ''}}>12</option>
+                </select>
+            </div>
+
+            @php
+            $current = DB::table('students')
+            ->where('userid', $dbdata->id)
+            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->orderBy('students.id', 'desc')
+            ->select('sections.section_name', 'sections.id')
+            ->first();
+
+            @endphp
+            <label for="section" class="form-label">Section:</label>
+            <div class="input-group mb-3">
+                <select name="section" id="section" class="form-select">
+                    <option value="{{$current->id}}">{{ $current->section_name }}</option>
                 </select>
             </div>
 
@@ -186,6 +211,18 @@
             $('#eye2').addClass( "fa-eye" );
             $('#eye2').removeClass( "fa-eye-slash" );
         }
+    });
+    $('#yearlevel, #strand').change(function() {
+        $('#sectionhide').removeAttr('hidden');
+        var value1 = $('#yearlevel').val();
+        var value2 = $('#strand').val();
+        $.get('/getSections/' + encodeURIComponent(value1) + '/' + encodeURIComponent(value2), function(data) {
+            var options = '';
+            $.each(data, function(key, value) {
+                options += '<option value="' + key + '">' + value  +'</option>';
+            });
+            $('#section').html(options);
+        });
     });
 });
 </script>

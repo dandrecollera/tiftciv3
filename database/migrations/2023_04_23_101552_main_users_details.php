@@ -23,7 +23,7 @@ class MainUsersDetails extends Migration
             $table->longText('address')->nullable();
             $table->string('lrn')->nullable();
             $table->string('strand')->nullable();
-            $table->string('yearlevel')->default('11');
+            $table->string('yearlevel')->nullable();
             $table->string('photo')->default('blank.jpg');
             $table->timestamps();
 

@@ -84,14 +84,37 @@
                 <label class="form-label" for="address">Address</label>
             </div>
 
-            <label for="address" class="form-label">Section:</label>
+            <label for="strand" class="form-label">Strand:</label>
             <div class="input-group mb-3">
-                <select name="section" id="statusInput" class="form-select">
-                    @foreach ($sections as $section)
-                    <option value="{{$section->id}}">{{$section->id}}: {{$section->section_name}}</option>
-                    @endforeach
+                <select name="strand" id="strand" class="form-select">
+                    <option selected hidden value="">Strand</option>
+                    <option value="ABM">ABM</option>
+                    <option value="HE">HE</option>
+                    <option value="ICT">ICT</option>
+                    <option value="GAS">GAS</option>
                 </select>
             </div>
+
+            <label for="yearlevel" class="form-label">Year Level:</label>
+            <div class="input-group mb-3">
+                <select name="yearlevel" id="yearlevel" class="form-select">
+                    <option value="" selected hidden>Year Level</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+
+
+            <div id="sectionhide" hidden>
+                <label for="section" class="form-label">Section:</label>
+                <div class="input-group mb-3">
+                    <select name="section" id="section" class="form-select">
+
+                    </select>
+                </div>
+            </div>
+
+
 
             <label for="address" class="form-label">Status:</label>
             <div class="input-group mb-3">
@@ -158,6 +181,18 @@
             $('#eye2').addClass( "fa-eye" );
             $('#eye2').removeClass( "fa-eye-slash" );
         }
+    });
+    $('#yearlevel, #strand').change(function() {
+        $('#sectionhide').removeAttr('hidden');
+        var value1 = $('#yearlevel').val();
+        var value2 = $('#strand').val();
+        $.get('/getSections/' + encodeURIComponent(value1) + '/' + encodeURIComponent(value2), function(data) {
+            var options = '';
+            $.each(data, function(key, value) {
+                options += '<option value="' + key + '">' + value  +'</option>';
+            });
+            $('#section').html(options);
+        });
     });
 });
 </script>

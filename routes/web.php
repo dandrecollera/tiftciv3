@@ -127,6 +127,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     // Admin/Students
     Route::get('/adminstudent', [AdminStudentController::class, 'adminstudent'])->name('adminstudentPage');
     Route::get('/adminstudent_add', [AdminStudentController::class, 'adminstudent_add'])->name('adminstudent_add');
+    Route::get('/getSections/{yearlevel}/{strand}', [AdminStudentController::class, 'getSections'])->name('getSections');
     Route::post('/adminstudent_add_process', [AdminStudentController::class, 'adminstudent_add_process'])->name('adminstudent_add_process');
     Route::get('/adminstudent_batchadd', [AdminStudentController::class, 'adminstudent_batchadd'])->name('adminstudent_batchadd');
     Route::post('/adminstudent_batchadd_process', [AdminStudentController::class, 'adminstudent_batchadd_process'])->name('adminstudent_batchadd_process');
@@ -136,6 +137,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminstudent_pass_process', [AdminStudentController::class, 'adminstudent_pass_process'])->name('adminstudent_pass_process');
     Route::post('/adminstudent_image_process', [AdminStudentController::class, 'adminstudent_image_process'])->name('adminstudent_image_process');
     Route::get('/adminstudent_delete_process', [AdminStudentController::class, 'adminstudent_delete_process'])->name('adminstudent_delete_process');
+
 
     // Admin/Students/Transaction
     Route::get('/admintransaction', [AdminTransactionController::class, 'admintransaction'])->name('admintransaction');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -262,6 +263,8 @@ class AdminStudentController extends Controller
             ->insert([
                 'userid' => $muserid,
                 'lrn' => $input['lrn'],
+                'strand' => $input['strand'],
+                'yearlevel' => $input['yearlevel'],
                 'firstname' => $input['firstname'],
                 'middlename' => !empty($input['middlename']) ? $input['middlename'] : '',
                 'lastname' => $input['lastname'],
@@ -335,6 +338,14 @@ class AdminStudentController extends Controller
             $header =fgetcsv($handle);
 
             while(($data = fgetcsv($handle)) !== false){
+                $emailfirst_parts = explode(' ', $data[0]);
+                $emailfirst = strtolower($emailfirst_parts[0]);
+                $emaillast = strtolower(str_replace(' ', '', $data[2]));
+                $sample['email'] = $emailfirst . $emaillast . '-student@tiftci.org';
+                $sample['password'] = md5('student123');
+                $sample['accounttype'] = 'student';
+
+
                 $sample['firstname'] = $data[0];
                 $sample['middlename'] = $data[1];
                 $sample['lastname'] = $data[2];
@@ -343,17 +354,91 @@ class AdminStudentController extends Controller
                 $sample['lrn'] = $data[5];
                 $sample['strand'] = $data[6];
 
-                $emailfirst_parts = explode(' ', $data[0]);
-                $emailfirst = strtolower($emailfirst_parts[0]);
-                $emaillast = strtolower(str_replace(' ', '', $data[2]));
-                $sample['email'] = $emailfirst . $emaillast . '-student@tiftci.org';
-                $sample['password'] = md5('student123');
-                $sample['accounttype'] = 'student';
+
+                $muserid = DB::table('main_users')
+                    ->insertGetID([
+                        'email' => $sample['email'],
+                        'password' => $sample['password'],
+                        'accounttype' => 'student',
+                        'created_at' => Carbon::now()->toDateTimeString(),
+                        'updated_at' => Carbon::now()->toDateTimeString()
+                    ]);
+
+                $getSectionID = DB::table('sections')
+                    ->where('strand', $data[6])
+                    ->where('yearlevel', 11)
+                    ->where('section_name', $data[7])
+                    ->first();
+
+                DB::table('students')
+                    ->insert([
+                        'userid' => $muserid,
+                        'sectionid' => $getSectionID->id,
+                        'created_at' => Carbon::now()->toDateTimeString(),
+                        'updated_at' => Carbon::now()->toDateTimeString()
+                    ]);
+
+                DB::table('main_users_details')
+                    ->insert([
+                        'userid' => $muserid,
+                        'lrn' => $data[5],
+                        'strand' => $data[6],
+                        'yearlevel' => 11,
+                        'firstname' => $data[0],
+                        'middlename' => !empty($data[1]) ? $data[1] : '',
+                        'lastname' => $data[2],
+                        'mobilenumber' => $data[3],
+                        'address' => $data[4],
+                        'created_at' => Carbon::now()->toDateTimeString(),
+                        'updated_at' => Carbon::now()->toDateTimeString()
+                    ]);
+
+                $voucher = 0;
+                $tuition = 0;
+                $registration = 0;
+                if($data[8] == 'public'){
+                    $voucher = 17500.00;
+                    $tuition = 0.00;
+                    $registration = 1000.00;
+                } else if($data[8] == 'semi'){
+                    $voucher = 14000.00;
+                    $tuition = 3500.00;
+                    $registration = 1000.00;
+                } else {
+                    $voucher = 0.00;
+                    $tuition = 17500.00;
+                    $registration = 1000.00;
+                }
+
+                if($data[9] == 'full'){
+                    $voucher = 0;
+                    $tuition = 0;
+                    $registration = 0;
+                }
+
+                $latestyear = DB::table('schoolyears')
+                    ->orderBy('school_year', 'desc')
+                    ->first();
+
+                DB::table('tuition')
+                ->insert([
+                    'userid' => $muserid,
+                    'yearid' => $latestyear->id,
+                    'paymenttype' => $data[9],
+                    'paymentmethod' => $data[8],
+                    'voucher' => $voucher,
+                    'tuition' => $tuition,
+                    'registration' => $registration,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]);
+                // dd($sample);
+
             }
 
             fclose($handle);
 
-            dd($sample);
+
         }
 
 
@@ -455,6 +540,14 @@ class AdminStudentController extends Controller
             return redirect($this->default_url.'?e=1');
             die();
         }
+
+        DB::table('main_users_details')
+            ->where('userid', $input['did'])
+            ->update([
+                'strand' => $input['strand'],
+                'yearlevel' => $input['yearlevel'],
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
 
         DB::table('students')
             ->where('userid', $input['did'])
@@ -588,6 +681,20 @@ class AdminStudentController extends Controller
             ->delete();
 
         return redirect($this->default_url.'?n=4&'.$qstring);
+    }
+
+
+    public function getSections($yearlevel, $strand){
+
+        Log::debug("yearlevel: $yearlevel");
+        Log::debug("strand: $strand");
+
+        $sections = DB::table('sections')
+        ->where('yearlevel', $yearlevel)
+        ->where('strand', $strand)
+        ->pluck(DB::raw("CONCAT(yearlevel, ' - ', section_name) as name"), 'id');
+
+        return response()->json($sections);
     }
 
 }
