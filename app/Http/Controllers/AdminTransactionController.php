@@ -55,31 +55,58 @@ class AdminTransactionController extends Controller
             $data['notif'] = $_GET['n'];
         }
 
-        $data['schoolyear'] = $schoolyear = DB::table('schoolyears')
-            ->leftjoin('tuition', 'tuition.yearid', '=', 'schoolyears.id')
-            ->orderBy('schoolyears.id', 'desc')
-            ->select('schoolyears.id', 'yearid', 'school_year')
-            ->first();
 
-
-
-        $data['dbresult'] = $transaction = DB::table('tuition')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
+        $data['getSchoolYear'] = $getSchoolYear = DB::table('tuition')
+            ->where('userid', $query['sid'])
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
-            ->where('yearid', $schoolyear->id)
-            ->where('tuition.userid', $query['sid'])
-            ->select(
-                'main_users_details.firstname',
-                'main_users_details.middlename',
-                'main_users_details.lastname',
-                'tuition.paymenttype',
-                'tuition.paymentmethod',
-                'tuition.voucher',
-                'tuition.tuition',
-                'tuition.registration',
-                'schoolyears.school_year',
-            )
-            ->first();
+            ->get()
+            ->toArray();
+
+        if(!empty($query['year'])){
+            $data['dbresult'] = $transaction = DB::table('tuition')
+                ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
+                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+                ->where('school_year', $query['year'])
+                ->where('tuition.userid', $query['sid'])
+                ->select(
+                    'main_users_details.firstname',
+                    'main_users_details.middlename',
+                    'main_users_details.lastname',
+                    'tuition.paymenttype',
+                    'tuition.paymentmethod',
+                    'tuition.voucher',
+                    'tuition.tuition',
+                    'tuition.registration',
+                    'schoolyears.school_year',
+                )
+                ->first();
+        } else {
+            $recentYear = DB::table('tuition')
+                ->where('userid', $query['sid'])
+                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+                ->orderBy('schoolyears.id', 'desc')
+                ->first();
+
+
+            $data['dbresult'] = $transaction = DB::table('tuition')
+                ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
+                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+                ->where('yearid', $recentYear->id)
+                ->where('tuition.userid', $query['sid'])
+                ->select(
+                    'main_users_details.firstname',
+                    'main_users_details.middlename',
+                    'main_users_details.lastname',
+                    'tuition.paymenttype',
+                    'tuition.paymentmethod',
+                    'tuition.voucher',
+                    'tuition.tuition',
+                    'tuition.registration',
+                    'schoolyears.school_year',
+                )
+                ->first();
+        }
+
 
             // dd($transaction);
         return view('admin.transaction', $data);
@@ -97,8 +124,13 @@ class AdminTransactionController extends Controller
             die();
         }
 
+        $getYear = DB::table('schoolyears')
+            ->where('school_year', $input['dyear'])
+            ->first();
+
         $tuitionamount = DB::table('tuition')
             ->where('userid', $input['did'])
+            ->where('yearid', $getYear->id)
             ->orderBy('id', 'desc')
             ->first();
 
@@ -138,6 +170,7 @@ class AdminTransactionController extends Controller
 
         DB::table('tuition')
             ->where('userid', $input['did'])
+            ->where('yearid', $getYear->id)
             ->update([
                 'voucher' => $voucher,
                 'tuition' => $tuition,

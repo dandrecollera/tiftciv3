@@ -141,7 +141,7 @@ class AppointmentController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Pending"));
 
         return redirect('/appointment?n=1');
     }

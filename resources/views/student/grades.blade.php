@@ -25,7 +25,7 @@
 
     @if ($year->id == $startyear || $year->id == $endyear)
     @php
-    $gradesInYear = DB::table('grades')->where('yearid', $year->id)->get();
+    $gradesInYear = DB::table('grades')->where('yearid', $year->id)->where('studentid', $userinfo[0])->get();
     @endphp
 
     @if ($gradesInYear->count())

@@ -44,6 +44,7 @@
                     </form>
                 </div>
             </div>
+            @if (isset($schedules))
             <div class="card ">
                 <div class="card-body overflow-scroll">
 
@@ -76,6 +77,32 @@
                     </table>
                 </div>
             </div>
+            @else
+            <div class="card ">
+                <div class="card-body overflow-scroll">
+
+
+                    @php
+                    $day = request('day');
+                    @endphp
+                    <h5 class="card-title">Schedule</h5>
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col"><strong>Subjects</strong></th>
+                                <th scope="col"><strong>Start</strong></th>
+                                <th scope="col"><strong>End</strong></th>
+                                <th scope="col"><strong>Day</strong></th>
+                                <th scope="col"><strong>Teacher</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
         </div>
     </div>
 </div>

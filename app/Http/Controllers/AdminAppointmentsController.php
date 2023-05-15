@@ -194,7 +194,7 @@ class AdminAppointmentsController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Approved"));
 
         return redirect('/adminappointments?n=1');
     }
@@ -232,7 +232,7 @@ class AdminAppointmentsController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Declined"));
 
 
         return redirect('/adminappointments?n=2');
@@ -271,7 +271,7 @@ class AdminAppointmentsController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Complete"));
 
 
         return redirect('/adminappointments?n=3');

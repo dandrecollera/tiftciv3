@@ -50,6 +50,7 @@
 
             <br>
 
+            @if (isset($studentsection))
             <div class="card">
                 <div class="card-body overflow-scroll">
                     <h5 class="card-title">{{$studentsection->section_name}} Schedule</h5>
@@ -76,6 +77,27 @@
                     </table>
                 </div>
             </div>
+            @else
+            <div class="card">
+                <div class="card-body overflow-scroll">
+                    <h5 class="card-title">Schedule</h5>
+                    <h6 class="card-title">{{$today}}</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"><strong>Subject</strong></th>
+                                <th scope="col"><strong>Start</strong></th>
+                                <th scope="col"><strong>End</strong></th>
+                                <th scope="col"><strong>Teacher</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
         </div>
     </div>
     <div class="col-lg-4">

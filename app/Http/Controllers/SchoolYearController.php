@@ -141,7 +141,6 @@ class SchoolYearController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-
         $currentyear = DB::table('schoolyears')
             ->orderBy('id', 'desc')
             ->first();
@@ -149,8 +148,6 @@ class SchoolYearController extends Controller
         $years = explode('-', $currentyear->school_year);
         $newyear = intval($years[1]) + 1;
         $newacademicyear = $years[1]. '-' . strval($newyear);
-
-        // dd($newacademicyear);
 
         $schoolyearid = DB::table('schoolyears')
             ->insertGetID([
@@ -160,15 +157,53 @@ class SchoolYearController extends Controller
             ]);
 
 
-        $studentsdb = DB::table('main_users')
+        // 12 -> Grad, 11 -> 12
+        DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.accounttype', 'student')
+            ->where('main_users_details.yearlevel', '12')
+            ->update([
+                'main_users_details.yearlevel' => 'Graduate',
+            ]);
+
+        DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('main_users.accounttype', 'student')
+            ->where('main_users_details.yearlevel', '11')
+            ->update([
+                'main_users_details.yearlevel' => '12',
+            ]);
+
+        // Get the new 12 and update their section
+        $get1112 = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->leftjoin('students', 'students.userid', '=', 'main_users.id')
+            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
-            ->get()
-            ->toArray();
+            ->where('main_users_details.yearlevel', '12')
+            ->select(
+                'main_users_details.strand',
+                'sections.section_name',
+                'main_users.id',
+            )
+            ->get();
 
         $voucher = 0;
         $tuition = 0;
         $registration = 0;
-        foreach ($studentsdb as $students => $student) {
+        foreach ($get1112 as $students => $student) {
+            $newsection = DB::table('sections')
+                ->where('strand', $student->strand)
+                ->where('section_name', $student->section_name)
+                ->where('yearlevel', '12')
+                ->first();
+
+            DB::table('students')
+                ->where('userid', $student->id)
+                ->update([
+                    'sectionid' => $newsection->id,
+                ]);
+
             $tuitiondb = DB::table('tuition')
                 ->where('userid', $student->id)
                 ->select('paymenttype')
@@ -201,6 +236,20 @@ class SchoolYearController extends Controller
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
         }
+
+
+        $getGrad = DB::table('main_users')
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
+            ->where('accounttype', 'student')
+            ->where('yearlevel', 'Graduate')
+            ->get();
+
+        foreach ($getGrad as $students => $student) {
+            DB::table('students')
+                ->where('userid', $student->id)
+                ->delete();
+        }
+
 
         return redirect($this->default_url.'?n=1');
     }

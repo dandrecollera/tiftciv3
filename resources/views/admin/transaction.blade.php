@@ -57,7 +57,24 @@
         </div>
     </div>
     @endif
-    <h4>{{ $schoolyear->school_year }}</h4>
+
+    @php
+    $currentUrl = url()->current();
+    $query = request()->query('sid');
+    $sid = request()->input('sid');
+    @endphp
+
+    <div class="btn-group mb-3">
+
+        @foreach ($getSchoolYear as $schoolyear)
+        <a class="btn btn-dark shadow-sm btn-sm"
+            href="{{ $currentUrl }}?sid={{ $query }}&year={{ $schoolyear->school_year }}">{{
+            $schoolyear->school_year }}</a>
+        @endforeach
+    </div>
+
+
+    <h3>{{ $dbresult->school_year }}</h3>
     <h6>{{ $dbresult->firstname }} {{ $dbresult->middlename }} {{ $dbresult->lastname }}</h6>
     <hr>
     <div class="row fs-6">
@@ -86,15 +103,15 @@
                     'Enter Amount' :  'Paid' }}" {{ $dbresult->registration != 0.00 ? "" : ' readonly' }}>
                 </div>
 
+                <input type="hidden" name="dyear" value="{{$dbresult->school_year}}">
                 <input type="hidden" name="did" value="{{$qsid}}">
                 <button type="submit" id="addbutton" class="btn btn-dark shadow-sm btn-sm  float-end"
                     data-bs-toggle="modal" data-bs-target="#addeditmodal">Confirm</button>
-                {{-- <button type="submit" class="btn btn-primary float-end"
-                    onclick="return confirm('Confirm Amount?');">Confirm</button> --}}
             </form>
         </div>
-
     </div>
+
+
 </div>
 
 <div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

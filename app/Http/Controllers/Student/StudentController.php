@@ -33,18 +33,13 @@ class StudentController extends Controller
             ->get()
             ->toArray();
 
-        // dd($news);
-
-        $latestYear = DB::table('schoolyears')
-            ->orderby('id', 'desc')
-            ->first();
 
 
 
         $data['balance'] = $balance = DB::table('tuition')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
-            ->where('yearid', $latestYear->id)
+            ->orderBy('yearid', 'desc')
             ->first();
         $data['today'] = $today = Carbon::now()->format('l');
         $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
@@ -83,7 +78,12 @@ class StudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
 
-        $data['studentsection'] = $studentsection = DB::table('students')
+        $getStatus = DB::table('main_users_details')
+            ->where('userid', $userinfo[0])
+            ->first();
+
+        if($getStatus->yearlevel != "Graduate"){
+            $data['studentsection'] = $studentsection = DB::table('students')
             ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
             ->where('students.userid', $userinfo[0])
             ->select('sections.section_name', 'sections.id')
@@ -93,6 +93,9 @@ class StudentController extends Controller
             ->where('sectionid', $studentsection->id)
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
             ->get();
+        }
+
+
 
         // dd($subjects);
 
@@ -112,8 +115,13 @@ class StudentController extends Controller
             $data['day'] = $day;
         }
 
+        $getStatus = DB::table('main_users_details')
+            ->where('userid', $userinfo[0])
+            ->first();
 
-        $data['studentsection'] = $studentsection = DB::table('students')
+
+        if($getStatus->yearlevel != "Graduate"){
+            $data['studentsection'] = $studentsection = DB::table('students')
             ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
             ->where('students.userid', $userinfo[0])
             ->select('sections.section_name', 'sections.id')
@@ -142,6 +150,8 @@ class StudentController extends Controller
         $data['schedules'] = $schedules->get();
         // dd($schedules);
         // dd($data['schedules']);
+        }
+
         $data['qstring'] = http_build_query($qstring);
         $data['qstring'] = $qstring;
 
@@ -152,13 +162,14 @@ class StudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        $data['balance'] = $balance = DB::table('tuition')
+        $data['balances'] = $balances = DB::table('tuition')
             ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
             ->orderBy('tuition.id', 'desc')
-            ->first();
-        $data['today'] = $today = Carbon::now()->format('l');
-        $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
+            ->get()
+            ->ToArray();
+        // $data['today'] = $today = Carbon::now()->format('l');
+        // $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
 
 
         return view('student.balance', $data);
@@ -362,7 +373,7 @@ class StudentController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Pending"));
 
 
         return redirect('/studentappointment?n=1');
@@ -401,7 +412,7 @@ class StudentController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Cancelled"));
 
 
         return redirect('/studentappointment?n=2');

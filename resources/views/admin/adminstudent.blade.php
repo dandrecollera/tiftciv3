@@ -147,7 +147,7 @@
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="8">
+                        <td colspan="9">
                             <iframe id="" src="/admintransaction?sid={{$dbr->id}}" width="100%" height="500px"
                                 style="border:none;"></iframe>
                         </td>

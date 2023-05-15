@@ -414,8 +414,8 @@ class AdminStudentController extends Controller
                 ->insert([
                     'userid' => $muserid,
                     'yearid' => $latestyear->id,
-                    'paymenttype' => $data[9],
-                    'paymentmethod' => $data[8],
+                    'paymenttype' => $data[8],
+                    'paymentmethod' => $data[9],
                     'voucher' => $voucher,
                     'tuition' => $tuition,
                     'registration' => $registration,
@@ -461,6 +461,8 @@ class AdminStudentController extends Controller
             ->first();
 
         $data['sections'] = $sections = DB::table('sections')
+            ->where('strand', $dbdata->strand)
+            ->where('yearlevel', $dbdata->yearlevel)
             ->get()
             ->toArray();
 
@@ -677,7 +679,7 @@ class AdminStudentController extends Controller
         $sections = DB::table('sections')
         ->where('yearlevel', $yearlevel)
         ->where('strand', $strand)
-        ->pluck(DB::raw("CONCAT(yearlevel, ' - ', section_name) as name"), 'id');
+        ->pluck('section_name', 'id');
 
         return response()->json($sections);
     }

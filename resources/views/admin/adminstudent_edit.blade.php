@@ -113,7 +113,10 @@
             <label for="section" class="form-label">Section:</label>
             <div class="input-group mb-3">
                 <select name="section" id="section" class="form-select">
-                    <option value="{{$current->id}}">{{ $current->section_name }}</option>
+                    @foreach ($sections as $section)
+                    <option value="{{$section->id}}">{{$section->section_name}}</option>
+                    @endforeach
+                    {{-- <option value="{{$current->id}}">{{ $current->section_name }}</option> --}}
                 </select>
             </div>
 
