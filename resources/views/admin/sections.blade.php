@@ -109,7 +109,7 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
-                        <td>{{$dbr->section_name}}</td>
+                        <td><strong>{{$dbr->section_name}}</strong></td>
                         <td>{{$dbr->strand}}</td>
                         <td>{{$dbr->yearlevel}}</td>
                         <td>
