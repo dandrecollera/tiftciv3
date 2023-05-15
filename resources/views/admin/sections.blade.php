@@ -91,9 +91,6 @@
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong>ID</strong></span>
-                        </th>
-                        <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Section' ? 'text-primary' : '' }}"><strong>Section</strong>
                             </span>
                         </th>
@@ -112,7 +109,6 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
-                        <th scope="row"><strong>{{$dbr->id}}</strong></th>
                         <td>{{$dbr->section_name}}</td>
                         <td>{{$dbr->strand}}</td>
                         <td>{{$dbr->yearlevel}}</td>
