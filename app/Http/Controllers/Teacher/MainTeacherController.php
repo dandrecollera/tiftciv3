@@ -111,7 +111,7 @@ class MainTeacherController extends Controller
         }
 
 
-        $data['subject'] = $sections = DB::table('subjects')
+        $data['subject'] = $subjects = DB::table('subjects')
             ->where('id', $query['subject'])
             ->first();
 
@@ -132,7 +132,7 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        // dd($students)
+        // dd($subjects);
 
         $data['qstring'] = http_build_query($qstring);
         $data['qstring2'] = $qstring;
@@ -150,7 +150,6 @@ class MainTeacherController extends Controller
         $data['subject'] = $query['subject'];
         $data['section'] = $query['section'];
         $data['quarter'] = $query['quarter'];
-        // dd($query);
         $data['query'] = $query;
         return view('teacher.studentgrades_add', $data);
     }

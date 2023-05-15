@@ -59,7 +59,7 @@ class StudentController extends Controller
         $data['schedules'] = $schedule = DB::table('students')
             ->leftjoin('schedules', 'schedules.sectionid', '=', 'students.sectionid')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.sectionid')
+            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
             ->where('students.userid', $userinfo[0])
             ->where('schedules.day', $today)
             ->select(
@@ -73,6 +73,7 @@ class StudentController extends Controller
             ->orderBy('schedules.start_time', 'asc')
             ->get()
             ->toArray();
+            // dd($schedule);
 
         return view('student.home', $data);
     }

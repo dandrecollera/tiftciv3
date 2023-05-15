@@ -17,7 +17,6 @@
     ->where('tuition.userid', $userinfo[0])
     ->orderBy('yearid', 'asc')
     ->first();
-
     $startyear = $getYear->yearid;
     $endyear = $startyear + 1;
     @endphp
@@ -39,7 +38,8 @@
     $pastSubjects = DB::table('schedules')
     ->where('sectionid', $availableGrade->sectionid)
     ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-    ->get();
+    ->get()
+    ->toArray();
     @endphp
     <div class="row mb-3">
         <div class="col-12">

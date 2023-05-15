@@ -345,16 +345,6 @@ class AdminStudentController extends Controller
                 $sample['password'] = md5('student123');
                 $sample['accounttype'] = 'student';
 
-
-                $sample['firstname'] = $data[0];
-                $sample['middlename'] = $data[1];
-                $sample['lastname'] = $data[2];
-                $sample['mobilenumber'] = $data[3];
-                $sample['address'] = $data[4];
-                $sample['lrn'] = $data[5];
-                $sample['strand'] = $data[6];
-
-
                 $muserid = DB::table('main_users')
                     ->insertGetID([
                         'email' => $sample['email'],
@@ -432,15 +422,10 @@ class AdminStudentController extends Controller
                     'created_at' => Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now()->toDateTimeString()
                 ]);
-                // dd($sample);
 
             }
-
             fclose($handle);
-
-
         }
-
 
         return redirect($this->default_url.'?n=1');
     }

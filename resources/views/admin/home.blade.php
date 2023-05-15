@@ -51,7 +51,7 @@ $latestappointments = DB::table('appointments')
                     <ul class="list-group list-group-flush">
                         @foreach ($news as $nw)
                         <li class="list-group-item list-group-item-dark" aria-current="true">
-                            <a href="https://dandrecollera.com/news/{{$nw->post_name}}" class="newsclass"
+                            <a href="https://tiftci.org/news/{{$nw->post_name}}" class="newsclass"
                                 target="_blank">{{$nw->post_title}}</a><br>
                             <span style="font-size:10px">{{ date('m/d/Y g:iA', strtotime($nw->post_modified)) }}</span>
                         </li>
