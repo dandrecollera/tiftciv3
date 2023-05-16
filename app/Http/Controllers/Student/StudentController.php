@@ -138,6 +138,7 @@ class StudentController extends Controller
                 DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
                 DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
                 'subjects.subject_name',
+                'subjects.semester',
                 'schedules.day',
             )
             ->orderBy('schedules.start_time', 'asc');

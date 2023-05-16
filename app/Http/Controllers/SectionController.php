@@ -306,7 +306,7 @@ class SectionController extends Controller
                 'main_users_details.lastname',
                 'sections.section_name',
                 'subjects.subject_name',
-                'subjects.subject_name',
+                'subjects.semester',
                 'schedules.sectionid',
                 'schedules.id',
                 DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),

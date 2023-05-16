@@ -122,6 +122,7 @@
                 <thead>
                     <tr>
                         <th scope="col"><strong>Subject</strong></th>
+                        <th scope="col"><strong>Semester</strong></th>
                         <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Start' ? 'text-primary' : '' }}">
                             <strong>Start</strong>
                         </th>
@@ -138,6 +139,7 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr>
+                        <th><strong>{{$dbr->semester}}</strong></th>
                         <th><strong>{{$dbr->subject_name}}</strong></th>
                         <td>{{$dbr->start_time}}</td>
                         <td>{{$dbr->end_time}}</td>

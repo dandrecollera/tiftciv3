@@ -137,13 +137,11 @@ $sections = DB::table('sections')
                                 <label class="form-label">Type of Inquiry*</label>
                                 <div class="input-group mb-3">
                                     <select name="inquiry" id="inquiry" class="form-select" required>
-                                        <option selected hidden value="">Select Option</option>
-                                        <option value="Enrollment">Enrollment</option>
-                                        <option value="Document Request">Document Request</option>
+                                        <option value="Document Request" selected>Document Request</option>
                                     </select>
                                 </div>
 
-                                <div id="documentstuff" hidden>
+                                <div id="documentstuff">
                                     <label for="address" class="form-label">Documents</label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="goodmoral" id="goodmoral"
@@ -205,7 +203,6 @@ $sections = DB::table('sections')
 @push('jsscripts')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#documentstuff').attr('hidden', true);
         $('#yearsAttended').attr('hidden', true);
         $('#otherreasoncontainer').attr('hidden', true);
 

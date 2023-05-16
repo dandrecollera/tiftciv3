@@ -56,6 +56,7 @@
                     <table class="table ">
                         <thead>
                             <tr>
+                                <th scope="col"><strong>Semester</strong></th>
                                 <th scope="col"><strong>Subjects</strong></th>
                                 <th scope="col"><strong>Start</strong></th>
                                 <th scope="col"><strong>End</strong></th>
@@ -66,7 +67,8 @@
                         <tbody>
                             @foreach ($schedules as $schedule)
                             <tr>
-                                <th scope="row"><strong>{{$schedule->subject_name}}</strong></th>
+                                <th><strong>{{$schedule->semester}}</strong></th>
+                                <th><strong>{{$schedule->subject_name}}</strong></th>
                                 <td>{{$schedule->start_time}}</td>
                                 <td>{{$schedule->end_time}}</td>
                                 <td>{{$schedule->day}}</td>

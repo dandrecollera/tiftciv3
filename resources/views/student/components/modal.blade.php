@@ -21,6 +21,28 @@
     @yield('style')
 
 
+    <style>
+        * {
+            scrollbar-width: auto;
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+            transition: .1s;
+        }
+
+        /* Chrome, Edge, and Safari */
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.0);
+        }
+    </style>
 </head>
 
 <body>
