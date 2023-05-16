@@ -189,6 +189,10 @@ class StudentController extends Controller
         $qstring = array();
         $data['errorlist'] = [
             1 => 'Only Monday to Friday is Available',
+            2 => 'Select a proper Inquiry.',
+            3 => 'Select an appointment date.',
+            4 => 'Select a Document for Document Request.',
+            5 => 'Please select a future date',
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -296,8 +300,12 @@ class StudentController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        $forminput['inquiry'] = $inquiry = $input['inquiry'];
+        if(empty($input['inquiry']) || $input['inquiry'] == ""){
+            return redirect('/studentappointment?e=2');
+            die();
+        }
 
+        $forminput['inquiry'] = $inquiry = $input['inquiry'];
         $forminput['goodmoral'] = $goodmoral = false;
         $forminput['f137'] = $f137 = false;
         $forminput['f138'] = $f138 = false;
@@ -305,6 +313,11 @@ class StudentController extends Controller
         $forminput['others'] = $others = false;
         $forminput['otherdocument'] = $otherdocument = '';
         if($inquiry == 'Document Request'){
+
+            if(empty($input['goodmoral']) && empty($input['f137']) && empty($input['f138']) && empty($input['diploma']) && empty($input['others'])){
+                return redirect('/studentappointment?e=4');
+                die();
+            }
 
             if(!empty($input['goodmoral'])){
                 $forminput['goodmoral'] = $goodmoral = true;
@@ -326,15 +339,24 @@ class StudentController extends Controller
             }
         }
 
+        if(empty($input['appointeddate'])){
+            return redirect('/studentappointment?e=3');
+            die();
+        }
+
         $forminput['otherreason'] = $otherreason = $input['otherreason'];
         $appointeddate = $input['appointeddate'];
         $dateparse = Carbon::parse($appointeddate);
+
+        if ($dateparse->isPast()){
+            return redirect('/studentappointment?e=5');
+            die();
+        }
 
         if ($dateparse->isWeekend()){
             return redirect('/studentappointment?e=1');
             die();
         }
-
 
         $forminput['appointeddate'] = $appointeddate;
 

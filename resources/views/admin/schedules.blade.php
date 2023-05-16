@@ -121,8 +121,8 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"><strong>Subject</strong></th>
                         <th scope="col"><strong>Semester</strong></th>
+                        <th scope="col"><strong>Subject</strong></th>
                         <th scope="col" class="{{ $orderbylist[$sort]['display'] == 'Start' ? 'text-primary' : '' }}">
                             <strong>Start</strong>
                         </th>

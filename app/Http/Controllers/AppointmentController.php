@@ -19,6 +19,10 @@ class AppointmentController extends Controller
 
         $data['errorlist'] = [
             1 => 'Only Monday to Friday is Available',
+            2 => 'Select a proper Inquiry.',
+            3 => 'Select an appointment date.',
+            4 => 'Select a Document for Document Request.',
+            5 => 'Please select a future date',
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -51,6 +55,10 @@ class AppointmentController extends Controller
 
         $forminput = array();
 
+        if(empty($input['inquiry']) || $input['inquiry'] == ""){
+            return redirect('/appointment?e=2');
+            die();
+        }
 
         $forminput['email'] = $email = $input['email'];
         $forminput['lrn'] = $email = $input['lrn'];
@@ -74,6 +82,11 @@ class AppointmentController extends Controller
         $forminput['otherdocument'] = $otherdocument = '';
         if($inquiry == 'Document Request'){
 
+            if(empty($input['goodmoral']) && empty($input['f137']) && empty($input['f138']) && empty($input['diploma']) && empty($input['others'])){
+                return redirect('/appointment?e=4');
+                die();
+            }
+
             if(!empty($input['goodmoral'])){
                 $forminput['goodmoral'] = $goodmoral = true;
             }
@@ -94,9 +107,19 @@ class AppointmentController extends Controller
             }
         }
 
+        if(empty($input['appointeddate'])){
+            return redirect('/appointment?e=3');
+            die();
+        }
+
         $forminput['otherreason'] = $otherreason = $input['otherreason'];
         $appointeddate = $input['appointeddate'];
         $dateparse = Carbon::parse($appointeddate);
+
+        if ($dateparse->isPast()){
+            return redirect('/appointment?e=5');
+            die();
+        }
 
         if ($dateparse->isWeekend()){
             return redirect('/appointment?e=1');
