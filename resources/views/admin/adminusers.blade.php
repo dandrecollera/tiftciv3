@@ -76,7 +76,7 @@
                             <li><a class="dropdown-item" href="?{{ $sorturl }}">{{$odl['display']}}</a></li>
                             @endforeach
                         </ul>
-                        @if (!empty($sort))
+                        @if (!empty($sort) || $lpp != 25)
                         <button onclick="location.href='./adminuser'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
