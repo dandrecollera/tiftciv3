@@ -618,7 +618,7 @@ class AdminStudentController extends Controller
             $path = $request->file('image')->storeAs($destinationPath, $imageName);
             $photo = $imageName;
         } else {
-            return redirect($this->default_url_adminuser.'?e=7');
+            return redirect($this->default_url.'?e=7');
             die();
         }
 
