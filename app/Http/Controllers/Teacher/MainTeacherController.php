@@ -60,7 +60,7 @@ class MainTeacherController extends Controller
         $data['subjects'] = $subjects = DB::table('schedules')
             ->where('userid', $userinfo[0])
             ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->orderBy('sectionid', 'asc')
+            ->orderBy('subjectid', 'asc')
             ->get()
             ->toArray();
 
