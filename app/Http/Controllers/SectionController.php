@@ -335,9 +335,15 @@ class SectionController extends Controller
         $query = $request->query();
         $data['sid'] = $query['sid'];
 
+
+        $selectedSection = DB::table('sections')
+            ->where('id', $query['sid'])
+            ->first();
+
         $data['teachers'] = $teachers = DB::table('teachers')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'teachers.userid')
             ->leftjoin('subjects', 'subjects.id', '=', 'teachers.subjectid')
+            ->where('subjects.yearlevel', $selectedSection->yearlevel)
             ->select(
                 'teachers.id',
                 'main_users_details.firstname',
