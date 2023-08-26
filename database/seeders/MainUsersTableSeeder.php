@@ -22,7 +22,7 @@ class MainUsersTableSeeder extends Seeder
             0 =>
             array (
                 'id' => 1,
-                'email' => 'masteradmin@tiftci.com',
+                'email' => 'masteradmin@tiftci.org',
                 'password' => 'c8550856c4834da6c1ca3251f5fe264f',
                 'accounttype' => 'admin',
                 'status' => 'active',
@@ -32,7 +32,7 @@ class MainUsersTableSeeder extends Seeder
             1 =>
             array (
                 'id' => 2,
-                'email' => 'dandrecollera-admin@tiftci.com',
+                'email' => 'dandrecollera-admin@tiftci.org',
                 'password' => '5f1e0eb76cb20a0da22764ca38ecc978',
                 'accounttype' => 'admin',
                 'status' => 'active',
@@ -42,7 +42,7 @@ class MainUsersTableSeeder extends Seeder
             2 =>
             array (
                 'id' => 3,
-                'email' => 'jaymielyncruz-admin@tiftci.com',
+                'email' => 'jaymielyncruz-admin@tiftci.org',
                 'password' => '0192023a7bbd73250516f069df18b500',
                 'accounttype' => 'admin',
                 'status' => 'active',
@@ -52,7 +52,7 @@ class MainUsersTableSeeder extends Seeder
             3 =>
             array (
                 'id' => 4,
-                'email' => 'ralphextra-admin@tiftci.com',
+                'email' => 'ralphextra-admin@tiftci.org',
                 'password' => '0192023a7bbd73250516f069df18b500',
                 'accounttype' => 'admin',
                 'status' => 'active',
@@ -62,7 +62,7 @@ class MainUsersTableSeeder extends Seeder
             4 =>
             array (
                 'id' => 5,
-                'email' => 'alapostadero-admin@tiftci.com',
+                'email' => 'alapostadero-admin@tiftci.org',
                 'password' => '0192023a7bbd73250516f069df18b500',
                 'accounttype' => 'admin',
                 'status' => 'active',

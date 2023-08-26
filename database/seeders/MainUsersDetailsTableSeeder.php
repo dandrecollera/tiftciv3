@@ -37,7 +37,7 @@ class MainUsersDetailsTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'userid' => 2,
-                'firstname' => 'Dandre Mitchek',
+                'firstname' => 'Dandre Mitchel',
                 'middlename' => 'Ranes',
                 'lastname' => 'Collera',
                 'mobilenumber' => '09761816840',
