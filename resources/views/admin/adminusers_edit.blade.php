@@ -53,15 +53,16 @@
                     rows="4">{{ !empty($dbdata->address) ? $dbdata->address : '' }}</textarea>
                 <label class="form-label" for="address">Address</label>
             </div>
-
-            <label for="address" class="form-label">Status:</label>
+            
+            {{-- active or inactive btn --}}
+            {{-- <label for="address" class="form-label">Status:</label>
             <div class="input-group mb-3">
                 <select name="status" id="statusInput" class="form-select">
                     <option value="active" {{ $dbdata->status == 'active' ? 'selected' : ''}}>Active</option>
                     <option value="inactive" {{$dbdata->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
                 </select>
-            </div>
-
+            </div>--}}
+            
             <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>
             <br>

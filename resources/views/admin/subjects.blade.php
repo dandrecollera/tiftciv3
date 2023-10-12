@@ -120,7 +120,14 @@
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->subject_name}}">
                                     <i class="fa-solid fa-trash fa-xs"></i></a> --}}
+                                
+                                    {{-- ADDING ARCHIVE BTN IN SUBJECT --}}
+                                    <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    {{-- data-email="{{$dbr->email}}"--}}>
+                                <i class="fas fa-box-archive"></i></a>
                             </div>
+                            
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
@@ -168,17 +175,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Delete This Subject</div>
+                    <div>Archive This Subject</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to Archive <strong><span id="Email"></span></strong>?<br>
                     Please note this is unrecoverable.
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a href="" class="btn btn-danger" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>

@@ -49,13 +49,13 @@ $latestappointments = DB::table('appointments')
                 <h4 class="card-header"><strong>Latest News</strong></h4>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        @foreach ($news as $nw)
+                        {{-- @foreach ($news as $nw)
                         <li class="list-group-item list-group-item-dark" aria-current="true">
                             <a href="https://tiftci.org/news/{{$nw->post_name}}" class="newsclass"
                                 target="_blank">{{$nw->post_title}}</a><br>
                             <span style="font-size:10px">{{ date('m/d/Y g:iA', strtotime($nw->post_modified)) }}</span>
                         </li>
-                        @endforeach
+                        @endforeach --}}
                     </ul>
                 </div>
             </div>

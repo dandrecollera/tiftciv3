@@ -127,10 +127,11 @@
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                {{-- delete button to Archive button REAL QUICK --}}
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a>
+                                <i class="fas fa-box-archive"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -172,12 +173,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Delete This Teacher User</div>
+                    <div>Archive This Teacher User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to Archive<strong><span id="Email"></span></strong>?<br>
                     Please note this is unrecoverable.
                 </p>
                 <div class="justify-content-end d-flex">
