@@ -26,12 +26,12 @@ class StudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
 
-        $data['news'] = $news = DB::table('wp_posts')
-            ->where('post_type', 'news')
-            ->orderby('id', 'desc')
-            ->limit(3)
-            ->get()
-            ->toArray();
+        // $data['news'] = $news = DB::table('wp_posts')
+        //     ->where('post_type', 'news')
+        //     ->orderby('id', 'desc')
+        //     ->limit(3)
+        //     ->get()
+        //     ->toArray();
 
 
 

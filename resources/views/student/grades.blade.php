@@ -46,13 +46,16 @@
             <div class="card">
                 <div class="card-body overflow-scroll">
                     <h5 class="card-title"><strong>{{$year->school_year}}</strong></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><strong>1st Semester</strong></h6>
+                    <h6 class="card-subtitle mb- text-muted"><strong>1st Semester</strong></h6>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <th><strong>Types</strong></th>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>1st</strong></th>
                                 <th><strong>2nd</strong></th>
+                                <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Action Take</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +89,9 @@
                             @endphp
 
                             <tr>
+                                <td>
                                 <th><strong>{{ $subject->subject_name }}</strong></th>
+                                </td>
                                 <td>
                                     <strong>
                                         @if ($firstQuarterGrade)
@@ -105,6 +110,7 @@
                                         @endif
                                     </strong>
                                 </td>
+                                <td></td>
                             </tr>
                             @php
                             $lastsubjectid = $subject->subjectid;
@@ -118,9 +124,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <th><strong>Types</strong></th>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>3rd</strong></th>
                                 <th><strong>4th</strong></th>
+                                <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Action Taken</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -150,7 +159,9 @@
                             @endphp
 
                             <tr>
+                                <td>
                                 <th><strong>{{ $subject->subject_name }}</strong></th>
+                                </td>
                                 <td>
                                     <strong>
                                         @if ($firstQuarterGrade)
@@ -169,6 +180,7 @@
                                         @endif
                                     </strong>
                                 </td>
+                                <td></td>
                             </tr>
                             @php
                             $lastsubjectid = $subject->subjectid;
@@ -192,9 +204,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <th><strong>Types</strong></th>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>1st</strong></th>
                                 <th><strong>2nd</strong></th>
+                                <th><strong>Semester Final Grade</strong></th>
+                                <th><strong>Action Taken</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -228,11 +243,26 @@
                             @endphp
 
                             <tr>
+                                <td><strong>Types</strong></td>
+                                <td><strong>Learning Area</strong></td>
+                                <tb><strong>1st</strong></td>
+                                <tb><strong>2nd</strong></td>
+                                <tb><strong>Semestral Final Grade</strong></td>
+                                <tb><strong>Action Take</strong></td>
                                 <th><strong>{{ $subject->subject_name }}</strong></th>
                                 <td>
                                     <strong>
                                         @if ($firstQuarterGrade)
                                         {{$firstQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
                                         @else
                                         0
                                         @endif
@@ -260,9 +290,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <td><strong>Types</strong></td>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>3rd</strong></th>
                                 <th><strong>4th</strong></th>
+                                <th><strong>Semester Final Grade</strong></th>
+                                <th><strong>Action Taken</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -311,6 +344,16 @@
                                         @endif
                                     </strong>
                                 </td>
+                                <td>
+                                    <strong>
+                                        @if ($secondQuarterGrade)
+                                        {{$secondQuarterGrade}}
+                                        @else
+                                        0
+                                        @endif
+                                    </strong>
+                                </td>
+                                <td></td>
                             </tr>
                             @php
                             $lastsubjectid = $subject->subjectid;
@@ -324,6 +367,8 @@
         </div>
     </div>
 
+    
+
     @endif
 
 
@@ -333,8 +378,6 @@
     @endforeach
 
 
-
-</div>
 
 
 @endsection

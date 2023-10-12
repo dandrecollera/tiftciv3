@@ -37,6 +37,10 @@ $query->where('active', '=', 'Approved')
 
 <br>
 <h5>Other</h5>
+<a href="/enrollment" class="list-group-item list-group-item-spec py-2 ripple <! --{{$path == 'enrollment' ? 'active' : ''}} -->">
+    <i class="fas fa-file fa-fw me-3" <!-- style="{{$path == 'enrollment' ? 'color:#2D58A1;' : ''
+        }}"--></i><span>Enrollment</span>
+</a> 
 <a href="/studentappointment"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentappointment' ? 'active' : ''}}">
     <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentappointment' ? 'color:#2D58A1;' : ''

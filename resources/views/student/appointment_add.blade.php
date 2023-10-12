@@ -124,43 +124,39 @@ $currentyear = DB::table('schoolyears')
                     <div class="col-12 my-3">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="card-title">Inquiry</h3>
+                                <h3 class="card-title">Document Request</h3>
 
-                                <label class="form-label">Type of Inquiry*</label>
-                                <div class="input-group mb-3">
-                                    <select name="inquiry" id="inquiry" class="form-select" required>
-                                        <option selected hidden value="">Select Option</option>
-                                        <option value="Enrollment">Enrollment</option>
-                                        <option value="Document Request">Document Request</option>
-                                    </select>
-                                </div>
-
-                                <div id="documentstuff" hidden>
+                                <div>
                                     <label for="address" class="form-label">Documents</label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="goodmoral" id="goodmoral"
                                             value="Good Moral">
                                         <label class="form-check-label" for="goodmoral">Good Moral</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="f137" id="f137"
-                                            value="F137">
-                                        <label class="form-check-label" for="f137">F137</label>
-                                    </div>
+                                 </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="f138" id="f138"
                                             value="F138">
                                         <label class="form-check-label" for="f138">F138</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="diploma" id="diploma"
-                                            value="Diploma">
-                                        <label class="form-check-label" for="diploma">Diploma</label>
+                                        <input class="form-check-input" type="checkbox" name="Certificate of Registration" id="Certificate of Registration"
+                                            value="Certificate of Registration">
+                                        <label class="form-check-label" for="Certificate of Registration">Certificate of Registration</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="others" id="others"
                                             value="Others">
                                         <label class="form-check-label" for="others">Others</label>
+                                    </div>
+                                    
+                                    <div>   
+                                    <label class="form-label">Type of Reason*</label><br>
+                                    <div class="input-group mb-3">
+                                        <select name="inquiry" id="inquiry" class="form-select" required>
+                                            <option selected hidden value="">Select Option</option>
+                                            <option value="Enrollment">Scholarship</option>
+                                            <option value="Document Request">Enrollment for College</option>
+                                        </select>
                                     </div>
 
                                     <div id="otherdocumentcontainer" hidden>
