@@ -7,7 +7,7 @@
             <h1>Administrator</h1>
         </div>
     </div>
-    
+
     <div class="">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
             data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Admin
@@ -129,21 +129,14 @@
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
 
-                                {{-- delete button ito --}}
-                                {{-- @if($userinfo[0] == 1)
-                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a>
-                                @endif --}}
 
-                                @if($userinfo[0] == 1)
+                                @if($dbr->id != $userinfo[0])
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
                                     <i class="fas fa-box-archive"></i></a>
                                 @endif
-                            
+
                             </div>
                         </td>
                     </tr>
