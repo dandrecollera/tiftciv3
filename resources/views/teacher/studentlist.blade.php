@@ -29,11 +29,13 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                
                                 <td>
                                     <a class="btn btn-dark btn-sm" href="#"
                                         data-bs-target="#subjectTeacher{{$section->sectionid}}"
                                         data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-caret-down fa-xs"></i></a>
+                                            class="fa-solid fa-caret-down fa-xs"></i>
+                                        </a>
                                 </td>
                             </tr>
                             <tr id="subjectTeacher{{$section->sectionid}}" class="collapse">
@@ -41,7 +43,7 @@
                                     <iframe id="" src="/students?sid={{$section->sectionid}}" width="100%"
                                         height="500px" style="border:none;"></iframe>
                                 </td>
-                            </tr>
+                            </tr>                            
                             @endif
                             @php
                             $lastsection = $section->sectionid;

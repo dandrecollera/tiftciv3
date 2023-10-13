@@ -34,7 +34,8 @@
 @endsection
 
 @section('content')
-<div class="py-3 px-5">
+<div class="py-3 px-5">     
+    <a href="{{ route('getstudentlist') }}" class="btn btn-dark shadow-sm btn-sm float-end" style="margin-right: 10px;" target="_blank">Student List</a>
     <h4>{{ $section->section_name }} Students</h4>
     <hr>
     <div class="row fs-6">

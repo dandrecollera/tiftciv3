@@ -6,7 +6,10 @@
         <a href="/section?subject={{$qstring2['subject']}}">
             <button type="button" class="btn btn-primary mb-2">Back</button>
         </a>
-        <h1 class="mb-3">{{$subject->subject_name}}: {{$section->section_name}}</h1>
+        <h1 class="mb-3">
+            <div style="font-size: 30px; color: light black;">Grade's Input for</div>
+            {{$subject->subject_name}}: {{$section->section_name}}
+        </h1>
         <hr>
         @if (!empty($error))
         <div class="row">
@@ -39,91 +42,128 @@
                             <th scope="col"><strong>Name</strong></th>
                             <th scope="col"><strong>{{$subject->semester == "1st" ? '1st' : '3rd'}}</strong></th>
                             <th scope="col"><strong>{{$subject->semester == "1st" ? '2nd' : '4th'}}</strong></th>
+                            <th scope="col"><strong> Final Grade</strong></th>
+                            <th scope="col"><strong></strong></th> <!-- Add this header for the submit button -->
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($students as $dbr)
-                        <tr>
-                            <th scope="row"><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong>
-                            </th>
-                            @php
+                    @foreach ($students as $dbr)
+                    @php
+                    $latestyear = DB::table('schoolyears')
+                        ->orderBy('id', 'desc')
+                        ->first();
 
-                            $latestyear = DB::table('schoolyears')
-                            ->orderBy('id', 'desc')
-                            ->first();
+                    $grades = DB::table('grades')
+                        ->where('studentid', $dbr->userid)
+                        ->where('subjectid', $qstring2['subject'])
+                        ->where('yearid', $latestyear->id)
+                        ->select('grades.grade', 'grades.quarter', 'grades.id')
+                        ->get()
+                        ->toArray();
 
-                            $grades = DB::table('grades')
-                            ->where('studentid', $dbr->userid)
-                            ->where('subjectid', $qstring2['subject'])
-                            ->where('yearid', $latestyear->id)
-                            ->select('grades.grade', 'grades.quarter', 'grades.id')
-                            ->get()
-                            ->toArray();
-                            $firstQuarterGrade = '';
-                            $secondQuarterGrade = '';
-                            $firstquarterid = '';
-                            $secondquarterid = '';
-                            foreach ($grades as $grade) {
-                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
+                    $average = '';
+                    $firstQuarterGrade = '';
+                    $secondQuarterGrade = '';
+                    $firstquarterid = '';
+                    $secondquarterid = '';
+
+                    foreach ($grades as $grade) {
+                        if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
                             $firstQuarterGrade = $grade->grade;
                             $firstquarterid = $grade->id;
-                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
+                        } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
                             $secondQuarterGrade = $grade->grade;
                             $secondquarterid = $grade->id;
-                            }
-                            }
-                            @endphp
-                            <td>
-                                @if ($firstQuarterGrade)
+                        }
+                    }
+                    @endphp
 
-
-                                <a class="topedit" href="#" data-id="{{$dbr->userid}}" data-grade="{{$firstquarterid}}"
-                                    data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"
-                                    data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
-                                    style="text-decoration: underline">
-                                    <strong>{{$firstQuarterGrade}}</strong>
-                                </a>
-
-                                @else
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="btn btn-primary btn-sm topgrade" href="#" data-id="{{$dbr->userid}}"
-                                        data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
-                                        data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
-                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-plus"></i></a>
-                                </div>
-
-                                @endif
-                            </td>
-                            <td>
-                                @if ($secondQuarterGrade)
-                                <a class="bottomedit" href="#" data-id="{{$dbr->userid}}"
-                                    data-grade="{{$secondquarterid}}"
-                                    data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"
-                                    data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
-                                    style="text-decoration: underline">
-                                    <strong>{{$secondQuarterGrade}}</strong>
-                                </a>
-                                @else
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="btn btn-primary btn-sm bottomgrade" href="#" data-id="{{$dbr->userid}}"
-                                        data-quarter="{{$subject->semester == '1st' ? '2nd' : '4th' }}"
-                                        data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
-                                        data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                            class="fa-solid fa-plus"></i></a>
-                                </div>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
+                    <tr>
+                        <th scope="row"><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong></th>
+                        <td>
+                            @if ($firstQuarterGrade)
+                            <a class="topedit" href="#" data-id="{{$dbr->userid}}" data-grade="{{$firstquarterid}}"
+                                data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
+                                data-bs-toggle="modal" data-bs-target="#addeditmodal"
+                                data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
+                                style="text-decoration: underline">
+                                <strong>{{$firstQuarterGrade}}</strong>
+                            </a>
+                            @else
+                            <div class="form-outline" role="group" aria-label="Basic example">
+                                <input type="number" class="form-control" id="yourTextInputID_1_{{$dbr->userid}}" min="65" max="100"
+                                    oninput="validateInput(this)" required>
+                                <label for="yourTextInputID_1_{{$dbr->userid}}" class="form-label">Grade</label>
+                                <div class="form-helper"></div>
+                            </div>
+                            <script>
+                                function validateInput(input) {
+                                    const inputValue = input.value;
+                                    if (inputValue === "100" || (inputValue.length === 1 && inputValue <= 9)) {
+                                    } else if (inputValue.length > 2 || inputValue > 100) {
+                                        input.value = inputValue.slice(0, 2);
+                                    }
+                                }
+                            </script>     
+                            @endif
+                        </td>
+                        <td>
+                            @if ($secondQuarterGrade)
+                            <a class="topedit" href="#" data-id="{{$dbr->userid}}" data-grade="{{$secondquarterid}}"
+                                data-quarter="{{$subject->semester == '1st' ? '1st' : '3rd' }}"
+                                data-bs-toggle="modal" data-bs-target="#addeditmodal"
+                                data-name="{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}"
+                                style="text-decoration: underline">
+                                <strong>{{$secondQuarterGrade}}</strong>
+                            </a>
+                            @else
+                            <div class="form-outline" role="group" aria-label="Basic example">
+                                <input type="number" class="form-control" id="yourTextInputID_2_{{$dbr->userid}}" min="65" max="100"
+                                    oninput="validateInput(this)" required>
+                                <label for="yourTextInputID_2_{{$dbr->userid}}" class="form-label">Grade</label>
+                                <div class="form-helper"></div>
+                            </div>
+                            <script>
+                                function validateInput(input) {
+                                    const inputValue = input.value;
+                                    if (inputValue === "100" || (inputValue.length === 1 && inputValue <= 9)) {
+                                    } else if (inputValue.length > 2 || inputValue > 100) {
+                                        input.value = inputValue.slice(0, 2);
+                                    }
+                                }
+                            </script>        
+                            @endif
+                        </td>
+                        <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <input type="number" step="0.01" class="form-control" id="gwaInput_{{$dbr->userid}}" readonly style="width: 6em">
+                        </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="calculateAverage({{$dbr->userid}})">Check</button>
+                        </td>
+                    </tr>
+                    @endforeach
                     </tbody>
-                </table>
+                    </table>
+                    <div class="">
+                        <button type="button" id="addbutton" class="btn btn-primary shadow-sm btn-sm float-end"
+                            data-bs-toggle="modal" data-bs-target="#addeditmodal"> Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <script>
+            function calculateAverage(userId) {
+                const firstGrade = parseFloat(document.getElementById(`yourTextInputID_1_${userId}`).value);
+                const secondGrade = parseFloat(document.getElementById(`yourTextInputID_2_${userId}`).value);
+                if (!isNaN(firstGrade) && !isNaN(secondGrade)) {
+                const average = (firstGrade + secondGrade) / 2;
+                    document.getElementById(`gwaInput_${userId}`).value = average.toFixed(2);
+                }
+            }
+        </script>
     </div>
-</div>
 
 
 <div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -132,13 +172,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
-                    <div>Modal title</div>
+                    <div>Submission of Grade</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/adminuser_add" width="100%" height="450px"
-                    style="border:none; height:80vh;"></iframe>
+                <h4>Warning</h4>
+                <p>
+                    Submiting <strong>the Grades</strong> will finalize the grades for the current year
+                </p>
+
+                <hr>
+                <div class="justify-content-end d-flex">
+                    <div class="btn-group">
+                        <a class="btn btn-primary">Confirm</a>
+                        <a class="btn btn-danger" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
             </div>
 
         </div>

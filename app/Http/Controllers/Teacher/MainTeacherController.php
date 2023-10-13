@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use PDF;
 use Illuminate\Support\Facades\Storage;
 
 class MainTeacherController extends Controller
@@ -24,12 +25,12 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        $data['news'] = $news = DB::table('wp_posts')
-            ->where('post_type', 'news')
-            ->orderby('id', 'desc')
-            ->limit(3)
-            ->get()
-            ->toArray();
+        // $data['news'] = $news = DB::table('wp_posts')
+        //     ->where('post_type', 'news')
+        //     ->orderby('id', 'desc')
+        //     ->limit(3)
+        //     ->get()
+        //     ->toArray();
 
         $data['today'] = $today = Carbon::now()->format('l');
         $data['schedules'] = $schedule = DB::table('schedules')
@@ -542,5 +543,17 @@ class MainTeacherController extends Controller
         session(['sessionkey' => $user_id]);
 
         return redirect('teachersettings?n=5');
+    }
+
+    public function getstudentlist()
+    {
+    $pdf = PDF:: loadView('teacher.viewstudentlist');
+    return $pdf ->stream('StudentLists.pdf');
+    }
+
+    public function getschedule()
+    {
+    $pdf = PDF:: loadView('teacher.printschedule');
+    return $pdf ->stream('PrintSchedule.pdf');
     }
 }

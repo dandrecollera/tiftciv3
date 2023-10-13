@@ -127,10 +127,13 @@
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
+
+                                    @if($userinfo[0] == 1)
                                 <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
                                     <i class="fa-solid fa-trash fa-xs"></i></a>
+                                    @endif
                             </div>
                         </td>
                     </tr>

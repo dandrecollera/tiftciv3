@@ -46,6 +46,8 @@
             </div>
             <div class="card ">
                 <div class="card-body overflow-scroll">
+                <a href="{{ route('getschedule') }}" class="btn btn-info shadow-sm btn-sm float-end" style="margin-right: 10px;" target="_blank">Schedule List</a>
+
 
 
                     @php

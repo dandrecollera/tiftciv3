@@ -37,6 +37,19 @@ $query->where('active', '=', 'Approved')
 
 <br>
 <h5>Other</h5>
+<a href="/studentenrollment"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentenrollment' ? 'active' : ''}}">
+    <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentenrollmet' ? 'color:#2D58A1;' : ''
+        }}"></i><span>Enrollment</span>
+    @if ($seenstatus > 0)
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger overflow-visible"
+        style="z-index:3;">
+        {{$seenstatus}}
+    </span>
+    @endif
+</a>
+
+
 <a href="/studentappointment"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentappointment' ? 'active' : ''}}">
     <i class="fas fa-comment fa-fw me-3" style="{{$path == 'studentappointment' ? 'color:#2D58A1;' : ''

@@ -16,6 +16,7 @@ use App\Http\Controllers\EmailUpdateController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -184,4 +185,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/studentsgrades_add_process', [MainTeacherController::class, 'studentsgrades_add_process'])->name('studentsgrades_add_process');
     Route::get('/studentsgrades_edit', [MainTeacherController::class, 'studentsgrades_edit'])->name('studentsgrades_edit');
     Route::post('/studentsgrades_edit_process', [MainTeacherController::class, 'studentsgrades_edit_process'])->name('studentsgrades_edit_process');
+    Route::get('/viewstudentlist', [App\Http\Controllers\Teacher\MainTeacherController::class, 'getstudentlist'])->name('getstudentlist');
+    Route::get('/printschedule', [App\Http\Controllers\Teacher\MainTeacherController::class, 'getschedule'])->name('getschedule');
+
 });
