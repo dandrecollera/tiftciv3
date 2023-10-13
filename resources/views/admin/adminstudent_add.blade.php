@@ -16,10 +16,21 @@
         @csrf
         <div class="container-fluid">
 
-            <div class="form-outline mt-2 mb-2">
+            {{-- <div class="form-outline mt-2 mb-2">
                 <input type="email" class="form-control is-valid" name="email" id="emailInput" required>
                 <label for="emailInput" class="form-label">Email:</label>
-            </div>
+            </div>--}}
+
+            <div class="input-group mb-3">
+                <input
+                    type="text"
+                    class="form-control rounded"
+                    placeholder="username"
+                    aria-label="username"
+                    aria-describedby="basic-addon2"
+                    required/>
+                    <span class="input-group-text border-0" id="basic-addon2">@tiftci.org</span>
+                </div>
 
             <div class="form-outline mt-4 mb-2">
                 <input type="number" class="form-control is-valid" name="lrn" id="lrn" maxlength="12" min="0"
