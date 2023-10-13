@@ -24,12 +24,12 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        // $data['news'] = $news = DB::table('wp_posts')
-        //     ->where('post_type', 'news')
-        //     ->orderby('id', 'desc')
-        //     ->limit(3)
-        //     ->get()
-        //     ->toArray();
+        $data['news'] = $news = DB::table('wp_posts')
+            ->where('post_type', 'news')
+            ->orderby('id', 'desc')
+            ->limit(3)
+            ->get()
+            ->toArray();
 
         $data['today'] = $today = Carbon::now()->format('l');
         $data['schedules'] = $schedule = DB::table('schedules')

@@ -21,17 +21,26 @@ class StudentController extends Controller
         $this->middleware('axustudent');
     }
 
+    public function enrollment(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+
+        return view('student.enrollment', $data);
+    }
+
+
     public function portal(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
 
-        // $data['news'] = $news = DB::table('wp_posts')
-        //     ->where('post_type', 'news')
-        //     ->orderby('id', 'desc')
-        //     ->limit(3)
-        //     ->get()
-        //     ->toArray();
+        $data['news'] = $news = DB::table('wp_posts')
+            ->where('post_type', 'news')
+            ->orderby('id', 'desc')
+            ->limit(3)
+            ->get()
+            ->toArray();
 
 
 

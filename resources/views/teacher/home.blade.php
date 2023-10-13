@@ -36,7 +36,13 @@
             <h4 class="card-header">Latest News</h4>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                
+                    @foreach ($news as $nw)
+                    <li class="list-group-item" aria-current="true">
+                        <a href="https://tiftci.org/news/{{$nw->post_name}}" class="newsclass"
+                            target="_blank">{{$nw->post_title}}</a><br>
+                        <span style="font-size:10px">{{ date('m/d/Y g:iA', strtotime($nw->post_modified)) }}</span>
+                    </li>
+                    @endforeach
                 </ul>
             </div>
         </div>

@@ -151,7 +151,6 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminappointments_complete_process', [AdminAppointmentsController::class, 'adminappointments_complete_process'])->name('adminappointments_complete_process');
 
     // Student Portal
-    Route::get('/enrollment', function () {return view('student.enrollment');});
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');
     Route::get('/studentprofile', [StudentController::class, 'studentprofile'])->name('studentprofile');
     Route::get('/studentsettings', [StudentController::class, 'studentsettings'])->name('studentsettings');
@@ -162,6 +161,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
     Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
+    Route::get('/enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
     Route::get('/hmv', [StudentController::class, 'hmv'])->name('hmv');
     Route::get('/studentappointment', [StudentController::class, 'studentappointment'])->name('studentappointment');
     Route::get('/studentappointment_add', [StudentController::class, 'studentappointment_add'])->name('studentappointment_add');
