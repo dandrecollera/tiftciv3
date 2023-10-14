@@ -15,6 +15,7 @@ use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\EmailUpdateController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
+use App\Http\Controllers\Alumni\AlumniController;
 
 /*
 |--------------------------------------------------------------------------
@@ -184,4 +185,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/studentsgrades_add_process', [MainTeacherController::class, 'studentsgrades_add_process'])->name('studentsgrades_add_process');
     Route::get('/studentsgrades_edit', [MainTeacherController::class, 'studentsgrades_edit'])->name('studentsgrades_edit');
     Route::post('/studentsgrades_edit_process', [MainTeacherController::class, 'studentsgrades_edit_process'])->name('studentsgrades_edit_process');
+
+    // Aluni Portal
+    Route::get('/alumni', [AlumniController::class, 'home'])->name('alumnihome');
+
 });

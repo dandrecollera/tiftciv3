@@ -48,6 +48,7 @@ class LoginController extends Controller
         if($userdata->accounttype == 'admin') $goto = 'admin';
         if($userdata->accounttype == 'student') $goto = 'portal';
         if($userdata->accounttype == 'teacher') $goto = 'teacher';
+        if($userdata->accounttype == 'alumni') $goto = 'alumni';
         return redirect()->to($goto);
     }
 

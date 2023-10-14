@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'axuadmin' => \App\Http\Middleware\AdminHandler::class,
         'axuteacher' => \App\Http\Middleware\TeacherHandler::class,
         'axustudent' => \App\Http\Middleware\StudentHandler::class,
+        'axualumni' => \App\Http\Middleware\AlumniHandler::class,
     ];
 }
