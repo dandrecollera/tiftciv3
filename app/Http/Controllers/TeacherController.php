@@ -45,7 +45,7 @@ class TeacherController extends Controller
             1 => 'New User has been saved.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
-            4 => 'User has been deleted.',
+            4 => 'User status updated.',
             5 => 'Image has been updated'
         ];
         $data['notif'] = 0;
@@ -257,13 +257,8 @@ class TeacherController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['did']) || empty($input['email'])  || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['did']) || empty($input['email'])  || empty($input['firstname']) || empty($input['lastname'])){
             return redirect($this->default_url.'?e=1');
-            die();
-        }
-
-        if($input['status'] != 'active' && $input['status'] != 'inactive'){
-            return redirect($this->default_url.'?e=6');
             die();
         }
 
@@ -280,7 +275,6 @@ class TeacherController extends Controller
             ->where('id', $input['did'])
             ->update([
                 'email' => $input['email'],
-                'status' => $input['status'],
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
@@ -420,6 +414,50 @@ class TeacherController extends Controller
         DB::table('main_users_details')
             ->where('userid', $input['did'])
             ->delete();
+
+        return redirect($this->default_url.'?n=4&'.$qstring);
+    }
+
+    public function adminteacher_archive_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', $this->default_accounttype)
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url.'?e=5&'.$qstring);
+            die();
+        }
+
+        if($logindata->status == 'active'){
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'inactive',
+                ]);
+        } else {
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'active',
+                ]);
+        }
 
         return redirect($this->default_url.'?n=4&'.$qstring);
     }

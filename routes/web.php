@@ -80,6 +80,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminuser_pass_process', [AdminController::class, 'adminuser_pass_process'])->name('adminuserPassProcess');
     Route::post('/adminuser_image_process', [AdminController::class, 'adminuser_image_process'])->name('adminuserImageProcess');
     Route::get('/adminuser_delete_process', [AdminController::class, 'adminuser_delete_process'])->name('adminuserDeleteProcess');
+    Route::get('/adminuser_archive_process', [AdminController::class, 'adminuser_archive_process'])->name('adminuser_archive_process');
 
     // Admin/Accounts/Teachers
     Route::get('/adminteacher', [TeacherController::class, 'adminteacher'])->name('adminteacher');
@@ -90,6 +91,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminteacher_pass_process', [TeacherController::class, 'adminteacher_pass_process'])->name('adminTeacherPassProcess');
     Route::post('/adminteacher_image_process', [TeacherController::class, 'adminteacher_image_process'])->name('adminTeacherImageProcess');
     Route::get('/adminteacher_delete_process', [TeacherController::class, 'adminteacher_delete_process'])->name('adminTeacherDeleteProcess');
+    Route::get('/adminteacher_archive_process', [TeacherController::class, 'adminteacher_archive_process'])->name('adminteacher_archive_process');
 
     // Admin/Subjects
     Route::get('/adminsubject', [SubjectAdminController::class, 'adminsubject'])->name('adminSubjectPage');

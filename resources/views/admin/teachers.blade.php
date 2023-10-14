@@ -131,7 +131,7 @@
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
-                                <i class="fas fa-box-archive"></i></a>
+                                    <i class="fas fa-box-archive"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -178,8 +178,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to Archive<strong><span id="Email"></span></strong>?<br>
-                    Please note this is unrecoverable.
+                <p>Are you sure you want to Archive <strong><span id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -220,6 +219,16 @@
         console.log(iid);
         $('#Email').html(iemail);
         $('#DeleteButton').prop('href', '/adminteacher_delete_process?did='+iid+'&'+iqstring);
+    });
+    $('.dcc-archive').on('click', function() {
+        console.log('delete button clicked!');
+        console.log( $(this).data("id") );
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        console.log(iid);
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminteacher_archive_process?did='+iid+'&'+iqstring);
     });
 });
 </script>

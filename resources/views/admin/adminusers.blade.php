@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Error</h4>
+                <h4 class="alert-heading">Error</h4>com
                 <p>{{ $errorlist[(int) $error ] }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -124,13 +124,15 @@
                         <td>{{$dbr->middlename}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
+                            @if ($dbr->id == $userinfo[0] || $userinfo[0] == 1)
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
+                                @endif
 
 
-                                @if($dbr->id != $userinfo[0])
+                                @if($userinfo[0] == 1 && $dbr->id != 1 )
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
@@ -185,7 +187,6 @@
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
-                    Please note this is unrecoverable.
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -219,7 +220,7 @@
         $('#addeditmodalLabel').html('Edit This Admin User');
         $('#addeditframe').attr('src', '/adminuser_edit?id='+iid+'{!!$qstring!!}');
     });
-    $('.dcc-delete').on('click', function() {
+    $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
@@ -227,7 +228,7 @@
         var iemail = $(this).data("email");
         console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminuser_delete_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminuser_archive_process?did='+iid+'&'+iqstring);
     });
 });
 
