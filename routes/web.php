@@ -188,5 +188,8 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Aluni Portal
     Route::get('/alumni', [AlumniController::class, 'home'])->name('alumnihome');
+    Route::get('/appointmenmt_add', function () {
+        return view('alumni.components.appointment_add');
+    });
 
 });
