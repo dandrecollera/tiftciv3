@@ -6,19 +6,33 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .was-validated .form-control:valid {
+        margin-bottom: 0;
+    }
+
+    .was-validated .form-control:invalid {
+        margin-bottom: 0;
+    }
 </style>
 @endsection
 
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/adminstudent_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/adminstudent_add_process" method="POST" target="_parent" enctype="multipart/form-data"
+        class="was-validated">
         @csrf
         <div class="container-fluid">
 
-            <div class="form-outline mt-2 mb-2">
-                <input type="email" class="form-control" name="email" id="emailInput" required>
-                <label for="emailInput" class="form-label">Email:</label>
+            <div class="input-group mt-2 mb-2">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="email" id="emailInput" required>
+                    <label for="emailInput" class="form-label">Email:</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
+                </div>
             </div>
 
             <div class="form-outline mt-4 mb-2">

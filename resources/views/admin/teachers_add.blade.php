@@ -6,19 +6,34 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .was-validated .form-control:valid {
+        margin-bottom: 0;
+    }
+
+    .was-validated .form-control:invalid {
+        margin-bottom: 0;
+    }
 </style>
 @endsection
 
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/adminteacher_add_process" method="POST" target="_parent" enctype="multipart/form-data">
+    <form action="/adminteacher_add_process" method="POST" target="_parent" enctype="multipart/form-data"
+        class="was-validated">
         @csrf
         <div class="container-fluid">
 
-            <div class="form-outline mt-2 mb-2">
-                <input type="email" class="form-control" name="email" id="emailInput" required>
-                <label for="emailInput" class="form-label">Email:</label>
+
+            <div class="input-group mt-2 mb-2">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="email" id="emailInput" required>
+                    <label for="emailInput" class="form-label">Email:</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
+                </div>
             </div>
 
             <div class="row" id="conpass">
@@ -29,7 +44,7 @@
                     <div class="form-outline">
                         <a id="show1" href="#conpass" style="color: inherit;"><i
                                 class="fas fa-eye-slash trailing pe-auto" id="eye1"></i></a>
-                        <input name="password" type="password" class="form-control" id="password"
+                        <input name="password" type="password" class="form-control is-valid" id="password"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password">Password</label>
                         <div class="form-helper"></div>
@@ -39,7 +54,7 @@
                     <div class="form-outline">
                         <a id="show2" href="#conpass" style="color: inherit;"><i
                                 class="fas fa-eye-slash trailing pe-auto" id="eye2"></i></a>
-                        <input name="password2" type="password" class="form-control" id="password2"
+                        <input name="password2" type="password" class="form-control is-valid" id="password2"
                             data-mdb-showcounter="true" maxlength="20" required>
                         <label class="form-label" for="password2">Retype Password</label>
                         <div class="form-helper"></div>
@@ -49,44 +64,36 @@
 
             <div class="input-group my-4 pt-2">
                 <div class="form-outline">
-                    <input type="text" class="form-control" name="firstname" id="firstNameInput" required>
+                    <input type="text" class="form-control is-valid" name="firstname" id="firstNameInput" required>
                     <label class="form-label" for="firstNameInput">First Name</label>
                 </div>
                 <div class="form-outline">
-                    <input type="text" class="form-control" name="middlename" id="middleNameInput">
+                    <input type="text" class="form-control is-valid" name="middlename" id="middleNameInput">
                     <label class="form-label overflow-x-scroll pe-2" for="middleNameInput">Middle Name</label>
                 </div>
                 <div class="form-outline">
-                    <input type="text" class="form-control" name="lastname" id="lastNameInput" required>
+                    <input type="text" class="form-control is-valid" name="lastname" id="lastNameInput" required>
                     <label class="form-label" for="lastNameInput">Last Name</label>
                 </div>
             </div>
 
             <div class="form-outline my-4">
                 <input maxlength="11" min="0" data-mdb-showcounter="true" type="number" pattern="/^-?\d+\.?\d*$/"
-                    onKeyPress="if(this.value.length==11) return false;" class="form-control" name="mobilenumber"
-                    onkeydown="return event.keyCode !== 69 && event.keyCode !== 187" id="contactInput"
-                    value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
+                    onKeyPress="if(this.value.length==11) return false;" class="form-control is-valid"
+                    name="mobilenumber" onkeydown="return event.keyCode !== 69 && event.keyCode !== 187"
+                    id="contactInput" value="{{ !empty($dbdata->mobilenumber) ? $dbdata->mobilenumber : '' }}">
                 <label class="form-label" for="contactInput">Mobile Number</label>
                 <div class="form-helper"></div>
             </div>
 
             <div class="form-outline mt-4 mb-2">
-                <textarea class="form-control" name="address" id="address" rows="4"></textarea>
+                <textarea class="form-control is-valid" name="address" id="address" rows="4"></textarea>
                 <label class="form-label" for="address">Address</label>
-            </div>
-
-            <label for="address" class="form-label">Status:</label>
-            <div class="input-group mb-3">
-                <select name="status" id="statusInput" class="form-select">
-                    <option value="active" selected>Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
             </div>
 
             <label for="InputGroupFile01" class="form-label">Image:</label>
             <div class="input-group mb-3">
-                <input type="file" name="image" class="form-control" id="inputGroupFile01"
+                <input type="file" name="image" class="form-control  is-valid" id="inputGroupFile01"
                     accept="image/jpeg,image/png">
             </div>
 

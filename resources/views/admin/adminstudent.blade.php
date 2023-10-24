@@ -139,10 +139,10 @@
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a>
+                                    <i class="fa-solid fa-box-archive fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -235,7 +235,7 @@
         $('#addeditmodalLabel').html('Edit This Student User');
         $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
     });
-    $('.dcc-delete').on('click', function() {
+    $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
@@ -243,7 +243,7 @@
         var iemail = $(this).data("email");
         console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminstudent_delete_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminstudent_archive_process?did='+iid+'&'+iqstring);
     });
 });
 

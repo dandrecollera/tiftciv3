@@ -95,31 +95,33 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Subject' ? 'text-primary' : '' }}"><strong>Subject
                                     Name</strong></span>
                         </th>
-                        <th scope="col"><strong>Strand</strong></th>
+                        <th scope="col"><strong>Status</strong></th>
+                        {{-- <th scope="col"><strong>Strand</strong></th>
                         <th scope="col"><strong>Semester</strong></th>
-                        <th scope="col"><strong>yearlevel</strong></th>
+                        <th scope="col"><strong>yearlevel</strong></th> --}}
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr>
+                    <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
                         <td><strong>{{$dbr->subject_name}}</strong></td>
-                        <td><strong>{{$dbr->strand}}</strong></td>
+                        <td><strong>{{$dbr->status}}</strong></td>
+                        {{-- <td><strong>{{$dbr->strand}}</strong></td>
                         <td><strong>{{$dbr->semester}}</strong></td>
-                        <td><strong>{{$dbr->yearlevel}}</strong></td>
+                        <td><strong>{{$dbr->yearlevel}}</strong></td> --}}
                         <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
+                            {{-- <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-caret-down fa-xs"></i></a>
+                                        class="fa-solid fa-caret-down fa-xs"></i></a> --}}
                                 {{-- <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                        class="fa-solid fa-pen fa-xs"></i></a> --}}
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->subject_name}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a> --}}
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -178,7 +180,7 @@
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
@@ -217,6 +219,13 @@
         $('#Email').html(iemail);
         $('#DeleteButton').prop('href', '/adminsubject_delete_process?did='+iid+'&'+iqstring);
     });
+    $('.dcc-archive').on('click', function() {
+        var iid = $(this).data("id");
+        var iqstring = $(this).data("qstring");
+        var iemail = $(this).data("email");
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminsubject_archive_process?did='+iid+'&'+iqstring);
+    })
 });
 </script>
 

@@ -6,19 +6,33 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .was-validated .form-control:valid {
+        margin-bottom: 0;
+    }
+
+    .was-validated .form-control:invalid {
+        margin-bottom: 0;
+    }
 </style>
 @endsection
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/adminteacher_edit_process" method="POST" target="_parent">
+    <form action="/adminteacher_edit_process" method="POST" target="_parent" class='was-validated'>
         @csrf
         <div class="container-fluid mb-4">
 
             <h4>Edit Teacher Details</h4>
-            <div class="form-outline my-4">
-                <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}">
-                <label for="emailInput" class="form-label">Email:</label>
+            <div class="input-group mt-2 mb-2">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="email" id="emailInput"
+                        value="{{ explode('@', $dbdata->email)[0] }}" required>
+                    <label for="emailInput" class="form-label">Email:</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
+                </div>
             </div>
 
             <div class="input-group my-4">
@@ -54,13 +68,13 @@
                 <label class="form-label" for="address">Address</label>
             </div>
 
-            <label for="address" class="form-label">Status:</label>
+            {{-- <label for="address" class="form-label">Status:</label>
             <div class="input-group mb-3">
                 <select name="status" id="statusInput" class="form-select">
                     <option value="active" {{ $dbdata->status == 'active' ? 'selected' : ''}}>Active</option>
                     <option value="inactive" {{$dbdata->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
                 </select>
-            </div>
+            </div> --}}
 
             <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>

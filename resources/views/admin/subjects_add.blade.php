@@ -23,15 +23,15 @@
             </div>
 
 
-            <label for="emailInput" class="form-label">Semester</label>
+            {{-- <label for="emailInput" class="form-label">Semester</label>
             <div class="input-group mb-3">
                 <select name="semester" id="strandInput" class="form-select" required>
                     <option value="1st">1st</option>
                     <option value="2nd">2nd</option>
                 </select>
-            </div>
+            </div> --}}
 
-            <button type="submit" class="btn btn-primary float-end">Save</button>
+            <button type="submit" class="btn btn-primary float-end">Add</button>
         </div>
     </form>
 </div>

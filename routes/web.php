@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\SubjectAdminController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SchoolYearController;
@@ -81,6 +82,8 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminuser_pass_process', [AdminController::class, 'adminuser_pass_process'])->name('adminuserPassProcess');
     Route::post('/adminuser_image_process', [AdminController::class, 'adminuser_image_process'])->name('adminuserImageProcess');
     Route::get('/adminuser_delete_process', [AdminController::class, 'adminuser_delete_process'])->name('adminuserDeleteProcess');
+    Route::get('/adminuser_archive_process', [AdminController::class, 'adminuser_archive_process'])->name('adminuser_archive_process');
+
 
     // Admin/Accounts/Teachers
     Route::get('/adminteacher', [TeacherController::class, 'adminteacher'])->name('adminteacher');
@@ -91,6 +94,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminteacher_pass_process', [TeacherController::class, 'adminteacher_pass_process'])->name('adminTeacherPassProcess');
     Route::post('/adminteacher_image_process', [TeacherController::class, 'adminteacher_image_process'])->name('adminTeacherImageProcess');
     Route::get('/adminteacher_delete_process', [TeacherController::class, 'adminteacher_delete_process'])->name('adminTeacherDeleteProcess');
+    Route::get('/adminteacher_archive_process', [TeacherController::class, 'adminteacher_archive_process'])->name('adminteacher_archive_process');
 
     // Admin/Subjects
     Route::get('/adminsubject', [SubjectAdminController::class, 'adminsubject'])->name('adminSubjectPage');
@@ -99,10 +103,23 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminsubject_edit', [SubjectAdminController::class, 'adminsubject_edit'])->name('adminSubjectEditPage');
     Route::post('/adminsubject_edit_process', [SubjectAdminController::class, 'adminsubject_edit_process'])->name('adminSubjectEditProcess');
     Route::get('/adminsubject_delete_process', [SubjectAdminController::class, 'adminsubject_delete_process'])->name('adminSubjectDeleteProcess');
+    Route::get('/adminsubject_archive_process', [SubjectAdminController::class, 'adminsubject_archive_process'])->name('adminsubject_archive_process');
     Route::get('/subject_teacher', [SubjectAdminController::class, 'admin_teacher'])->name('adminSubjectTeacher');
     Route::get('/subject_teacher_add', [SubjectAdminController::class, 'admin_teacher_add'])->name('adminSubjectTeacherAdd');
     Route::post('/subject_teacher_add_process', [SubjectAdminController::class, 'admin_teacher_add_process'])->name('adminSubjectTeacherAddProcess');
     Route::get('/subject_teacher_delete_process', [SubjectAdminController::class, 'admin_teacher_delete_process'])->name('adminSubjectTeacherDeleteProcess');
+
+
+    Route::get('/admincurriculum', [CurriculumController::class, 'admincurriculum'])->name('admincurriculum');
+    Route::get('/admincurriculum_add', [CurriculumController::class, 'admincurriculum_add'])->name('admincurriculum_add');
+    Route::post('/admincurriculum_add_process', [CurriculumController::class, 'admincurriculum_add_process'])->name('admincurriculum_add_process');
+    Route::get('/admincurriculum_subjects', [CurriculumController::class, 'admincurriculum_subjects'])->name('admincurriculum_subjects');
+    Route::get('/admincurriculum_edit', [CurriculumController::class, 'admincurriculum_edit'])->name('admincurriculum_edit');
+    Route::post('/admincurriculum_edit_process', [CurriculumController::class, 'admincurriculum_edit_process'])->name('admincurriculum_edit_process');
+    Route::get('/fetchTeachers', [CurriculumController::class, 'fetchTeachers'])->name('fetchTeachers');
+    Route::get('/fetchSubjects', [CurriculumController::class, 'fetchSubjects'])->name('fetchSubjects');
+
+
 
     //Admin/Sections
     Route::get('/adminsection', [SectionController::class, 'adminsection'])->name('adminSectionPage');

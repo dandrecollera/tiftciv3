@@ -6,6 +6,14 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .was-validated .form-control:valid {
+        margin-bottom: 0;
+    }
+
+    .was-validated .form-control:invalid {
+        margin-bottom: 0;
+    }
 </style>
 @endsection
 
@@ -62,13 +70,13 @@
                 <label class="form-label" for="address">Address</label>
             </div>
 
-            <label for="address" class="form-label">Status:</label>
+            {{-- <label for="address" class="form-label">Status:</label>
             <div class="input-group mb-3">
                 <select name="status" id="statusInput" class="form-select">
                     <option value="active" {{ $dbdata->status == 'active' ? 'selected' : ''}}>Active</option>
                     <option value="inactive" {{$dbdata->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
                 </select>
-            </div>
+            </div> --}}
 
             <input type="hidden" name="did" value="{{ $dbdata->id }}">
             <button type="submit" class="btn btn-primary float-end">Save</button>

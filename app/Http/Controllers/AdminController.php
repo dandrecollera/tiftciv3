@@ -83,7 +83,7 @@ class AdminController extends Controller
             1 => 'New User has been saved.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
-            4 => 'User has been deleted.',
+            4 => 'User has been updated.',
             5 => 'Image has been updated'
         ];
         $data['notif'] = 0;
@@ -229,7 +229,7 @@ class AdminController extends Controller
         }
 
         $muserid = DB::table('main_users')->insertGetId([
-            'email' => $input['email'],
+            'email' => $input['email'] . '@tiftci.org',
             'password' => md5($input['password']),
             'accounttype' => 'admin',
             'created_at' => Carbon::now()->toDateTimeString(),
@@ -285,13 +285,8 @@ class AdminController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['did']) || empty($input['email']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['did']) || empty($input['email']) || empty($input['firstname']) || empty($input['lastname'])){
             return redirect($this->default_url_adminuser.'?e=1');
-            die();
-        }
-
-        if($input['status'] != 'active' && $input['status'] != 'inactive'){
-            return redirect($this->default_url_adminuser.'?e=6');
             die();
         }
 
@@ -304,8 +299,7 @@ class AdminController extends Controller
         DB::table('main_users')
             ->where('id', $input['did'])
             ->update([
-                'email' => $input['email'],
-                'status' => $input['status'],
+                'email' => $input['email'] . '@tiftci.org',
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
@@ -494,5 +488,48 @@ class AdminController extends Controller
         return view('admin.components.adminprofile', $data);
     }
 
+    public function adminuser_archive_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_start_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if (empty($input['did'])) {
+            return redirect($this->default_url_adminuser . '?e=1&' . $qstring);
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', 'admin')
+            ->first();
+
+        if (empty($logindata)) {
+            return redirect($this->default_url_adminuser . '?e=5&' . $qstring);
+            die();
+        }
+
+        if($logindata->status == 'active'){
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => "inactive",
+                ]);
+        } else {
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => "active",
+                ]);
+        }
+
+        return redirect($this->default_url_adminuser . '?n=4&' . $qstring);
+    }
 }
 

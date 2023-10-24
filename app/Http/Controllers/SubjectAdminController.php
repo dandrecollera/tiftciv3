@@ -150,7 +150,7 @@ class SubjectAdminController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['subjectname']) || empty($input['semester'])){
+        if(empty($input['subjectname'])){
             return redirect($this->default_url.'?e=1');
             die();
         }
@@ -166,7 +166,6 @@ class SubjectAdminController extends Controller
         $subjectid = DB::table('subjects')
             ->insertGetID([
                 'subject_name' => $input['subjectname'],
-                'semester' => $input['semester'],
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -231,6 +230,44 @@ class SubjectAdminController extends Controller
         DB::table('subjects')
             ->where('id', $input['did'])
             ->delete();
+
+        return redirect($this->default_url.'?n=4&'.$qstring);
+    }
+
+    public function adminsubject_archive_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this-> default_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : ''
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url.'?e1&'.$qstring);
+            die();
+        }
+
+        $subjectstatus = DB::table('subjects')
+            ->where('id', $input['did'])
+            ->first();
+
+        if($subjectstatus->status == 'active'){
+            DB::table('subjects')
+            ->where('id', $input['did'])
+            ->update([
+                'status' => 'inactive',
+            ]);
+        } else {
+            DB::table('subjects')
+            ->where('id', $input['did'])
+            ->update([
+                'status' => 'active',
+            ]);
+        }
 
         return redirect($this->default_url.'?n=4&'.$qstring);
     }
@@ -365,4 +402,5 @@ class SubjectAdminController extends Controller
 
         return redirect($this->default_url_sub.'?n=4&'.$qstring);
     }
+
 }

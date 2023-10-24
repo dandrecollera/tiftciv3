@@ -127,10 +127,10 @@
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm dcc-delete" data-bs-toggle="modal"
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
                                     data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-trash fa-xs"></i></a>
+                                    <i class="fas fa-box-archive"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -172,17 +172,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Delete This Teacher User</div>
+                    <div>Archive This Teacher User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
-                    Please note this is unrecoverable.
+                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
@@ -220,6 +219,13 @@
         $('#Email').html(iemail);
         $('#DeleteButton').prop('href', '/adminteacher_delete_process?did='+iid+'&'+iqstring);
     });
+    $('.dcc-archive').on('click', function(){
+        var iid = $(this).data('id');
+        var iqstring = $(this).data('id');
+        var iemail = $(this).data('email');
+        $('#Email').html(iemail);
+        $('#DeleteButton').prop('href', '/adminteacher_archive_process?did='+iid+'&'+iqstring);
+    })
 });
 </script>
 

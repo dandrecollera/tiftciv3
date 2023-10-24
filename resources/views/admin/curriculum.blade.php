@@ -4,13 +4,12 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Administrator</h1>
+            <h1>Curriculums</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Admin
-            User</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Curriculum</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -43,7 +42,7 @@
                         value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <button onclick="location.href='./adminuser'" type="button" class="btn btn-dark"><i
+                    <button onclick="location.href='./admincurriculum'" type="button" class="btn btn-dark"><i
                             class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
@@ -77,7 +76,7 @@
                             @endforeach
                         </ul>
                         @if (!empty($sort) || $lpp != 25)
-                        <button onclick="location.href='./adminuser'" type="button" class="btn btn-dark"><i
+                        <button onclick="location.href='./admincurriculum'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
                     </div>
@@ -96,17 +95,12 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong></strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Email' ? 'text-primary' : '' }}"><strong>Email</strong></span>
+                                class="{{ $orderbylist[$sort]['display'] == 'Name' ? 'text-primary' : '' }}"><strong>Name</strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Last Name' ? 'text-primary' : '' }}"><strong>Last
-                                    Name</strong></span></th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'First Name' ? 'text-primary' : '' }}"><strong>First
-                                    Name</strong></span></th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}"><strong>Middle
-                                    Name</strong></span></th>
+                                class="{{ $orderbylist[$sort]['display'] == 'Year Level' ? 'text-primary' : '' }}"><strong>Year
+                                    Level</strong></span></th>
+
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
@@ -114,29 +108,26 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
-                        <th scope="row"><strong><img src="{{ asset('/storage/images/' . $dbr->photo) }}"
-                                    class="rounded-circle me-lg-0 me-2 dpcover" height="40" width="40" alt=""
-                                    loading="lazy" /></strong></th>
-                        <td>{{$dbr->email}}</td>
-                        <td>{{$dbr->lastname}}</td>
-                        <td>{{$dbr->firstname}}</td>
-                        <td>{{$dbr->middlename}}</td>
+
+                        <td>{{$dbr->id}}</td>
+                        <td>{{$dbr->name}}</td>
+                        <td>{{$dbr->yearlevel}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
-                            @if ($dbr->id == $userinfo[0] || $userinfo[0] == 1)
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
-                                @endif
-
-                                @if ($userinfo[0] == 1 && $dbr->id != 1)
-                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fas fa-box-archive fa-xs"></i></a>
-                                @endif
+                                <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-caret-down fa-xs"></i></a>
                             </div>
+                        </td>
+                    </tr>
+                    <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
+                        <td colspan="5">
+                            <iframe id="" src="/admincurriculum_subjects?sid={{$dbr->id}}" width="100%" height="500px"
+                                style="border:none;"></iframe>
                         </td>
                     </tr>
                     @endforeach
@@ -156,7 +147,7 @@
 
 <div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addeditmodalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
@@ -173,7 +164,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<div class="modal  fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -206,16 +197,16 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Admin User');
-        $('#addeditframe').attr('src', '/adminuser_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New Curriculum');
+        $('#addeditframe').attr('src', '/admincurriculum_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Admin User');
-        $('#addeditframe').attr('src', '/adminuser_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Edit This Curriculum');
+        $('#addeditframe').attr('src', '/admincurriculum_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');

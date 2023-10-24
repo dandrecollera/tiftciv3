@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Subjects extends Migration
+class Curriculum extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class Subjects extends Migration
      */
     public function up()
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('curriculums', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('subject_name');
+            $table->string('name');
+            $table->json('cstt');
+            $table->string('yearlevel');
             $table->string('status')->default('active');
-            // $table->string('semester');
-            // $table->string('strand');
-            // $table->string('yearlevel');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class Subjects extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('curriculums');
     }
 }
