@@ -123,6 +123,21 @@
                         </td>
                         <td>
                             <div class="input-group mb-3">
+                                <select name="day[]" id="" class="form-select day" required>
+                                    <option value="Monday" {{ $row['day']=='Monday' ? 'selected' : '' }}>Monday
+                                    </option>
+                                    <option value="Tuesday" {{ $row['day']=='Tuesday' ? 'selected' : '' }}>Tuesday
+                                    </option>
+                                    <option value="Wednesday" {{ $row['day']=='Wednesday' ? 'selected' : '' }}>Wednesday
+                                    </option>
+                                    <option value="Thursday" {{ $row['day']=='Thursday' ? 'selected' : '' }}>Thursday
+                                    </option>
+                                    <option value="Friday" {{ $row['day']=='Friday' ? 'selected' : '' }}>Friday</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group mb-3">
                                 <input type="time" name="starttime[]" class="form-control"
                                     value="{{ $row['starttime'] }}" required>
                                 <input type="time" name="endtime[]" class="form-control" value="{{ $row['endtime'] }}"

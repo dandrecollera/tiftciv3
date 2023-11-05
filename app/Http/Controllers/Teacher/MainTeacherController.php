@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class MainTeacherController extends Controller
 {
@@ -19,6 +20,7 @@ class MainTeacherController extends Controller
     public function __construct(Request $request) {
         $this->middleware('axuteacher');
     }
+
 
     public function teacher(Request $request){
         $data = array();
@@ -57,14 +59,98 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        $data['subjects'] = $subjects = DB::table('schedules')
-            ->where('userid', $userinfo[0])
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->orderBy('subjectid', 'asc')
+        // $data['subjects'] = $subjects = DB::table('schedules')
+        //     ->where('userid', $userinfo[0])
+        //     ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
+        //     ->orderBy('subjectid', 'asc')
+        //     ->get()
+        //     ->toArray();
+
+        $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+        $data['subjects'] = $subjects = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $latestyear->schoolyear)
             ->get()
             ->toArray();
 
+        $selectedTeacherId = $userinfo[0];
+        $compiledCsttData = [];
+
+        foreach ($subjects as $subject) {
+            // Decode the cstt JSON string to an array
+            $csttArray = json_decode($subject->cstt, true);
+
+            // Filter out only the entries where teacherid is 6
+            $filteredCsttData = array_filter($csttArray, function ($item) use ($selectedTeacherId) {
+                return $item['teacherid'] == $selectedTeacherId;
+            });
+
+            // Add the filtered CSTT data to the compiled array
+            foreach ($filteredCsttData as $csttItem) {
+                // Move the 'id' key to be part of the 'cstt' array
+                $csttItem['curriculumid'] = $subject->id;
+                $csttItem['section'] = $subject->name;
+                $compiledCsttData[] = $csttItem;
+            }
+        }
+
+        $data['compiledCsttData'] = $compiledCsttData;
+
+        // dd($compiledCsttData);
+
         return view('teacher.grades', $data);
+    }
+
+    public function fetchYearSubject(Request $request){
+        $query = $request->query();
+        $userinfo = $request->get('userinfo');
+
+
+
+        $data['subjects'] = $subjects = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $query['schoolyear'])
+            ->get()
+            ->toArray();
+
+        $selectedTeacherId = $userinfo[0];
+        $compiledCsttData = [];
+
+        foreach ($subjects as $subject) {
+            // Decode the cstt JSON string to an array
+            $csttArray = json_decode($subject->cstt, true);
+
+            // Filter out only the entries where teacherid is 6
+            $filteredCsttData = array_filter($csttArray, function ($item) use ($selectedTeacherId) {
+                return $item['teacherid'] == $selectedTeacherId;
+            });
+
+            // Add the filtered CSTT data to the compiled array
+            foreach ($filteredCsttData as $csttItem) {
+                // Move the 'id' key to be part of the 'cstt' array
+                $csttItem['curriculumid'] = $subject->id;
+                $csttItem['section'] = $subject->name;
+                $compiledCsttData[] = $csttItem;
+            }
+        }
+
+        $data['compiledCsttData'] = $compiledCsttData;
+
+        return response()->json($data['compiledCsttData']);
+        dd($data['compiledCsttData']);
+
+    }
+
+    public function getSubjectName(Request $request){
+        $query = $request->query();
+        $subject = DB::table('subjects')
+        ->where('id', $query['subjectid'])
+        ->first();
+
+        return response()->json(['subject_name' => $subject->subject_name]);
     }
 
     public function section(Request $request){
@@ -279,20 +365,49 @@ class MainTeacherController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
+        // dd($userinfo);
 
-        $data['sections'] = $sections = DB::table('schedules')
-            ->where('userid', $userinfo[0])
-            ->orderBy('sectionid', 'asc')
-            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
-            ->select(
-                'schedules.sectionid',
-                'sections.section_name',
-            )
+        $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+
+        $data['sections'] = $sections = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->orderBy('name', 'asc')
+            ->where('schoolyear', $latestyear->schoolyear)
             ->get()
             ->toArray();
 
+        // dd($sections);
+
+        // $data['sections'] = $sections = DB::table('schedules')
+        //     ->where('userid', $userinfo[0])
+        //     ->orderBy('sectionid', 'asc')
+        //     ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
+        //     ->select(
+        //         'schedules.sectionid',
+        //         'sections.section_name',
+        //     )
+        //     ->get()
+        //     ->toArray();
+
         return view('teacher.studentlist', $data);
 
+    }
+
+    public function getStudentSection(Request $request){
+        $query = $request->query();
+        $userinfo = $request->get('userinfo');
+
+        $sections = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->orderBy('name', 'asc')
+            ->where('schoolyear', $query['schoolyear'])
+            ->get()
+            ->toArray();
+
+        return response()->json($sections);
     }
 
     public function students(Request $request){
@@ -301,7 +416,7 @@ class MainTeacherController extends Controller
         $query = $request->query();
         $sectionid = $query['sid'];
 
-        $data['section'] = $section = DB::table('sections')
+        $data['section'] = $section = DB::table('curriculums')
             ->where('id', $sectionid)
             ->first();
 
@@ -315,6 +430,29 @@ class MainTeacherController extends Controller
 
         // dd($dbresult);
         return view('teacher.students', $data);
+    }
+
+    public function studentlistpdf(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+        $sectionid = $query['id'];
+
+        $data['section'] = $section = DB::table('curriculums')
+            ->where('id', $sectionid)
+            ->first();
+
+        $data['dbresult'] = $dbresult = DB::table('students')
+            ->where('sectionid', $sectionid)
+            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
+            ->leftjoin('main_users', 'main_users.id', '=', 'students.userid')
+            ->orderBy('lastname', 'asc')
+            ->get()
+            ->toArray();
+
+        $pdf = PDF::loadview('teacher.studentlistpdf', $data);
+
+        return $pdf->stream('studentlist.pdf');
     }
 
     public function teacherprofile(Request $request){

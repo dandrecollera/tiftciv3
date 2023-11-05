@@ -204,6 +204,7 @@ class CurriculumController extends Controller
             $csttData[] = [
                 'subjectid' => $input['subject'][$i],
                 'teacherid' => $input['teacher'][$i],
+                'day' => $input['day'][$i],
                 'starttime' => $input['starttime'][$i],
                 'endtime' => $input['endtime'][$i],
             ];
@@ -254,6 +255,7 @@ class CurriculumController extends Controller
             $csttData[] = [
                 'subjectid' => $input['subject'][$i],
                 'teacherid' => $input['teacher'][$i],
+                'day' => $input['day'][$i],
                 'starttime' => $input['starttime'][$i],
                 'endtime' => $input['endtime'][$i],
             ];

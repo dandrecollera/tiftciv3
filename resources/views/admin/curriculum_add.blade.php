@@ -92,10 +92,22 @@
                         </td>
                         <td>
                             <div class="input-group mb-3">
+                                <select name="day[]" id="" class="form-select day" required>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group mb-3">
                                 <input type="time" name="starttime[]" class="form-control" required>
                                 <input type="time" name="endtime[]" class="form-control" required>
                             </div>
                         </td>
+
                         <td>
                             <a class="btn btn-danger btn-sm"><i class="fa-solid fa-trash fa-xs"></i></a>
                         </td>

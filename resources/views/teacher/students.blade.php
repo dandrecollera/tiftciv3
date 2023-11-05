@@ -35,7 +35,11 @@
 
 @section('content')
 <div class="py-3 px-5">
-    <h4>{{ $section->section_name }} Students</h4>
+    <a href="studentlistpdf?id={{$section->id}}" class="btn btn-dark shadow-sm btn-sm float-end"
+        style="margin-right: 10px;" target="_blank">Student
+        List</a>
+
+    <h4>{{ $section->name }} Students</h4>
     <hr>
     <div class="row fs-6">
         <div class="col overflow-scroll scrollable-container mb-2">

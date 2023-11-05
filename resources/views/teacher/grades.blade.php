@@ -1,30 +1,87 @@
 @extends('teacher.components.layout')
 
 @section('content')
-<div class="row">
-    <h1 class="">Grading</h1>
-    <h5 class="mb-3">Select a subject to see the list of sections</h5>
+<h1 class="">Grading Portal</h1>
+<select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
+</select>
+
+<h5 class="mb-3">Select a Section to see list of students</h5>
+<div class="row" id="card-container">
+
+
+    @foreach ($compiledCsttData as $subject)
+
     @php
-    $lastsubjectid = 999
+    // dd($subject);
+
+    $subjectname = DB::table('subjects')
+    ->where('id', $subject['subjectid'])
+    ->first();
     @endphp
-    @foreach ($subjects as $subject)
-    @if ($subject->subjectid != $lastsubjectid)
     <div class="col-12 col-lg-4 mb-3">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">{{$subject->subject_name}}</h6>
-                <a href="/section?subject={{$subject->subjectid}}">
-                    <button type="button" class="btn btn-outline-primary btn-sm">Show Sections</button>
+                <h6 class="card-title"><strong>{{$subject['section']}}</strong></h6>
+                <h6 class="card-title">{{$subjectname->subject_name}}</h6>
+                <a href="/section?subject={{$subject['subjectid']}}&section={{$subject['curriculumid']}}">
+                    <button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>
                 </a>
             </div>
         </div>
     </div>
-    @php
-    $lastsubjectid = $subject->subjectid;
-    @endphp
-    @endif
-
     @endforeach
+
+
 
 </div>
 @endsection
+
+@push('jsscripts')
+<script>
+    $(document).ready(function(){
+        var currentYear = new Date().getFullYear();
+
+        for (var year = currentYear + 1; year >= 2020; year--) {
+            $('#schoolyear').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
+        }
+
+        $('#schoolyear').change(function(){
+            let selectedSchoolYear = $(this).val();
+
+            $.get('/fetchYearSubject', {schoolyear: selectedSchoolYear}, function(data){
+                updatePageContent(data);
+            });
+        });
+
+
+        function updatePageContent(updatedData) {
+        // Clear existing content
+        $('#card-container').empty();
+
+        // Append the updated content
+        $.each(updatedData, function (index, subject) {
+            // Fetch subject name using AJAX
+            $.get('/getSubjectName', { subjectid: subject.subjectid }, function (subjectData) {
+                // Append the updated content to the page
+                var newContent =
+                    '<div class="col-12 col-lg-4 mb-3">' +
+                    '<div class="card">' +
+                    '<div class="card-body">' +
+                        '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
+                    '<h6 class="card-title">' + subjectData.subject_name + '</h6>' +
+                    '<a href="/section?subject=' + subject.subjectid + '&section='+ subject.curriculumid +'">' +
+                    '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+
+                // Append the new content to the row
+                $('#card-container').append(newContent);
+            });
+        });
+    }
+
+    })
+</script>
+@endpush
