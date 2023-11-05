@@ -25,7 +25,7 @@ class Tuition extends Migration
             $table->timestamps();
 
             $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
-            $table->foreign('yearid')->references('id')->on('schoolyears')->onDelete('cascade');
+            $table->foreign('yearid')->references('id')->on('curriculums')->onDelete('cascade');
         });
 
     }

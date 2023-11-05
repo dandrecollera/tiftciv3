@@ -58,15 +58,15 @@ class AdminTransactionController extends Controller
 
         $data['getSchoolYear'] = $getSchoolYear = DB::table('tuition')
             ->where('userid', $query['sid'])
-            ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
             ->get()
             ->toArray();
 
         if(!empty($query['year'])){
             $data['dbresult'] = $transaction = DB::table('tuition')
                 ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
-                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
-                ->where('school_year', $query['year'])
+                ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
+                ->where('curriculums.schoolyear', $query['year'])
                 ->where('tuition.userid', $query['sid'])
                 ->select(
                     'main_users_details.firstname',
@@ -77,20 +77,20 @@ class AdminTransactionController extends Controller
                     'tuition.voucher',
                     'tuition.tuition',
                     'tuition.registration',
-                    'schoolyears.school_year',
+                    'curriculums.schoolyear',
                 )
                 ->first();
         } else {
             $recentYear = DB::table('tuition')
                 ->where('userid', $query['sid'])
-                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
-                ->orderBy('schoolyears.id', 'desc')
+                ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
+                ->orderBy('curriculums.id', 'desc')
                 ->first();
 
 
             $data['dbresult'] = $transaction = DB::table('tuition')
                 ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'tuition.userid')
-                ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+                ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
                 ->where('yearid', $recentYear->id)
                 ->where('tuition.userid', $query['sid'])
                 ->select(
@@ -102,7 +102,7 @@ class AdminTransactionController extends Controller
                     'tuition.voucher',
                     'tuition.tuition',
                     'tuition.registration',
-                    'schoolyears.school_year',
+                    'curriculums.schoolyear',
                 )
                 ->first();
         }
@@ -124,8 +124,8 @@ class AdminTransactionController extends Controller
             die();
         }
 
-        $getYear = DB::table('schoolyears')
-            ->where('school_year', $input['dyear'])
+        $getYear = DB::table('curriculums')
+            ->where('schoolyear', $input['dyear'])
             ->first();
 
         $tuitionamount = DB::table('tuition')

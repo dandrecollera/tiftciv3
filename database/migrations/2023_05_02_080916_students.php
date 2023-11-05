@@ -20,7 +20,7 @@ class Students extends Migration
             $table->timestamps();
 
             $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
-            $table->foreign('sectionid')->references('id')->on('sections')->onDelete('cascade');
+            $table->foreign('sectionid')->references('id')->on('curriculums')->onDelete('cascade');
         });
 
     }

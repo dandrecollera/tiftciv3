@@ -49,7 +49,7 @@ class AdminStudentController extends Controller
             1 => 'New Student has been saved.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
-            4 => 'Student has been deleted.',
+            4 => 'Student has been updated.',
             5 => 'Image has been updated',
             6 => 'Tuition has been updated.',
             7 => 'Section has been changed',
@@ -85,7 +85,7 @@ class AdminStudentController extends Controller
             ['display'=>'Last Name', 'field'=>'main_users_details.lastname' ],
             ['display'=>'First Name', 'field'=>'main_users_details.firstname' ],
             ['display'=>'Middle Name', 'field'=>'main_users_details.middlename' ],
-            ['display'=>'Section', 'field'=>'sections.section_name' ],
+            ['display'=>'Section', 'field'=>'curriculums.name' ],
         ];
         if (!empty($query['sort'])) {
             $data['sort'] = $qstring['sort'] = $query['sort'];
@@ -100,13 +100,13 @@ class AdminStudentController extends Controller
         $countdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->count();
         $dbdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->select(
                 'main_users.*',
@@ -117,16 +117,16 @@ class AdminStudentController extends Controller
                 'main_users_details.address',
                 'main_users_details.lrn',
                 'main_users_details.photo',
-                'sections.section_name',
-                'sections.strand',
-                'sections.yearlevel',
+                'curriculums.name',
+                'curriculums.strand',
+                'curriculums.yearlevel',
             );
 
         if(!empty($keyword)){
             $countdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->where('main_users.email', 'like', "%$keyword%")
             ->orwhere('main_users_details.firstname', 'like', "%$keyword%")
@@ -134,7 +134,7 @@ class AdminStudentController extends Controller
             ->orwhere('main_users_details.lastname', 'like', "%$keyword%")
             ->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")
             ->orwhere('main_users_details.address', 'like', "%$keyword%")
-            ->orwhere('sections.section_name', 'like', "%$keyword%")
+            ->orwhere('curriculums.name', 'like', "%$keyword%")
             ->count();
 
             $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'student');
@@ -302,10 +302,15 @@ class AdminStudentController extends Controller
             ->orderBy('school_year', 'desc')
             ->first();
 
+        $latestenrolled = DB::table('students')
+            ->where('userid', $muserid)
+            ->orderBy('id', 'desc')
+            ->first();
+
         DB::table('tuition')
             ->insert([
                 'userid' => $muserid,
-                'yearid' => $latestyear->id,
+                'yearid' => $latestenrolled->sectionid,
                 'paymenttype' => $input['paymenttype'],
                 'paymentmethod' => $input['paymentmethod'],
                 'voucher' => $voucher,
@@ -354,10 +359,12 @@ class AdminStudentController extends Controller
                         'updated_at' => Carbon::now()->toDateTimeString()
                     ]);
 
-                $getSectionID = DB::table('sections')
+                $getSectionID = DB::table('curriculums')
                     ->where('strand', $data[6])
-                    ->where('yearlevel', 11)
-                    ->where('section_name', $data[7])
+                    ->where('semester', $data[7])
+                    ->where('schoolyear', $data[8])
+                    ->where('yearlevel', $data[9])
+                    ->where('name', $data[10])
                     ->first();
 
                 DB::table('students')
@@ -373,7 +380,7 @@ class AdminStudentController extends Controller
                         'userid' => $muserid,
                         'lrn' => $data[5],
                         'strand' => $data[6],
-                        'yearlevel' => 11,
+                        'yearlevel' => $data[9],
                         'firstname' => $data[0],
                         'middlename' => !empty($data[1]) ? $data[1] : '',
                         'lastname' => $data[2],
@@ -386,11 +393,11 @@ class AdminStudentController extends Controller
                 $voucher = 0;
                 $tuition = 0;
                 $registration = 0;
-                if($data[8] == 'public'){
+                if($data[11] == 'public'){
                     $voucher = 17500.00;
                     $tuition = 0.00;
                     $registration = 1000.00;
-                } else if($data[8] == 'semi'){
+                } else if($data[11] == 'semi'){
                     $voucher = 14000.00;
                     $tuition = 3500.00;
                     $registration = 1000.00;
@@ -400,7 +407,7 @@ class AdminStudentController extends Controller
                     $registration = 1000.00;
                 }
 
-                if($data[9] == 'full'){
+                if($data[12] == 'full'){
                     $voucher = 0;
                     $tuition = 0;
                     $registration = 0;
@@ -410,12 +417,17 @@ class AdminStudentController extends Controller
                     ->orderBy('school_year', 'desc')
                     ->first();
 
+                $latestenrolled = DB::table('students')
+                    ->where('userid', $muserid)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
                 DB::table('tuition')
                 ->insert([
                     'userid' => $muserid,
-                    'yearid' => $latestyear->id,
-                    'paymenttype' => $data[8],
-                    'paymentmethod' => $data[9],
+                    'yearid' => $latestenrolled->sectionid,
+                    'paymenttype' => $data[11],
+                    'paymentmethod' => $data[12],
                     'voucher' => $voucher,
                     'tuition' => $tuition,
                     'registration' => $registration,
@@ -442,7 +454,7 @@ class AdminStudentController extends Controller
         $data['dbdata'] = $dbdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
             ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->where('main_users.id', $query['id'])
             ->select(
@@ -454,13 +466,15 @@ class AdminStudentController extends Controller
                 'main_users_details.address',
                 'main_users_details.photo',
                 'main_users_details.lrn',
-                'sections.section_name',
-                'sections.strand',
-                'sections.yearlevel',
+                'curriculums.name',
+                'curriculums.strand',
+                'curriculums.yearlevel',
+                'curriculums.semester',
+                'curriculums.schoolyear',
             )
             ->first();
 
-        $data['sections'] = $sections = DB::table('sections')
+        $data['sections'] = $sections = DB::table('curriculums')
             ->where('strand', $dbdata->strand)
             ->where('yearlevel', $dbdata->yearlevel)
             ->get()
@@ -671,17 +685,62 @@ class AdminStudentController extends Controller
     }
 
 
-    public function getSections($yearlevel, $strand){
+    public function getSections($yearlevel, $strand, $schoolyear, $semester){
 
-        Log::debug("yearlevel: $yearlevel");
-        Log::debug("strand: $strand");
+        // dd('test');
 
-        $sections = DB::table('sections')
+        $sections = DB::table('curriculums')
         ->where('yearlevel', $yearlevel)
         ->where('strand', $strand)
-        ->pluck('section_name', 'id');
+        ->where('schoolyear', $schoolyear)
+        ->where('semester', $semester)
+        ->pluck('name', 'id');
 
         return response()->json($sections);
+    }
+
+    public function adminstudent_archive_process(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_start_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect('/adminstudent?e=1%'.$qstring);
+            die();
+        }
+
+        $logindata = DB::table('main_users')
+            ->where('id', $input['did'])
+            ->where('accounttype', 'student')
+            ->first();
+
+        if(empty($logindata)){
+            return redirect('/adminstudent?e=5&'.$qstring);
+            die();
+        }
+
+        if($logindata->status == 'active'){
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'inactive',
+                ]);
+        } else {
+            DB::table('main_users')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'active',
+                ]);
+        }
+
+        return redirect('/adminstudent?n=4&'.$qstring);
     }
 
 }

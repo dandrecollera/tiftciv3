@@ -128,7 +128,7 @@
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
-                        <td>{{$dbr->section_name}}</td>
+                        <td>{{$dbr->name}}</td>
                         <td>{{$dbr->lrn}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
@@ -196,12 +196,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
-                    Please note this is unrecoverable.
+                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-danger" id="DeleteButton">DELETE</a>
+                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>

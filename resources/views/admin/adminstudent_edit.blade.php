@@ -109,6 +109,21 @@
                 </select>
             </div>
 
+            <label for="schoolyear" class="form-label">School Year:</label>
+            <div class="input-group mb-2">
+                <select name="schoolyear" id="schoolyear" class="form-select">
+
+                </select>
+            </div>
+
+            <label for="semester" class="form-label">Semester:</label>
+            <div class="input-group mb-2">
+                <select name="semester" id="semester" class="form-select">
+                    <option value="1st" {{ $dbdata->semester == '1st' ? 'selected' : ''}}>1st</option>
+                    <option value="2nd" {{ $dbdata->semester == '2nd' ? 'selected' : ''}}>2nd</option>
+                </select>
+            </div>
+
             @php
             $current = DB::table('students')
             ->where('userid', $dbdata->id)
@@ -122,7 +137,7 @@
             <div class="input-group mb-3">
                 <select name="section" id="section" class="form-select">
                     @foreach ($sections as $section)
-                    <option value="{{$section->id}}">{{$section->section_name}}</option>
+                    <option value="{{$section->id}}">{{$section->name}}</option>
                     @endforeach
                     {{-- <option value="{{$current->id}}">{{ $current->section_name }}</option> --}}
                 </select>
@@ -201,6 +216,15 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+    var currentYear = new Date().getFullYear();
+
+    for (var year = currentYear + 1; year >= 2020; year--) {
+    var value = year + '-' + (year + 1);
+    var selected = value === '{{$dbdata->schoolyear}}' ? 'selected' : '';
+
+    $('#schoolyear').append('<option value="' + value + '" ' + selected + '>' + value + '</option>');
+}
+
     $('#show1').on('click', function() {
         if($('#password').attr('type') == "text"){
             $('#password').attr('type', 'password');
@@ -223,11 +247,13 @@
             $('#eye2').removeClass( "fa-eye-slash" );
         }
     });
-    $('#yearlevel, #strand').change(function() {
+    $('#yearlevel, #strand, #schoolyear, #semester').change(function() {
         $('#sectionhide').removeAttr('hidden');
         var value1 = $('#yearlevel').val();
         var value2 = $('#strand').val();
-        $.get('/getSections/' + encodeURIComponent(value1) + '/' + encodeURIComponent(value2), function(data) {
+        var value3 = $('#schoolyear').val();
+        var value4 = $('#semester').val();
+        $.get('/getSections/' + encodeURIComponent(value1) + '/' + encodeURIComponent(value2) + '/' + encodeURIComponent(value3) + '/' + encodeURIComponent(value4), function(data) {
             var options = '';
             $.each(data, function(key, value) {
                 options += '<option value="' + key + '">' + value  +'</option>';

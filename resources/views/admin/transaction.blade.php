@@ -68,13 +68,12 @@
 
         @foreach ($getSchoolYear as $schoolyear)
         <a class="btn btn-dark shadow-sm btn-sm"
-            href="{{ $currentUrl }}?sid={{ $query }}&year={{ $schoolyear->school_year }}">{{
-            $schoolyear->school_year }}</a>
+            href="{{ $currentUrl }}?sid={{ $query }}&year={{ $schoolyear->schoolyear }}">{{
+            $schoolyear->schoolyear }}</a>
         @endforeach
     </div>
 
-
-    <h3>{{ $dbresult->school_year }}</h3>
+    <h3>{{ $dbresult->schoolyear }}</h3>
     <h6>{{ $dbresult->firstname }} {{ $dbresult->middlename }} {{ $dbresult->lastname }}</h6>
     <hr>
     <div class="row fs-6">
@@ -103,7 +102,7 @@
                     'Enter Amount' :  'Paid' }}" {{ $dbresult->registration != 0.00 ? "" : ' readonly' }}>
                 </div>
 
-                <input type="hidden" name="dyear" value="{{$dbresult->school_year}}">
+                <input type="hidden" name="dyear" value="{{$dbresult->schoolyear}}">
                 <input type="hidden" name="did" value="{{$qsid}}">
                 <button type="submit" id="addbutton" class="btn btn-dark shadow-sm btn-sm  float-end"
                     data-bs-toggle="modal" data-bs-target="#addeditmodal">Confirm</button>

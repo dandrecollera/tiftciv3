@@ -431,7 +431,7 @@ class TeacherController extends Controller
         ]);
 
         if(empty($input['did'])){
-            return redirect($this->default_url.'?e1&'.$qstring);
+            return redirect($this->default_url.'?e=1&'.$qstring);
             die();
         }
 
