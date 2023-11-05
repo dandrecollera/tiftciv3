@@ -14,63 +14,73 @@ class MainUsersTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('main_users')->delete();
-
+        
         \DB::table('main_users')->insert(array (
-            0 =>
+            0 => 
             array (
-                'id' => 1,
-                'email' => 'masteradmin@tiftci.org',
-                'password' => 'c8550856c4834da6c1ca3251f5fe264f',
                 'accounttype' => 'admin',
-                'status' => 'active',
                 'created_at' => '2023-04-23 18:18:31',
+                'email' => 'masteradmin@tiftci.org',
+                'id' => 1,
+                'password' => '482c811da5d5b4bc6d497ffa98491e38',
+                'status' => 'active',
                 'updated_at' => '2023-04-23 18:18:31',
             ),
-            1 =>
+            1 => 
             array (
-                'id' => 2,
-                'email' => 'dandrecollera-admin@tiftci.org',
-                'password' => '5f1e0eb76cb20a0da22764ca38ecc978',
                 'accounttype' => 'admin',
-                'status' => 'active',
                 'created_at' => '2023-04-25 07:24:24',
+                'email' => 'dandrecollera-admin@tiftci.org',
+                'id' => 2,
+                'password' => '5f1e0eb76cb20a0da22764ca38ecc978',
+                'status' => 'active',
                 'updated_at' => '2023-04-25 07:24:24',
             ),
-            2 =>
+            2 => 
             array (
-                'id' => 3,
+                'accounttype' => 'admin',
+                'created_at' => '2023-04-25 07:25:02',
                 'email' => 'jaymielyncruz-admin@tiftci.org',
+                'id' => 3,
                 'password' => '0192023a7bbd73250516f069df18b500',
-                'accounttype' => 'admin',
                 'status' => 'active',
-                'created_at' => '2023-04-25 07:25:02',
                 'updated_at' => '2023-04-25 07:25:02',
             ),
-            3 =>
+            3 => 
             array (
-                'id' => 4,
+                'accounttype' => 'admin',
+                'created_at' => '2023-04-25 07:25:02',
                 'email' => 'ralphextra-admin@tiftci.org',
+                'id' => 4,
                 'password' => '0192023a7bbd73250516f069df18b500',
-                'accounttype' => 'admin',
                 'status' => 'active',
-                'created_at' => '2023-04-25 07:25:02',
                 'updated_at' => '2023-04-25 07:25:02',
             ),
-            4 =>
+            4 => 
             array (
-                'id' => 5,
-                'email' => 'alapostadero-admin@tiftci.org',
-                'password' => '0192023a7bbd73250516f069df18b500',
                 'accounttype' => 'admin',
-                'status' => 'active',
                 'created_at' => '2023-04-25 07:25:02',
+                'email' => 'alapostadero-admin@tiftci.org',
+                'id' => 5,
+                'password' => '0192023a7bbd73250516f069df18b500',
+                'status' => 'active',
                 'updated_at' => '2023-04-25 07:25:02',
+            ),
+            5 => 
+            array (
+                'accounttype' => 'teacher',
+                'created_at' => '2023-11-05 09:55:19',
+                'email' => 'testteacher@tiftci.org',
+                'id' => 6,
+                'password' => '482c811da5d5b4bc6d497ffa98491e38',
+                'status' => 'active',
+                'updated_at' => '2023-11-05 09:55:19',
             ),
         ));
-
-
+        
+        
     }
 }

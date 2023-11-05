@@ -30,10 +30,38 @@
                 <label for="name" class="form-label">Curriculum Name:</label>
             </div>
 
-            <label for="address" class="form-label">Year Level:</label>
-            <div class="input-group mb-3">
-                <select name="yearlevel" id="yearlevel" class="form-select">
+            <label for="address" class="form-label">School Year:</label>
+            <div class="input-group mb-2">
+                <select name="schoolyear" id="schoolyear" class="form-select">
 
+                </select>
+            </div>
+
+            <label for="yearlevel" class="form-label">Year Level:</label>
+            <div class="input-group mb-2">
+                <select name="yearlevel" id="yearlevel" class="form-select">
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+
+                </select>
+            </div>
+
+
+            <label for="strand" class="form-label">Strand:</label>
+            <div class="input-group mb-2">
+                <select name="strand" id="strand" class="form-select">
+                    <option value="ABM">ABM</option>
+                    <option value="HE">HE</option>
+                    <option value="ICT">ICT</option>
+                    <option value="GAS">GAS</option>
+                </select>
+            </div>
+
+            <label for="semester" class="form-label">Semester:</label>
+            <div class="input-group mb-4">
+                <select name="semester" id="semester" class="form-select">
+                    <option value="1st">1st</option>
+                    <option value="2nd">2nd</option>
                 </select>
             </div>
 
@@ -97,7 +125,7 @@
         var currentYear = new Date().getFullYear();
 
         for (var year = currentYear + 1; year >= 2020; year--) {
-            $('#yearlevel').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
+            $('#schoolyear').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
         }
 
         $('#addRow').click(function () {

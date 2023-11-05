@@ -119,6 +119,13 @@
             </div>
 
 
+            <label for="yearlevel" class="form-label">Year Level:</label>
+            <div class="input-group mb-2">
+                <select name="yearlevel" id="yearlevel" class="form-select">
+
+                </select>
+            </div>
+
             <div id="sectionhide" hidden>
                 <label for="section" class="form-label">Section:</label>
                 <div class="input-group mb-3">

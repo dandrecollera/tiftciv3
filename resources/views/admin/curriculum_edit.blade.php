@@ -30,11 +30,39 @@
                 <label for="name" class="form-label">Curriculum Name:</label>
             </div>
 
-            <label for="address" class="form-label">Year Level:</label>
+            <label for="address" class="form-label">School Year:</label>
             <div class="input-group mb-3">
-                <select name="yearlevel" id="yearlevel" class="form-select">
+                <select name="schoolyear" id="schoolyear" class="form-select">
                 </select>
             </div>
+
+            <label for="semester" class="form-label">Year Level:</label>
+            <div class="input-group mb-4">
+                <select name="yearlevel" id="yearlevel" class="form-select">
+                    <option value="11" {{$curriculum->yearlevel == "11" ? 'selected' : ''}}>11</option>
+                    <option value="12" {{$curriculum->yearlevel == "12" ? 'selected' : ''}}>12</option>
+                </select>
+            </div>
+
+            <label for="strand" class="form-label">Strand:</label>
+            <div class="input-group mb-2">
+                <select name="strand" id="strand" class="form-select">
+                    <option value="ABM" {{$curriculum->strand == "ABM" ? 'selected' : ''}}>ABM</option>
+                    <option value="HE" {{$curriculum->strand == "HE" ? 'selected' : ''}}>HE</option>
+                    <option value="ICT" {{$curriculum->strand == "ICT" ? 'selected' : ''}}>ICT</option>
+                    <option value="GAS" {{$curriculum->strand == "GAS" ? 'selected' : ''}}>GAS</option>
+                </select>
+            </div>
+
+            <label for="semester" class="form-label">Semester:</label>
+            <div class="input-group mb-4">
+                <select name="semester" id="semester" class="form-select">
+                    <option value="1st" {{$curriculum->semester == "1st" ? 'selected' : ''}}>1st</option>
+                    <option value="2nd" {{$curriculum->semester == "2nd" ? 'selected' : ''}}>2nd</option>
+                </select>
+            </div>
+
+
 
             <h3>Subjects</h3>
 
@@ -133,8 +161,11 @@
         var currentYear = new Date().getFullYear();
 
         for (var year = currentYear + 1; year >= 2020; year--) {
-            $('#yearlevel').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
-        }
+    var value = year + '-' + (year + 1);
+    var selected = value === '{{$curriculum->schoolyear}}' ? 'selected' : '';
+
+    $('#schoolyear').append('<option value="' + value + '" ' + selected + '>' + value + '</option>');
+}
 
         $('#addRow').click(function () {
             var newRow = $('#curriculumTable tbody tr:first').clone();

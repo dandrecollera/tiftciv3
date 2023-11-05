@@ -118,6 +118,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/admincurriculum_edit_process', [CurriculumController::class, 'admincurriculum_edit_process'])->name('admincurriculum_edit_process');
     Route::get('/fetchTeachers', [CurriculumController::class, 'fetchTeachers'])->name('fetchTeachers');
     Route::get('/fetchSubjects', [CurriculumController::class, 'fetchSubjects'])->name('fetchSubjects');
+    Route::get('/admincurriculum_archive', [CurriculumController::class, 'admincurriculum_archive'])->name('admincurriculum_archive');
 
 
 

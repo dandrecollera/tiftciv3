@@ -97,6 +97,12 @@
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Name' ? 'text-primary' : '' }}"><strong>Name</strong></span>
                         </th>
+                        <th scope="col"><strong>Strand</strong></th>
+                        <th scope="col"><strong>Semester</strong></th>
+                        <th scope="col"
+                            class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}">
+                            <strong>School Year</strong>
+                        </th>
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Year Level' ? 'text-primary' : '' }}"><strong>Year
                                     Level</strong></span></th>
@@ -111,6 +117,9 @@
 
                         <td>{{$dbr->id}}</td>
                         <td>{{$dbr->name}}</td>
+                        <td>{{$dbr->strand}}</td>
+                        <td>{{$dbr->semester}}</td>
+                        <td>{{$dbr->schoolyear}}</td>
                         <td>{{$dbr->yearlevel}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
@@ -121,11 +130,15 @@
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-caret-down fa-xs"></i></a>
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
+                                    data-email="{{$dbr->name}}" data-year="{{$dbr->yearlevel}}">
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="5">
+                        <td colspan="8">
                             <iframe id="" src="/admincurriculum_subjects?sid={{$dbr->id}}" width="100%" height="500px"
                                 style="border:none;"></iframe>
                         </td>
@@ -169,7 +182,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Archive This Admin User</div>
+                    <div>Archive This Curriculum</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -178,7 +191,7 @@
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-danger" id="DeleteButton">Archive</a>
+                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
@@ -214,9 +227,10 @@
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
+        var iyear = $(this).data('year');
         console.log(iid);
-        $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminuser_archive_process?did='+iid+'&'+iqstring);
+        $('#Email').html(iemail + ':' + iyear);
+        $('#DeleteButton').prop('href', '/admincurriculum_archive?did='+iid+'&'+iqstring);
     });
 });
 

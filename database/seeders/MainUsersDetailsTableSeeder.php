@@ -14,83 +14,109 @@ class MainUsersDetailsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('main_users_details')->delete();
-
+        
         \DB::table('main_users_details')->insert(array (
-            0 =>
+            0 => 
             array (
-                'id' => 1,
-                'userid' => 1,
-                'firstname' => 'Master Admin',
-                'middlename' => 'Master',
-                'lastname' => 'Admin',
-                'mobilenumber' => '12345678912',
                 'address' => 'Address Admin',
-                'lrn' => NULL,
-                'photo' => '1.png',
                 'created_at' => '2023-04-23 18:19:09',
+                'firstname' => 'Master Admin',
+                'id' => 1,
+                'lastname' => 'Admin',
+                'lrn' => NULL,
+                'middlename' => 'Master',
+                'mobilenumber' => '12345678912',
+                'photo' => '1.png',
+                'strand' => NULL,
                 'updated_at' => '2023-04-23 18:19:09',
+                'userid' => 1,
+                'yearlevel' => NULL,
             ),
-            1 =>
+            1 => 
             array (
-                'id' => 2,
-                'userid' => 2,
-                'firstname' => 'Dandre Mitchel',
-                'middlename' => 'Ranes',
-                'lastname' => 'Collera',
-                'mobilenumber' => '09761816840',
                 'address' => 'Interior Lapu Lapu St. Tanay Rizal',
-                'lrn' => NULL,
-                'photo' => '2.jpg',
                 'created_at' => '2023-04-25 07:24:24',
+                'firstname' => 'Dandre Mitchel',
+                'id' => 2,
+                'lastname' => 'Collera',
+                'lrn' => NULL,
+                'middlename' => 'Ranes',
+                'mobilenumber' => '09761816840',
+                'photo' => '2.jpg',
+                'strand' => NULL,
                 'updated_at' => '2023-04-25 07:24:24',
+                'userid' => 2,
+                'yearlevel' => NULL,
             ),
-            2 =>
+            2 => 
             array (
-                'id' => 3,
-                'userid' => 3,
-                'firstname' => 'Jaymielyn',
-                'middlename' => '',
-                'lastname' => 'Cruz',
-                'mobilenumber' => '',
                 'address' => '',
-                'lrn' => NULL,
-                'photo' => '3.jpg',
                 'created_at' => '2023-04-25 07:25:02',
+                'firstname' => 'Jaymielyn',
+                'id' => 3,
+                'lastname' => 'Cruz',
+                'lrn' => NULL,
+                'middlename' => '',
+                'mobilenumber' => '',
+                'photo' => '3.jpg',
+                'strand' => NULL,
                 'updated_at' => '2023-04-25 07:25:02',
+                'userid' => 3,
+                'yearlevel' => NULL,
             ),
-            3 =>
+            3 => 
             array (
-                'id' => 4,
-                'userid' => 4,
-                'firstname' => 'Ralph Vincent',
-                'middlename' => '',
-                'lastname' => 'Extra',
-                'mobilenumber' => '',
                 'address' => '',
-                'lrn' => NULL,
-                'photo' => '4.jpg',
                 'created_at' => '2023-04-25 07:25:38',
-                'updated_at' => '2023-04-25 07:25:38',
-            ),
-            4 =>
-            array (
-                'id' => 5,
-                'userid' => 5,
-                'firstname' => 'Al Valle',
-                'middlename' => '',
-                'lastname' => 'Apostadero',
-                'mobilenumber' => '',
-                'address' => '',
+                'firstname' => 'Ralph Vincent',
+                'id' => 4,
+                'lastname' => 'Extra',
                 'lrn' => NULL,
-                'photo' => '5.jpg',
+                'middlename' => '',
+                'mobilenumber' => '',
+                'photo' => '4.jpg',
+                'strand' => NULL,
+                'updated_at' => '2023-04-25 07:25:38',
+                'userid' => 4,
+                'yearlevel' => NULL,
+            ),
+            4 => 
+            array (
+                'address' => '',
                 'created_at' => '2023-04-25 07:28:29',
+                'firstname' => 'Al Valle',
+                'id' => 5,
+                'lastname' => 'Apostadero',
+                'lrn' => NULL,
+                'middlename' => '',
+                'mobilenumber' => '',
+                'photo' => '5.jpg',
+                'strand' => NULL,
                 'updated_at' => '2023-04-25 07:28:29',
+                'userid' => 5,
+                'yearlevel' => NULL,
+            ),
+            5 => 
+            array (
+                'address' => '4fdsafasdgasfdasd',
+                'created_at' => '2023-11-05 09:55:19',
+                'firstname' => 'Test',
+                'id' => 6,
+                'lastname' => 'Teacher4',
+                'lrn' => NULL,
+                'middlename' => '',
+                'mobilenumber' => '42342134124',
+                'photo' => '6.jpg',
+                'strand' => NULL,
+                'updated_at' => '2023-11-05 09:55:19',
+                'userid' => 6,
+                'yearlevel' => NULL,
             ),
         ));
-
-
+        
+        
     }
 }

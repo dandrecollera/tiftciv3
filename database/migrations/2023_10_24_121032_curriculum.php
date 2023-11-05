@@ -17,7 +17,10 @@ class Curriculum extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->json('cstt');
+            $table->string('schoolyear');
             $table->string('yearlevel');
+            $table->string('strand');
+            $table->string('semester');
             $table->string('status')->default('active');
             $table->timestamps();
         });

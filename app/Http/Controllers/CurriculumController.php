@@ -16,7 +16,7 @@ class CurriculumController extends Controller
         $this->middleware('axuadmin');
     }
 
-    public $default_url_adminuser = "/adminuser";   //default return URL
+    public $default_url_adminuser = "/admincurriculum";   //default return URL
     public $default_lpp = 25;                       //default line per page
     public $default_start_page = 1;                 //default starting page
 
@@ -73,6 +73,7 @@ class CurriculumController extends Controller
         $data['orderbylist'] = [
             ['display' => 'Default', 'field' => 'curriculums.id'],
             ['display' => 'Name', 'field' => 'curriculums.name'],
+            ['display' => 'School Year', 'field' => 'curriculums.schoolyear'],
             ['display' => 'Year Level', 'field' => 'curriculums.yearlevel'],
         ];
         if(!empty($query['sort'])){
@@ -214,7 +215,10 @@ class CurriculumController extends Controller
         DB::table('curriculums')
             ->insert([
                 'name' => $input['name'],
+                'schoolyear' => $input['schoolyear'],
                 'yearlevel' => $input['yearlevel'],
+                'strand' => $input['strand'],
+                'semester' => $input['semester'],
                 'cstt' => json_encode($csttData),
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
@@ -259,11 +263,57 @@ class CurriculumController extends Controller
             ->where('id', $input['sid'])
             ->update([
                 'name' => $input['name'],
+                'schoolyear' => $input['schoolyear'],
                 'yearlevel' => $input['yearlevel'],
+                'strand' => $input['strand'],
+                'semester' => $input['semester'],
                 'cstt' => json_encode($csttData),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
         return redirect('/admincurriculum?n=1');
+    }
+
+    public function admincurriculum_archive(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $input = $request->input();
+
+        $qstring = http_build_query([
+            'lpp' => !empty($input['lpp']) ? $input['lpp'] : $this->default_lpp,
+            'page' => !empty($input['page']) ? $input['page'] : $this->default_start_page,
+            'keyword' => !empty($input['keyword']) ? $input['keyword'] : '',
+            'sort' => !empty($input['sort']) ? $input['sort'] : '',
+        ]);
+
+        if(empty($input['did'])){
+            return redirect($this->default_url_adminuser.'?e1&'.$qstring);
+            die();
+        }
+
+        $logindata = DB::table('curriculums')
+            ->where('id', $input['did'])
+            ->first();
+
+        if(empty($logindata)){
+            return redirect($this->default_url_adminuser.'?e=5&'.$qstring);
+            die();
+        }
+
+        if($logindata->status == 'active'){
+            DB::table('curriculums')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'inactive',
+                ]);
+        } else {
+            DB::table('curriculums')
+                ->where('id', $input['did'])
+                ->update([
+                    'status' => 'active',
+                ]);
+        }
+
+        return redirect($this->default_url_adminuser.'?n=4&'.$qstring);
     }
 }
