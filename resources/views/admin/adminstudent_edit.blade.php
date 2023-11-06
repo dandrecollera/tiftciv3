@@ -24,9 +24,15 @@
         <div class="container-fluid mb-4">
 
             <h4>Edit Student Details</h4>
-            <div class="form-outline my-4">
-                <input type="email" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}">
-                <label for="emailInput" class="form-label">Email:</label>
+            <div class="input-group mt-2 mb-2">
+                <div class="form-outline">
+                    <input type="text" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}"
+                        required>
+                    <label for="emailInput" class="form-label">Email:</label>
+                </div>
+                <div class="form-outline">
+                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
+                </div>
             </div>
 
             <div class="form-outline mt-4 mb-2">

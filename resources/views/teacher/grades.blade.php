@@ -22,8 +22,8 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title"><strong>{{$subject['section']}}</strong></h6>
-                <h6 class="card-title">{{$subjectname->subject_name}}</h6>
-                <a href="/section?subject={{$subject['subjectid']}}&section={{$subject['curriculumid']}}">
+                <h6 class="card-title">{{$subjectname->subject_name}} - {{$subject['semester']}} Semester</h6>
+                <a href="/studentsgrades?subject={{$subject['subjectid']}}&section={{$subject['curriculumid']}}">
                     <button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>
                 </a>
             </div>
@@ -68,8 +68,8 @@
                     '<div class="card">' +
                     '<div class="card-body">' +
                         '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
-                    '<h6 class="card-title">' + subjectData.subject_name + '</h6>' +
-                    '<a href="/section?subject=' + subject.subjectid + '&section='+ subject.curriculumid +'">' +
+                    '<h6 class="card-title">' + subjectData.subject_name + '- '+  subject.semester +' Semester</h6>' +
+                    '<a href="/studentsgrades?subject=' + subject.subjectid + '&section='+ subject.curriculumid +'">' +
                     '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
                     '</a>' +
                     '</div>' +

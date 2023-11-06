@@ -488,13 +488,8 @@ class AdminStudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
 
-        if(empty($input['did']) || empty($input['lrn']) || empty($input['email']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status'])){
+        if(empty($input['did']) || empty($input['lrn']) || empty($input['email']) || empty($input['firstname']) || empty($input['lastname']) ){
             return redirect($this->default_url.'?e=1');
-            die();
-        }
-
-        if($input['status'] != 'active' && $input['status'] != 'inactive'){
-            return redirect($this->default_url.'?e=6');
             die();
         }
 
@@ -513,7 +508,6 @@ class AdminStudentController extends Controller
         ->where('id', $input['did'])
         ->update([
             'email' => $input['email'],
-            'status' => $input['status'],
             'updated_at' => Carbon::now()->toDateTimeString()
         ]);
 

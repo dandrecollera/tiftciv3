@@ -42,11 +42,11 @@ $path = request()->path();
         }}"></i><span>Sections</span>
 </a> --}}
 
-<a href="/adminschoolyear"
+{{-- <a href="/adminschoolyear"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminschoolyear' ? 'active' : ''}}">
     <i class="fas fa-calendar fa-fw me-3" style="{{$path == 'adminschoolyear' ? 'color:#2D58A1;' : ''
         }}"></i><span>School Year</span>
-</a>
+</a> --}}
 
 <a href="/adminstudent"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminstudent' ? 'active' : ''}}">

@@ -93,6 +93,7 @@ class MainTeacherController extends Controller
                 // Move the 'id' key to be part of the 'cstt' array
                 $csttItem['curriculumid'] = $subject->id;
                 $csttItem['section'] = $subject->name;
+                $csttItem['semester'] = $subject->semester;
                 $compiledCsttData[] = $csttItem;
             }
         }
@@ -133,6 +134,7 @@ class MainTeacherController extends Controller
                 // Move the 'id' key to be part of the 'cstt' array
                 $csttItem['curriculumid'] = $subject->id;
                 $csttItem['section'] = $subject->name;
+                $csttItem['semester'] = $subject->semester;
                 $compiledCsttData[] = $csttItem;
             }
         }
@@ -182,27 +184,12 @@ class MainTeacherController extends Controller
         $qstring['subject'] = $query['subject'];
         $qstring['section'] = $query['section'];
 
-        $data['errorlist'] = [
-            1 => 'Invalid Grade Input',
-        ];
-        $data['error'] = 0;
-        if(!empty($_GET['e'])){
-            $data['error'] = $_GET['e'];
-        }
-        $data['notiflist'] = [
-            1 => 'Grade Saved.',
-        ];
-        $data['notif'] = 0;
-        if(!empty($_GET['n'])){
-            $data['notif'] = $_GET['n'];
-        }
-
 
         $data['subject'] = $subjects = DB::table('subjects')
             ->where('id', $query['subject'])
             ->first();
 
-        $data['section'] = $sections = DB::table('sections')
+        $data['section'] = $sections = DB::table('curriculums')
             ->where('id', $query['section'])
             ->first();
 
