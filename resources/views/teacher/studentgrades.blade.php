@@ -31,6 +31,9 @@
         </div>
         @endif
 
+
+        <input type="hidden" value="{{$subject->id}}" id="subid">
+        <input type="hidden" value="{{$section->id}}" id="secid">
         <div class="row">
             <div class="col overflow-scroll scrollable-container mb-2">
                 <table class="table table-hover">
@@ -50,8 +53,9 @@
                             <td>
                                 <div class="form-outline" role="group" aria-label="Basic example">
                                     <input type="number" class="form-control grade-input"
-                                        data-userid="{{$student->userid}}" id="gradeinput1st-{{$student->userid}}"
-                                        required>
+                                        data-userid="{{$student->userid}}"
+                                        data-quarter="{{$section->semester == '1st' ? '1st' : '3rd'}}"
+                                        id="gradeinput1st-{{$student->userid}}" required>
                                     <label for="" class="form-label">Grade</label>
                                     <div class="form-helper"></div>
                                 </div>
@@ -60,7 +64,7 @@
                                 <div class="form-outline" role="group" aria-label="Basic example">
                                     <input type="number" class="form-control grade-input"
                                         id="gradeinput2nd-{{$student->userid}}" data-userid="{{$student->userid}}"
-                                        required>
+                                        data-quarter="{{$section->semester == '1st' ? '2nd' : '4th'}}" required>
                                     <label for="" class="form-label">Grade</label>
                                     <div class="form-helper"></div>
                                 </div>
@@ -120,26 +124,43 @@
     $(document).ready(function() {
     $('.grade-input').on('input', function(){
         let inputvalue = $(this).val();
+        let quarter = $(this).data('quarter');
         let userid = $(this).data('userid');
         let id1st = $('#gradeinput1st-' + userid);
         let id2nd = $('#gradeinput2nd-' + userid);
         let gwaInput = $('#gwaInput_' + userid);
 
         if(inputvalue < 65 || inputvalue > 100){
+            gwaInput.val('');
             return;
         }
 
-        // Get values from the input fields
+        saveGrade(userid, $('#subid').val(), $('#secid').val(), inputvalue, quarter)
+
         let grade1st = parseFloat(id1st.val()) || 0;
         let grade2nd = parseFloat(id2nd.val()) || 0;
 
-        // Calculate average
         let average = (grade1st + grade2nd) / 2;
 
-        // Update the readonly input with the calculated average
-        gwaInput.val(average.toFixed(2));
-
+        if (grade1st > 0 && grade2nd > 0) {
+            let average = (grade1st + grade2nd) / 2;
+            gwaInput.val(average.toFixed(2));
+        } else {
+            gwaInput.val('');
+        }
     })
+
+    function saveGrade(studentid, subjectid, sectionid, grade, quarter){
+        $.get('/saveGrade', {
+            studentid: studentid,
+            subjectid: subjectid,
+            sectionid: sectionid,
+            grade: grade,
+            quarter: quarter
+        }, function(data) {
+            console.log('saved');
+        });
+    }
 })
 </script>
 

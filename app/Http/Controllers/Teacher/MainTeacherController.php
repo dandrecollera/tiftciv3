@@ -66,6 +66,18 @@ class MainTeacherController extends Controller
         //     ->get()
         //     ->toArray();
 
+        $data['allyear'] = $allyear = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->select([
+                'schoolyear'
+            ])
+            ->orderBy('schoolyear', 'desc')
+            ->get()
+            ->unique('schoolyear')
+            ->toArray();
+
+        // dd($allyear);
+
         $latestyear = DB::table('curriculums')
             ->orderBy('schoolyear', 'desc')
             ->first();
@@ -184,6 +196,8 @@ class MainTeacherController extends Controller
         $qstring['subject'] = $query['subject'];
         $qstring['section'] = $query['section'];
 
+        $data['subject'] = $query['subject'];
+        $data['section'] = $query['section'];
 
         $data['subject'] = $subjects = DB::table('subjects')
             ->where('id', $query['subject'])
@@ -212,6 +226,14 @@ class MainTeacherController extends Controller
         $data['qstring2'] = $qstring;
         // dd($dbresult);
         return view('teacher.studentgrades', $data);
+    }
+
+
+    public function saveGrade(Request $request){
+        $userinfo = $request->get('userinfo');
+        $query = $request->query();
+
+        // Check if grade exists
     }
 
     public function studentsgrades_add(Request $request){

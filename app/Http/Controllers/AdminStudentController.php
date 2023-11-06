@@ -233,7 +233,7 @@ class AdminStudentController extends Controller
 
         $muserid = DB::table('main_users')
             ->insertGetID([
-                'email' => $input['email'],
+                'email' => $input['email']. '@tiftci.org',
                 'password' => md5($input['password']),
                 'accounttype' => 'student',
                 'created_at' => Carbon::now()->toDateTimeString(),
@@ -507,7 +507,7 @@ class AdminStudentController extends Controller
         DB::table('main_users')
         ->where('id', $input['did'])
         ->update([
-            'email' => $input['email'],
+            'email' => $input['email'] . '@tiftci.org',
             'updated_at' => Carbon::now()->toDateTimeString()
         ]);
 

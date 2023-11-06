@@ -3,6 +3,9 @@
 @section('content')
 <h1 class="">Grading Portal</h1>
 <select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
+    @foreach ($allyear as $singyear)
+    <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
+    @endforeach
 </select>
 
 <h5 class="mb-3">Select a Section to see list of students</h5>
@@ -39,11 +42,11 @@
 @push('jsscripts')
 <script>
     $(document).ready(function(){
-        var currentYear = new Date().getFullYear();
+        // var currentYear = new Date().getFullYear();
 
-        for (var year = currentYear + 1; year >= 2020; year--) {
-            $('#schoolyear').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
-        }
+        // for (var year = currentYear + 1; year >= 2020; year--) {
+        //     $('#schoolyear').append('<option value="' + year + '-' + (year + 1) + '">' + year + '-' + (year + 1) + '</option>');
+        // }
 
         $('#schoolyear').change(function(){
             let selectedSchoolYear = $(this).val();
