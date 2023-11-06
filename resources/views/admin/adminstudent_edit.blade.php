@@ -26,8 +26,8 @@
             <h4>Edit Student Details</h4>
             <div class="input-group mt-2 mb-2">
                 <div class="form-outline">
-                    <input type="text" class="form-control" name="email" id="emailInput" value="{{$dbdata->email}}"
-                        required>
+                    <input type="text" class="form-control" name="email" id="emailInput"
+                        value="{{ explode('@', $dbdata->email)[0] }}" required>
                     <label for="emailInput" class="form-label">Email:</label>
                 </div>
                 <div class="form-outline">
