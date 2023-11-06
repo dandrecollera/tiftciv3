@@ -17,12 +17,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($schedules as $schedule)
+                            @foreach ($teacherschedule as $schedule)
                             <tr>
-                                <th scope="row"><strong>{{ $schedule->section_name }}</strong></th>
-                                <td>{{ $schedule->start_time }}</td>
-                                <td>{{ $schedule->end_time }}</td>
-                                <td>{{ $schedule->subject_name }}</td>
+                                <th scope="row"><strong>{{$schedule['section']}}</strong></th>
+                                <td>{{$schedule['startTime']}}</td>
+                                <td>{{$schedule['endTime']}}</td>
+                                <td>{{$schedule['subject']}}</td>
                             </tr>
                             @endforeach
                         </tbody>

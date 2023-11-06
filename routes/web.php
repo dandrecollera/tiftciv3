@@ -206,9 +206,12 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/studentsgrades_edit_process', [MainTeacherController::class, 'studentsgrades_edit_process'])->name('studentsgrades_edit_process');
     Route::get('/fetchYearSubject', [MainTeacherController::class, 'fetchYearSubject'])->name('fetchYearSubject');
     Route::get('/getSubjectName', [MainTeacherController::class, 'getSubjectName'])->name('getSubjectName');
+    Route::get('/saveGrade', [MainTeacherController::class, 'saveGrade'])->name('saveGrade');
+    Route::get('/studentgradeslock', [MainTeacherController::class, 'studentgradeslock'])->name('studentgradeslock');
 
     Route::get('/getStudentSection', [MainTeacherController::class, 'getStudentSection'])->name('getStudentSection');
     Route::get('/studentlistpdf', [MainTeacherController::class, 'studentlistpdf'])->name('studentlistpdf');
+    Route::get('/teacherschedulepdf', [MainTeacherController::class, 'teacherschedulepdf'])->name('teacherschedulepdf');
 
     // Aluni Portal
     Route::get('/alumni', [AlumniController::class, 'home'])->name('alumnihome');

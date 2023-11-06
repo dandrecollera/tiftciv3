@@ -49,8 +49,64 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        // dd($schedule);
 
+        $data['latestyear'] = $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+
+
+        $selectedDay = $today;
+
+        $data['newsched'] = $newsched = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $latestyear->schoolyear)
+            ->get()
+            ->toArray();
+
+        $teacherSchedule = [];
+
+        foreach ($newsched as $schedule) {
+            $csttData = json_decode($schedule->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+                if ($scheduleInfo->teacherid == $userinfo[0]) {
+
+                    $day = $scheduleInfo->day;
+
+                    if ($day == $selectedDay || $selectedDay == 'All') {
+                        $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                        $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                        $subject = DB::table('subjects')
+                            ->where('id', $scheduleInfo->subjectid)
+                            ->value('subject_name');
+
+                        $section = $schedule->name;
+
+                        $teacherSchedule[] = [
+                            'day' => $day,
+                            'startTime' => $startTime,
+                            'endTime' => $endTime,
+                            'section' => $section,
+                            'subject' => $subject,
+                        ];
+                    }
+                }
+            }
+        }
+        usort($teacherSchedule, function ($a, $b) {
+            $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+
+            if ($dayComparison !== 0) {
+                return $dayComparison;
+            }
+
+            return strtotime($a['startTime']) - strtotime($b['startTime']);
+        });
+
+        $data['teacherschedule'] = $teacherSchedule;
 
         return view('teacher.home', $data);
     }
@@ -58,13 +114,6 @@ class MainTeacherController extends Controller
     public function grading(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
-
-        // $data['subjects'] = $subjects = DB::table('schedules')
-        //     ->where('userid', $userinfo[0])
-        //     ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-        //     ->orderBy('subjectid', 'asc')
-        //     ->get()
-        //     ->toArray();
 
         $data['allyear'] = $allyear = DB::table('curriculums')
             ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
@@ -75,8 +124,6 @@ class MainTeacherController extends Controller
             ->get()
             ->unique('schoolyear')
             ->toArray();
-
-        // dd($allyear);
 
         $latestyear = DB::table('curriculums')
             ->orderBy('schoolyear', 'desc')
@@ -92,17 +139,14 @@ class MainTeacherController extends Controller
         $compiledCsttData = [];
 
         foreach ($subjects as $subject) {
-            // Decode the cstt JSON string to an array
+
             $csttArray = json_decode($subject->cstt, true);
 
-            // Filter out only the entries where teacherid is 6
             $filteredCsttData = array_filter($csttArray, function ($item) use ($selectedTeacherId) {
                 return $item['teacherid'] == $selectedTeacherId;
             });
 
-            // Add the filtered CSTT data to the compiled array
             foreach ($filteredCsttData as $csttItem) {
-                // Move the 'id' key to be part of the 'cstt' array
                 $csttItem['curriculumid'] = $subject->id;
                 $csttItem['section'] = $subject->name;
                 $csttItem['semester'] = $subject->semester;
@@ -111,8 +155,6 @@ class MainTeacherController extends Controller
         }
 
         $data['compiledCsttData'] = $compiledCsttData;
-
-        // dd($compiledCsttData);
 
         return view('teacher.grades', $data);
     }
@@ -133,17 +175,13 @@ class MainTeacherController extends Controller
         $compiledCsttData = [];
 
         foreach ($subjects as $subject) {
-            // Decode the cstt JSON string to an array
             $csttArray = json_decode($subject->cstt, true);
 
-            // Filter out only the entries where teacherid is 6
             $filteredCsttData = array_filter($csttArray, function ($item) use ($selectedTeacherId) {
                 return $item['teacherid'] == $selectedTeacherId;
             });
 
-            // Add the filtered CSTT data to the compiled array
             foreach ($filteredCsttData as $csttItem) {
-                // Move the 'id' key to be part of the 'cstt' array
                 $csttItem['curriculumid'] = $subject->id;
                 $csttItem['section'] = $subject->name;
                 $csttItem['semester'] = $subject->semester;
@@ -210,7 +248,6 @@ class MainTeacherController extends Controller
         $data['students'] = $students = DB::table('students')
             ->where('students.sectionid', $query['section'])
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'students.userid')
-            // ->leftjoin('grades', 'grades.userid', '=', 'students.userid')
             ->select(
                 'main_users_details.userid',
                 'main_users_details.firstname',
@@ -220,11 +257,14 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        // dd($subjects);
+        $data['lock'] = $lock = DB::table('gradelock')
+            ->where('subjectid', $query['subject'])
+            ->where('sectionid', $query['section'])
+            ->first();
 
         $data['qstring'] = http_build_query($qstring);
         $data['qstring2'] = $qstring;
-        // dd($dbresult);
+
         return view('teacher.studentgrades', $data);
     }
 
@@ -233,7 +273,56 @@ class MainTeacherController extends Controller
         $userinfo = $request->get('userinfo');
         $query = $request->query();
 
-        // Check if grade exists
+        $checkgrade = DB::table('grades')
+            ->where('studentid', $query['studentid'])
+            ->where('subjectid', $query['subjectid'])
+            ->where('sectionid', $query['sectionid'])
+            ->where('quarter', $query['quarter'])
+            ->first();
+
+
+        if($checkgrade == null){
+            DB::table('grades')
+                ->insert([
+                    'studentid' => $query['studentid'],
+                    'subjectid' => $query['subjectid'],
+                    'sectionid' => $query['sectionid'],
+                    'grade' => $query['grade'],
+                    'quarter' => $query['quarter'],
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]);
+        } else {
+            DB::table('grades')
+                ->where('studentid', $query['studentid'])
+                ->where('subjectid', $query['subjectid'])
+                ->where('sectionid', $query['sectionid'])
+                ->where('quarter', $query['quarter'])
+                ->update([
+                    'studentid' => $query['studentid'],
+                    'subjectid' => $query['subjectid'],
+                    'sectionid' => $query['sectionid'],
+                    'grade' => $query['grade'],
+                    'quarter' => $query['quarter'],
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]);
+        }
+
+    }
+
+    public function studentgradeslock(Request $request){
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
+
+        DB::table('gradelock')
+            ->insert([
+                'subjectid' => $query['subject'],
+                'sectionid' => $query['section'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+        return redirect('/studentsgrades?subject='.$query['subject'].'&section='. $query['section']);
     }
 
     public function studentsgrades_add(Request $request){
@@ -339,46 +428,176 @@ class MainTeacherController extends Controller
         $query = $request->query();
         $qstring = array();
 
-        $day = '';
-        if(!empty($query['day'])){
-            $qstring['day'] = $day = $query['day'];
-            $data['day'] = $day;
+        $selectedDay = isset($query['day']) ? $query['day'] : 'All';
+
+        $data['allyear'] = $allyear = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->select([
+                'schoolyear'
+            ])
+            ->orderBy('schoolyear', 'desc')
+            ->get()
+            ->unique('schoolyear')
+            ->toArray();
+
+        $data['latestyear'] = $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+        $selectedyear = isset($query['year']) ? $query['year'] : $latestyear->schoolyear;
+
+        $data['newsched'] = $newsched = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $selectedyear)
+            ->get()
+            ->toArray();
+
+        $teacherSchedule = [];
+
+        foreach ($newsched as $schedule) {
+            $csttData = json_decode($schedule->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+                if ($scheduleInfo->teacherid == $userinfo[0]) {
+
+                    $day = $scheduleInfo->day;
+
+                    if ($day == $selectedDay || $selectedDay == 'All') {
+                        $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                        $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                        $subject = DB::table('subjects')
+                            ->where('id', $scheduleInfo->subjectid)
+                            ->value('subject_name');
+
+                        $section = $schedule->name;
+
+                        $teacherSchedule[] = [
+                            'day' => $day,
+                            'startTime' => $startTime,
+                            'endTime' => $endTime,
+                            'section' => $section,
+                            'subject' => $subject,
+                        ];
+                    }
+                }
+            }
         }
+        usort($teacherSchedule, function ($a, $b) {
+            $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
 
-        $schedules = DB::table('schedules')
-            ->where('userid', $userinfo[0])
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
-            ->select(
-                'sections.section_name',
-                'subjects.subject_name',
-                'schedules.day',
-                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
-                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
-            )
-            ->orderBy('schedules.start_time', 'asc');
+            if ($dayComparison !== 0) {
+                return $dayComparison;
+            }
 
-        if(!empty($day)){
-            $schedules->where('schedules.day', 'like', "%$day%");
-        }
+            return strtotime($a['startTime']) - strtotime($b['startTime']);
+        });
 
-        $data['schedules'] = $schedules->get()->toArray();
+        $data['teacherschedule'] = $teacherSchedule;
 
-        $data['qstring'] = http_build_query($qstring);
-        $data['qstring'] = $qstring;
+
 
         return view('teacher.myschedule', $data);
+    }
+
+    public function teacherschedulepdf(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+        $qstring = array();
+
+        $selectedDay = 'All';
+
+        $data['allyear'] = $allyear = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->select([
+                'schoolyear'
+            ])
+            ->orderBy('schoolyear', 'desc')
+            ->get()
+            ->unique('schoolyear')
+            ->toArray();
+
+        $data['latestyear'] = $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+        $data['selectedyear'] = $selectedyear = $query['year'];
+
+        $data['newsched'] = $newsched = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $selectedyear)
+            ->get()
+            ->toArray();
+
+        $teacherSchedule = [];
+
+        foreach ($newsched as $schedule) {
+            $csttData = json_decode($schedule->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+                if ($scheduleInfo->teacherid == $userinfo[0]) {
+
+                    $day = $scheduleInfo->day;
+
+                    if ($day == $selectedDay || $selectedDay == 'All') {
+                        $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                        $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                        $subject = DB::table('subjects')
+                            ->where('id', $scheduleInfo->subjectid)
+                            ->value('subject_name');
+
+                        $section = $schedule->name;
+
+                        $teacherSchedule[] = [
+                            'day' => $day,
+                            'startTime' => $startTime,
+                            'endTime' => $endTime,
+                            'section' => $section,
+                            'subject' => $subject,
+                        ];
+                    }
+                }
+            }
+        }
+        usort($teacherSchedule, function ($a, $b) {
+            $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+
+            if ($dayComparison !== 0) {
+                return $dayComparison;
+            }
+
+            return strtotime($a['startTime']) - strtotime($b['startTime']);
+        });
+
+        $data['teacherschedule'] = $teacherSchedule;
+
+        $pdf = PDF::loadview('teacher.teacherschedulepdf', $data);
+
+        return $pdf->stream('studentlist.pdf');
     }
 
     public function studentlist(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        // dd($userinfo);
-
         $latestyear = DB::table('curriculums')
             ->orderBy('schoolyear', 'desc')
             ->first();
+
+        $data['allyear'] = $allyear = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->select([
+                'schoolyear'
+            ])
+            ->orderBy('schoolyear', 'desc')
+            ->get()
+            ->unique('schoolyear')
+            ->toArray();
 
 
         $data['sections'] = $sections = DB::table('curriculums')
@@ -388,21 +607,7 @@ class MainTeacherController extends Controller
             ->get()
             ->toArray();
 
-        // dd($sections);
-
-        // $data['sections'] = $sections = DB::table('schedules')
-        //     ->where('userid', $userinfo[0])
-        //     ->orderBy('sectionid', 'asc')
-        //     ->leftjoin('sections', 'sections.id', '=', 'schedules.sectionid')
-        //     ->select(
-        //         'schedules.sectionid',
-        //         'sections.section_name',
-        //     )
-        //     ->get()
-        //     ->toArray();
-
         return view('teacher.studentlist', $data);
-
     }
 
     public function getStudentSection(Request $request){

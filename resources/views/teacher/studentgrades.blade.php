@@ -50,35 +50,60 @@
                         <tr>
                             <td><strong>{{$student->firstname}} {{$student->lastname}}</strong></td>
 
+                            @php
+                            $grade1 = DB::table('grades')
+                            ->where('studentid', $student->userid)
+                            ->where('subjectid', $subject->id)
+                            ->where('sectionid', $section->id)
+                            ->where('quarter', $section->semester == '1st' ? '1st' : '3rd')
+                            ->first();
+
+
+                            $grade2 = DB::table('grades')
+                            ->where('studentid', $student->userid)
+                            ->where('subjectid', $subject->id)
+                            ->where('sectionid', $section->id)
+                            ->where('quarter', $section->semester == '1st' ? '2nd' : '4th')
+                            ->first();
+
+                            @endphp
                             <td>
-                                <div class="form-outline" role="group" aria-label="Basic example">
+                                <div class="form-outline" role="group" aria-label="Basic example" style="width: 6em">
                                     <input type="number" class="form-control grade-input"
                                         data-userid="{{$student->userid}}"
                                         data-quarter="{{$section->semester == '1st' ? '1st' : '3rd'}}"
-                                        id="gradeinput1st-{{$student->userid}}" required>
+                                        id="gradeinput1st-{{$student->userid}}"
+                                        value="{{$grade1 != null ? $grade1->grade : ''}}" required {{$lock !=null
+                                        ? 'readonly' : '' }}>
                                     <label for="" class="form-label">Grade</label>
                                     <div class="form-helper"></div>
                                 </div>
                             </td>
                             <td>
-                                <div class="form-outline" role="group" aria-label="Basic example">
+                                <div class="form-outline" role="group" aria-label="Basic example" style="width: 6em">
                                     <input type="number" class="form-control grade-input"
                                         id="gradeinput2nd-{{$student->userid}}" data-userid="{{$student->userid}}"
-                                        data-quarter="{{$section->semester == '1st' ? '2nd' : '4th'}}" required>
+                                        data-quarter="{{$section->semester == '1st' ? '2nd' : '4th'}}"
+                                        value="{{$grade2 != null ? $grade2->grade : ''}}" required {{$lock !=null
+                                        ? 'readonly' : '' }}>
                                     <label for="" class="form-label">Grade</label>
                                     <div class="form-helper"></div>
                                 </div>
                             </td>
 
                             <td>
-                                <input type="number" step="0.01" class="form-control" id="gwaInput_{{$student->userid}}"
-                                    readonly style="width: 6em">
+                                <div class="form-outline" style="width: 6em">
+
+                                    <input type="number" class="form-control" id="gwaInput_{{$student->userid}}" {{$lock
+                                        !=null ? 'readonly' : '' }}>
+                                </div>
                             </td>
                         </tr>
+
                         @endforeach
                     </tbody>
                 </table>
-                <div class="">
+                <div class="" {{$lock !=null ? 'hidden' : '' }}>
                     <button type="button" id="addbutton" class="btn btn-primary shadow-sm btn-sm float-end"
                         data-bs-toggle="modal" data-bs-target="#addeditmodal"> Submit</button>
                 </div>
@@ -106,7 +131,8 @@
                 <hr>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a class="btn btn-primary">Confirm</a>
+                        <a class="btn btn-primary"
+                            href="/studentgradeslock?subject={{$subject->id}}&section={{$section->id}}">Confirm</a>
                         <a class="btn btn-danger" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
@@ -122,46 +148,56 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-    $('.grade-input').on('input', function(){
-        let inputvalue = $(this).val();
-        let quarter = $(this).data('quarter');
-        let userid = $(this).data('userid');
-        let id1st = $('#gradeinput1st-' + userid);
-        let id2nd = $('#gradeinput2nd-' + userid);
-        let gwaInput = $('#gwaInput_' + userid);
+        $('.grade-input').on('input', function(){
+            let inputvalue = $(this).val();
+            let quarter = $(this).data('quarter');
+            let userid = $(this).data('userid');
+            let id1st = $('#gradeinput1st-' + userid);
+            let id2nd = $('#gradeinput2nd-' + userid);
+            let gwaInput = $('#gwaInput_' + userid);
 
-        if(inputvalue < 65 || inputvalue > 100){
-            gwaInput.val('');
-            return;
-        }
+            if(inputvalue < 65 || inputvalue > 100){
+                gwaInput.val('');
+                return;
+            }
 
-        saveGrade(userid, $('#subid').val(), $('#secid').val(), inputvalue, quarter)
+            saveGrade(userid, $('#subid').val(), $('#secid').val(), inputvalue, quarter)
 
-        let grade1st = parseFloat(id1st.val()) || 0;
-        let grade2nd = parseFloat(id2nd.val()) || 0;
+            let grade1st = parseFloat(id1st.val()) || 0;
+            let grade2nd = parseFloat(id2nd.val()) || 0;
 
-        let average = (grade1st + grade2nd) / 2;
-
-        if (grade1st > 0 && grade2nd > 0) {
             let average = (grade1st + grade2nd) / 2;
-            gwaInput.val(average.toFixed(2));
-        } else {
-            gwaInput.val('');
-        }
-    })
 
-    function saveGrade(studentid, subjectid, sectionid, grade, quarter){
-        $.get('/saveGrade', {
-            studentid: studentid,
-            subjectid: subjectid,
-            sectionid: sectionid,
-            grade: grade,
-            quarter: quarter
-        }, function(data) {
-            console.log('saved');
+            if (grade1st > 0 && grade2nd > 0) {
+                // Calculate average
+                calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput);
+            } else {
+                // If only one input has a value or both are empty, clear the average
+                gwaInput.val('');
+            }
+
+            function calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput) {
+                // Calculate average
+                let average = (grade1st + grade2nd) / 2;
+
+                // Update the readonly input with the calculated average
+                gwaInput.val(average.toFixed(2));
+            }
         });
-    }
-})
+
+        function saveGrade(studentid, subjectid, sectionid, grade, quarter){
+            $.get('/saveGrade', {
+                studentid: studentid,
+                subjectid: subjectid,
+                sectionid: sectionid,
+                grade: grade,
+                quarter: quarter
+            }, function(data) {
+                console.log('saved');
+            });
+        }
+        $('.grade-input').trigger('input');
+    });
 </script>
 
 @endpush
