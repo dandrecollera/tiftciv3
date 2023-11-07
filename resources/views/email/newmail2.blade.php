@@ -318,7 +318,23 @@
                                                                     @endif
                                                                 </p>
                                                             </div>
-
+                                                            Details:<br>
+                                                            Inquiry: {{$details->inquiry}}<br>
+                                                            <br>
+                                                            Documents Requested:<br>
+                                                            {{$details->goodmoral == 1 ? 'Good Moral' : ''}}<br>
+                                                            {{$details->registration == 1 ? 'Certificate Of
+                                                            Registration' : ''}}<br>
+                                                            {{$details->f138 == 1 ? 'F138' : ''}}<br>
+                                                            @if ($details->others == 1)
+                                                            {{$details->otherdocument}}<br>
+                                                            @endif
+                                                            <br>
+                                                            Other Reason<br>
+                                                            {{$details->otherreason}}<br>
+                                                            <br>
+                                                            Appointment Date:<br>
+                                                            {{ date('m/d/Y l', strtotime($date)) }}
                                                         </td>
                                                     </tr>
                                                 </tbody>

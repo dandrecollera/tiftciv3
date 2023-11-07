@@ -16,13 +16,14 @@ class UpdateUser extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $status, $request, $date, $subject)
+    public function __construct($user, $status, $request, $date, $subject, $details)
     {
         $this->user = $user;
         $this->status = $status;
         $this->request = $request;
         $this->date = $date;
         $this->subject = $subject;
+        $this->details = $details;
     }
 
     /**
@@ -40,6 +41,7 @@ class UpdateUser extends Mailable
                 'status' => $this->status,
                 'request' => $this->request,
                 'date' => $this->date,
+                'details' => $this->details,
             ]);
     }
 }

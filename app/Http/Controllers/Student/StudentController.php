@@ -260,58 +260,119 @@ class StudentController extends Controller
             ->where('id', $fetchlateststudent->sectionid)
             ->first();
 
-            $scheds = [];
+        $scheds = [];
 
-            $csttData = json_decode($newsched->cstt);
+        $csttData = json_decode($newsched->cstt);
 
-            foreach ($csttData as $scheduleInfo) {
-                $day = $scheduleInfo->day;
+        foreach ($csttData as $scheduleInfo) {
+            $day = $scheduleInfo->day;
 
-                if ($day == $selectedDay || $selectedDay == 'All') {
-                    $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
-                    $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+            if ($day == $selectedDay || $selectedDay == 'All') {
+                $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
 
-                    $subject = DB::table('subjects')
-                        ->where('id', $scheduleInfo->subjectid)
-                        ->value('subject_name');
+                $subject = DB::table('subjects')
+                    ->where('id', $scheduleInfo->subjectid)
+                    ->value('subject_name');
 
-                    $teacher = DB::table('main_users_details')
-                        ->select('firstname', 'middlename', 'lastname')
-                        ->where('userid', $scheduleInfo->teacherid)
-                        ->first();
+                $teacher = DB::table('main_users_details')
+                    ->select('firstname', 'middlename', 'lastname')
+                    ->where('userid', $scheduleInfo->teacherid)
+                    ->first();
 
-                    $section = $newsched->name;
+                $section = $newsched->name;
 
-                    // Append the schedule to the array
-                    $scheds[] = [
-                        'day' => $day,
-                        'startTime' => $startTime,
-                        'endTime' => $endTime,
-                        'section' => $section,
-                        'teacher' => $teacher,
-                        'subject' => $subject,
-                    ];
-                }
+                $scheds[] = [
+                    'day' => $day,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'section' => $section,
+                    'teacher' => $teacher,
+                    'subject' => $subject,
+                ];
             }
+        }
 
             // Sort the schedules
-            usort($scheds, function ($a, $b) {
-                $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-                $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+        usort($scheds, function ($a, $b) {
+            $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
 
-                if ($dayComparison !== 0) {
-                    return $dayComparison;
-                }
+            if ($dayComparison !== 0) {
+                return $dayComparison;
+            }
 
-                return strtotime($a['startTime']) - strtotime($b['startTime']);
-            });
+            return strtotime($a['startTime']) - strtotime($b['startTime']);
+        });
 
-            $data['newsched'] = $scheds;
+        $data['newsched'] = $scheds;
 
         $data['qstring'] = http_build_query($qstring);
         $data['qstring'] = $qstring;
 
         return view('student.schedule', $data);
+    }
+
+    public function studentenrollment(Request $request){
+        $input = $request->input();
+        $userinfo = $request->get('userinfo');
+
+        DB::table('main_users_details')
+            ->where('userid', $userinfo[0])
+            ->update([
+                'yearlevel' => $input['yearlevel'],
+            ]);
+
+        DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->insert([
+                'userid' => $userinfo[0],
+                'sectionid' => $input['section'],
+            ]);
+
+
+        $voucher = 0;
+        $tuition = 0;
+        $registration = 0;
+
+
+        $tuition2 = DB::table('tuition')
+            ->where('userid', $userinfo[0])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if($tuition2->paymenttype == 'public'){
+            $voucher = 17500.00;
+            $tuition = 0.00;
+            $registration = 1000.00;
+        } else if($tuition2->paymenttype == 'semi'){
+            $voucher = 14000.00;
+            $tuition = 3500.00;
+            $registration = 1000.00;
+        } else {
+            $voucher = 0.00;
+            $tuition = 17500.00;
+            $registration = 1000.00;
+        }
+
+
+
+        DB::table('tuition')
+            ->insert([
+                'userid' => $userinfo[0],
+                'yearid' => $input['section'],
+                'paymenttype' => $tuition2->paymenttype,
+                'paymentmethod' => 'semi',
+                'voucher' => $voucher,
+                'tuition' => $tuition,
+                'registration' => $registration,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+
+        return redirect('/enrollment?n=1');
+        dd($input);
     }
 
     public function balance(Request $request){
@@ -324,9 +385,6 @@ class StudentController extends Controller
             ->orderBy('tuition.id', 'desc')
             ->get()
             ->ToArray();
-        // $data['today'] = $today = Carbon::now()->format('l');
-        // $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
-
 
         return view('student.balance', $data);
     }
@@ -462,37 +520,33 @@ class StudentController extends Controller
 
         $forminput['inquiry'] = $inquiry = $input['inquiry'];
         $forminput['goodmoral'] = $goodmoral = false;
-        $forminput['f137'] = $f137 = false;
+        $forminput['registration'] = $registration = false;
         $forminput['f138'] = $f138 = false;
-        $forminput['diploma'] = $diploma = false;
         $forminput['others'] = $others = false;
         $forminput['otherdocument'] = $otherdocument = '';
-        if($inquiry == 'Document Request'){
 
-            if(empty($input['goodmoral']) && empty($input['f137']) && empty($input['f138']) && empty($input['diploma']) && empty($input['others'])){
-                return redirect('/studentappointment?e=4');
-                die();
-            }
 
-            if(!empty($input['goodmoral'])){
-                $forminput['goodmoral'] = $goodmoral = true;
-            }
-            if(!empty($input['f137'])){
-                $forminput['f137'] = $f137 = true;
-            }
-            if(!empty($input['f138'])){
-                $forminput['f138'] = $f138 = true;
-            }
-            if(!empty($input['diploma'])){
-                $forminput['diploma'] = $diploma = true;
-            }
-            if(!empty($input['others'])){
-                if(!empty($input['otherdocument'])){
-                    $forminput['others'] = $others = true;
-                    $forminput['otherdocument'] = $otherdocument = $input['otherdocument'];
-                }
+        if(empty($input['goodmoral']) && empty($input['registration']) && empty($input['f138']) && empty($input['others'])){
+            return redirect('/studentappointment?e=4');
+            die();
+        }
+
+        if(!empty($input['goodmoral'])){
+            $forminput['goodmoral'] = $goodmoral = true;
+        }
+        if(!empty($input['registration'])){
+            $forminput['registration'] = $registration = true;
+        }
+        if(!empty($input['f138'])){
+            $forminput['f138'] = $f138 = true;
+        }
+        if(!empty($input['others'])){
+            if(!empty($input['otherdocument'])){
+                $forminput['others'] = $others = true;
+                $forminput['otherdocument'] = $otherdocument = $input['otherdocument'];
             }
         }
+
 
         if(empty($input['appointeddate'])){
             return redirect('/studentappointment?e=3');
@@ -529,9 +583,8 @@ class StudentController extends Controller
             'section' => $sections->section_name,
             'inquiry' => $forminput['inquiry'],
             'goodmoral' => $forminput['goodmoral'],
-            'f137' => $forminput['f137'],
+            'registration' => $forminput['registration'],
             'f138' => $forminput['f138'],
-            'diploma' => $forminput['diploma'],
             'others' => $forminput['others'],
             'otherdocument' => $forminput['otherdocument'],
             'otherreason' => $forminput['otherreason'],
@@ -551,7 +604,7 @@ class StudentController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Pending"));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Pending", $emailInfo));
 
 
         return redirect('/studentappointment?n=1');
@@ -590,10 +643,94 @@ class StudentController extends Controller
         $statusMail = $emailInfo->active;
         $requestMail = $emailInfo->inquiry;
         $dateMail = $emailInfo->appointeddate;
-        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Cancelled"));
+        Mail::to($Mail)->send(new UpdateUser($userMail, $statusMail, $requestMail, $dateMail, "Appointment Cancelled", $emailInfo));
 
 
         return redirect('/studentappointment?n=2');
+    }
+
+    public function enrollment(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['getstrand'] = $getstrand = DB::table('main_users_details')
+            ->where('userid', $userinfo[0])
+            ->first();
+
+        return view('student.enrollment', $data);
+    }
+
+    public function enrollSection(Request $request){
+        $query = $request->query();
+        $userinfo = $request->get('userinfo');
+
+        $section = DB::table('curriculums')
+            ->where('schoolyear', $query['schoolyear'])
+            ->where('yearlevel', $query['yearlevel'])
+            ->where('strand', $query['strand'])
+            ->where('semester', $query['semester'])
+            ->get()
+            ->toArray();
+
+        return response()->json($section);
+    }
+
+    public function fetschSchedule(Request $request){
+        $query = $request->query();
+        $userinfo = $request->get('userinfo');
+
+        $subjects = DB::table('curriculums')
+            ->where('id', $query['section'])
+            ->first();
+
+        $selectedDay = 'All';
+
+        $scheds = [];
+
+        $csttData = json_decode($subjects->cstt);
+
+        foreach($csttData as $scheduleInfo){
+            $day = $scheduleInfo->day;
+
+            if($day == $selectedDay || $selectedDay == "All"){
+                $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                $subject = DB::table('subjects')
+                    ->where('id', $scheduleInfo->subjectid)
+                    ->value('subject_name');
+
+                $teacher = DB::table('main_users_details')
+                    ->select('firstname', 'middlename', 'lastname')
+                    ->where('userid', $scheduleInfo->teacherid)
+                    ->first();
+
+                $section = $subjects->name;
+
+                $scheds[] = [
+                    'day' => $day,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'section' => $section,
+                    'teacher' => $teacher,
+                    'subject' => $subject,
+                ];
+            }
+        }
+
+        usort($scheds, function($a, $b){
+            $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+
+            if($dayComparison !== 0){
+                return $dayComparison;
+            }
+
+            return strtotime($a['startTime']) - strtotime($b['startTime']);
+        });
+
+        return response()->json($scheds);
+
     }
 
     public function studentprofile(Request $request){

@@ -139,9 +139,8 @@ $currentyear = DB::table('schoolyears')
                                         <label class="form-check-label" for="f138">F138</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox"
-                                            name="Certificate of Registration" id="Certificate of Registration"
-                                            value="Certificate of Registration">
+                                        <input class="form-check-input" type="checkbox" name="registration"
+                                            id="Certificate of Registration" value="Certificate of Registration">
                                         <label class="form-check-label" for="Certificate of Registration">Certificate of
                                             Registration</label>
                                     </div>
@@ -156,8 +155,8 @@ $currentyear = DB::table('schoolyears')
                                         <div class="input-group mb-3">
                                             <select name="inquiry" id="inquiry" class="form-select" required>
                                                 <option selected hidden value="">Select Option</option>
-                                                <option value="Enrollment">Scholarship</option>
-                                                <option value="Document Request">Enrollment for College</option>
+                                                <option value="Scholarship">Scholarship</option>
+                                                <option value="Enrollment for College">Enrollment for College</option>
                                             </select>
                                         </div>
 

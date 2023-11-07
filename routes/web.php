@@ -178,6 +178,9 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/studentsetting_pass_process', [StudentController::class, 'studentsetting_pass_process'])->name('studentsetting_pass_process');
     Route::post('/studentsetting_image_process', [StudentController::class, 'studentsetting_image_process'])->name('studentsetting_image_process');
 
+    Route::post('/studentenrollment', [StudentController::class, 'studentenrollment'])->name('studentenrollment');
+    Route::get('/fetschSchedule', [StudentController::class, 'fetschSchedule'])->name('fetschSchedule');
+    Route::get('/enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
     Route::get('/grades', [StudentController::class, 'grades'])->name('grades');
     Route::get('/schedule', [StudentController::class, 'schedule'])->name('schedule');
     Route::get('/balance', [StudentController::class, 'balance'])->name('balance');
@@ -186,6 +189,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/studentappointment_add', [StudentController::class, 'studentappointment_add'])->name('studentappointment_add');
     Route::post('/studentappointment_add_process', [StudentController::class, 'studentappointment_add_process'])->name('studentappointment_add_process');
     Route::get('/studentappointment_cancel_process', [StudentController::class, 'studentappointment_cancel_process'])->name('studentappointment_cancel_process');
+    Route::get('/enrollSection', [StudentController::class, 'enrollSection'])->name('enrollSection');
 
     // Teacher Portal
     Route::get('/teacher', [MainTeacherController::class, 'teacher'])->name('teacher');

@@ -111,6 +111,7 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}"><strong>Middle
                                     Name</strong></span></th>
 
+                        <th scope="col"><strong>Section</strong></th>
                         <th scope="col"><strong>LRN</strong></th>
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
@@ -126,6 +127,20 @@
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
+                        <td>
+                            @php
+                            $latestSection = DB::table('students')
+                            ->where('userid', $dbr->id)
+                            ->orderBy('id', 'desc')
+                            ->first();
+
+                            $thesection = DB::table('curriculums')
+                            ->where('id', $latestSection->sectionid)
+                            ->first();
+
+                            @endphp
+                            {{$thesection->name}}
+                        </td>
                         <td>{{$dbr->lrn}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>

@@ -115,7 +115,6 @@
                                     <label class="form-label" for="mobilenumber">Type of Inquiry</label>
                                 </div>
 
-                                @if ($info->inquiry == 'Document Request')
                                 <div id="documentstuff">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="goodmoral" id="goodmoral"
@@ -125,7 +124,8 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="f137" id="f137"
-                                            value="F137" onclick="return false;" {{$info->f137 == true ? 'checked' :
+                                            value="F137" onclick="return false;" {{$info->registration == true ?
+                                        'checked' :
                                         ''}}>
                                         <label class="form-check-label" for="f137">F137</label>
                                     </div>
@@ -134,12 +134,6 @@
                                             value="F138" onclick="return false;" {{$info->f138 == true ? 'checked'
                                         : ''}}>
                                         <label class="form-check-label" for="f138">F138</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" name="diploma" id="diploma"
-                                            value="Diploma" onclick="return false;" {{$info->diploma == true ? 'checked'
-                                        : ''}}>
-                                        <label class="form-check-label" for="diploma">Diploma</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="others" id="others"
@@ -158,7 +152,6 @@
                                     @endif
 
                                 </div>
-                                @endif
                                 <div class="form-outline mt-4 mb-4">
                                     <input type="text" class="form-control" name="otherreason" id="otherreason"
                                         value="{{$info->otherreason}}" readonly>

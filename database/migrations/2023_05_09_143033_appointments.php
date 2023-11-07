@@ -27,9 +27,8 @@ class Appointments extends Migration
             $table->string('inquiry');
             $table->string('lrn');
             $table->boolean('goodmoral')->default(false);
-            $table->boolean('f137')->default(false);
+            $table->boolean('registration')->default(false);
             $table->boolean('f138')->default(false);
-            $table->boolean('diploma')->default(false);
             $table->boolean('others')->default(false);
             $table->string('otherdocument')->nullable();
             $table->text('otherreason')->nullable();
