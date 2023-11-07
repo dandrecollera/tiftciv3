@@ -8,15 +8,23 @@ $path = request()->path();
 </a>
 
 <a href="#"
-    class="list-group-item list-group-item-spec py-2 ripple dropdown-toggle {{$path == 'adminteacher' || $path == 'adminuser' ? 'active' : ''}}"
+    class="list-group-item list-group-item-spec py-2 ripple dropdown-toggle {{$path == 'adminteacher' || $path == 'adminuser' ? 'active' : '' || $path == 'adminregistrar' ? 'active' : '' || $path == 'admincashier' ? 'active' : ''}}"
     data-bs-toggle="collapse" data-bs-target="#AdminToolsContent" role="button">
-    <i class="fas fa-users fa-fw me-3" style="{{$path == 'adminteacher' || $path == 'adminuser' ? 'color:#2D58A1;' : ''
+    <i class="fas fa-users fa-fw me-3" style="{{$path == 'adminteacher' || $path == 'adminuser' ? 'color:#2D58A1;' : '' || $path == 'adminregistrar' ? 'color:#2D58A1;' : '' || $path == 'admincashier' ? 'color:#2D58A1;' : ''
         }}"></i><span>Accounts</span>
 </a>
 <div class="collapse list-group-flush ps-2" id="AdminToolsContent">
     <a href="/adminuser"
         class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminuser' ? 'active' : ''}}">
         <span>Administrator</span>
+    </a>
+    <a href="/admincashier"
+        class="list-group-item list-group-item-spec py-2 ripple {{$path == 'admincashier' ? 'active' : ''}}">
+        <span>Cashier</span>
+    </a>
+    <a href="/adminregistrar"
+        class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminregistrar' ? 'active' : ''}}">
+        <span>Registrar</span>
     </a>
     <a href="/adminteacher"
         class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminteacher' ? 'active' : ''}}">
@@ -52,6 +60,12 @@ $path = request()->path();
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminstudent' ? 'active' : ''}}">
     <i class="fas fa-chalkboard-user fa-fw me-3" style="{{$path == 'adminstudent' ? 'color:#2D58A1;' : ''
         }}"></i><span>Students</span>
+</a>
+
+<a href="/adminalumni"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminalumni' ? 'active' : ''}}">
+    <i class="fas fa-chalkboard-user fa-fw me-3" style="{{$path == 'adminalumni' ? 'color:#2D58A1;' : ''
+        }}"></i><span>Alumni</span>
 </a>
 
 

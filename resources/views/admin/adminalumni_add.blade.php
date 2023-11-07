@@ -1,4 +1,7 @@
-@extends('admin.components.layout')
+@extends('admin.components.modal')
+
+
+
 
 @section('content')
 <div class="container-xl">
@@ -7,36 +10,7 @@
             <h1>Students</h1>
         </div>
     </div>
-    <div class="btn-group">
-        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Student</button>
-
-        <button type="button" id="massAdd" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Batch Add Students</button>
-    </div>
     <hr>
-    @if (!empty($error))
-    <div class="row">
-        <div class="col">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Error</h4>
-                <p>{{ $errorlist[(int) $error ] }}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-    @endif
-    @if (!empty($notif))
-    <div class="row">
-        <div class="col">
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Success</h4>
-                <p>{{ $notiflist[(int) $notif ] }}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-    @endif
     <div class="row">
         <div class="col ">
             <form method="get">
@@ -46,7 +20,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <button onclick="location.href='./adminstudent'" type="button" class="btn btn-dark"><i
+                    <button onclick="location.href='./adminalumni_add'" type="button" class="btn btn-dark"><i
                             class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
@@ -80,7 +54,7 @@
                             @endforeach
                         </ul>
                         @if (!empty($sort) || $lpp != 25)
-                        <button onclick="location.href='./adminstudent'" type="button" class="btn btn-dark"><i
+                        <button onclick="location.href='./adminalumni_add'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
                     </div>
@@ -145,16 +119,9 @@
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
-                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-peso-sign fa-xs"></i></a>
-                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-box-archive fa-xs"></i></a>
+                                    data-email="{{$dbr->email}}">Select</a>
                             </div>
                         </td>
                     </tr>
@@ -203,49 +170,30 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Archive This Student User</div>
+                    <div>Create Alumni Account</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to turn this to Alumni <strong><span id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
-                        <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
+                        <a href="" class="btn btn-primary" id="DeleteButton" target="_parent">Confirm</a>
+                        <a class="btn btn-danger" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 @endsection
 
 @push('jsscripts')
 
 <script type="text/javascript">
     $(document).ready(function(){
-    $('#addbutton').on('click', function() {
-        console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Student User');
-        $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
-    });
-    $('#massAdd').on('click', function() {
-        console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Batch Add Students');
-        $('#addeditframe').attr('src', '/adminstudent_batchadd?{!!$qstring!!}');
-    });
-    $('.dcc_edit').on('click', function() {
-        console.log('edit button clicked!');
-        console.log( $(this).data("id") );
-        var iid = $(this).data("id");
-        console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Student User');
-        $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
-    });
+
     $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');
         console.log( $(this).data("id") );
@@ -254,7 +202,7 @@
         var iemail = $(this).data("email");
         console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminstudent_archive_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminalumni_add_process?did='+iid+'&'+iqstring);
     });
 });
 

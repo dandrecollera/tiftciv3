@@ -319,6 +319,7 @@
                                                                 </p>
                                                             </div>
                                                             Details:<br>
+                                                            Request ID: {{$details->id}}<br>
                                                             Inquiry: {{$details->inquiry}}<br>
                                                             <br>
                                                             Documents Requested:<br>

@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\EmailUpdateController;
+use App\Http\Controllers\AdminAlumni;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 use App\Http\Controllers\Alumni\AlumniController;
@@ -169,6 +170,19 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/adminappointments_delete_process', [AdminAppointmentsController::class, 'adminappointments_delete_process'])->name('adminappointments_delete_process');
     Route::get('/adminappointments_decline_process', [AdminAppointmentsController::class, 'adminappointments_decline_process'])->name('adminappointments_decline_process');
     Route::get('/adminappointments_complete_process', [AdminAppointmentsController::class, 'adminappointments_complete_process'])->name('adminappointments_complete_process');
+
+    // Admin Alumni
+    Route::get('/adminalumni', [AdminAlumni::class, 'adminalumni'])->name('adminalumni');
+    Route::get('/adminalumni_add', [AdminAlumni::class, 'adminalumni_add'])->name('adminalumni_add');
+    Route::get('/adminalumni_add_process', [AdminAlumni::class, 'adminalumni_add_process'])->name('adminalumni_add_process');
+    Route::get('/adminalumni_batchadd', [AdminAlumni::class, 'adminalumni_batchadd'])->name('adminalumni_batchadd');
+    Route::post('/adminalumni_batchadd_process', [AdminAlumni::class, 'adminalumni_batchadd_process'])->name('adminalumni_batchadd_process');
+    Route::get('/adminalumni_edit', [AdminAlumni::class, 'adminalumni_edit'])->name('adminalumni_edit');
+    Route::post('/adminalumni_edit_process', [AdminAlumni::class, 'adminalumni_edit_process'])->name('adminalumni_edit_process');
+    Route::post('/adminalumni_pass_process', [AdminAlumni::class, 'adminalumni_pass_process'])->name('adminalumni_pass_process');
+    Route::post('/adminalumni_image_process', [AdminAlumni::class, 'adminalumni_image_process'])->name('adminalumni_image_process');
+    Route::get('/adminalumni_archive_process', [AdminAlumni::class, 'adminalumni_archive_process'])->name('adminalumni_archive_process');
+
 
     // Student Portal
     Route::get('/portal', [StudentController::class, 'portal'])->name('portal');

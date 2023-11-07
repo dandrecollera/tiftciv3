@@ -4,15 +4,15 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Students</h1>
+            <h1>Alumni</h1>
         </div>
     </div>
     <div class="btn-group">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Student</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Alumni</button>
 
         <button type="button" id="massAdd" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Batch Add Students</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Batch Add Alumni</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -111,7 +111,6 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}"><strong>Middle
                                     Name</strong></span></th>
 
-                        <th scope="col"><strong>Section</strong></th>
                         <th scope="col"><strong>LRN</strong></th>
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
@@ -127,27 +126,10 @@
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
-                        <td>
-                            @php
-                            $latestSection = DB::table('students')
-                            ->where('userid', $dbr->id)
-                            ->orderBy('id', 'desc')
-                            ->first();
-
-                            $thesection = DB::table('curriculums')
-                            ->where('id', $latestSection->sectionid)
-                            ->first();
-
-                            @endphp
-                            {{$thesection->name}}
-                        </td>
                         <td>{{$dbr->lrn}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
-                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-peso-sign fa-xs"></i></a>
                                 <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
@@ -181,7 +163,8 @@
 
 <div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addeditmodalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" id="maxwidthchange"
+        style="max-width: 90%">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
@@ -203,7 +186,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Archive This Student User</div>
+                    <div>Delete This Student User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -230,31 +213,27 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
+        $('#maxwidthchange').css('max-width', '90%');
         $('#addeditmodalLabel').html('Add A New Student User');
-        $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
+        $('#addeditframe').attr('src', '/adminalumni_add?{!!$qstring!!}');
     });
     $('#massAdd').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Batch Add Students');
-        $('#addeditframe').attr('src', '/adminstudent_batchadd?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Batch Add Alumni');
+        $('#addeditframe').attr('src', '/adminalumni_batchadd?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
-        console.log('edit button clicked!');
-        console.log( $(this).data("id") );
         var iid = $(this).data("id");
-        console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Student User');
-        $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
+        $('#maxwidthchange').css('max-width', '');
+        $('#addeditmodalLabel').html('Edit This Alumni User');
+        $('#addeditframe').attr('src', '/adminalumni_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
-        console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminstudent_archive_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminalumni_archive_process?did='+iid+'&'+iqstring);
     });
 });
 
