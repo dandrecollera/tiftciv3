@@ -5,175 +5,113 @@
 
 <h1>Grades</h1>
 
-
-
 <div class="container-lg mt-4">
+    <div class="input-group">
+        @php
+        $year = request()->input('year');
+        $currentUrl = url()->current();
+        @endphp
 
-    @php
-    $years = DB::table('schoolyears')->orderBy('id', 'desc')->get();
+        <button class="btn btn-warning dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{ empty($year) ? $latestyearstudent->schoolyear : $year }}
+        </button>
+        <ul class="dropdown-menu">
+            @foreach ($allyear as $singyear)
+            @php
 
-    $getYear = DB::table('tuition')
-    ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
-    ->where('tuition.userid', $userinfo[0])
-    ->orderBy('yearid', 'asc')
-    ->first();
-    $startyear = $getYear->yearid;
-    $endyear = $startyear + 1;
-    @endphp
+            $yearUrl = $currentUrl . "?year={$singyear}";
+            if (!empty($day)) {
+            $yearUrl .= "&day={$day}";
+            }
+            @endphp
+            <li><a class="dropdown-item" href="{{ $yearUrl }}">{{ $singyear }}</a></li>
+            @endforeach
+        </ul>
+    </div>
 
-    @foreach ($years as $year)
-
-    @if ($year->id == $startyear || $year->id == $endyear)
-    @php
-    $gradesInYear = DB::table('grades')->where('yearid', $year->id)->where('studentid', $userinfo[0])->get();
-    @endphp
-
-    @if ($gradesInYear->count())
-    @php
-    $availableGrade = DB::table('grades')
-    ->where('studentid', $userinfo[0])
-    ->where('yearid', $year->id)
-    ->select('grades.sectionid')
-    ->first();
-    $pastSubjects = DB::table('schedules')
-    ->where('sectionid', $availableGrade->sectionid)
-    ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-    ->get()
-    ->toArray();
-    @endphp
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-body overflow-scroll">
-                    <h5 class="card-title"><strong>{{$year->school_year}}</strong></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><strong>1st Semester</strong></h6>
+                    <h4 class="card-subtitle mb-2 "><strong>1st Semester</strong></h4>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <th><strong>Types</strong></th>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>1st</strong></th>
                                 <th><strong>2nd</strong></th>
+                                <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Action Take</strong></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $lastsubjectid = 999;
-                            @endphp
-                            @foreach ($pastSubjects as $subject)
-                            @if ($subject->semester == '1st' && $subject->subjectid != $lastsubjectid)
-
-                            @php
-                            $grades = DB::table('grades')
-                            ->where('subjectid', $subject->subjectid)
-                            ->where('studentid', $userinfo[0])
-                            ->where('yearid', $year->id)
-                            ->select('grades.grade', 'grades.quarter', 'grades.id')
-                            ->get()
-                            ->toArray();
-                            $firstQuarterGrade = '';
-                            $secondQuarterGrade = '';
-                            $firstquarterid = '';
-                            $secondquarterid = '';
-                            foreach ($grades as $grade) {
-                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
-                            $firstQuarterGrade = $grade->grade;
-                            $firstquarterid = $grade->id;
-                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
-                            $secondQuarterGrade = $grade->grade;
-                            $secondquarterid = $grade->id;
-                            }
-                            }
-                            @endphp
-
+                            @foreach ($first as $fgrades)
                             <tr>
-                                <th><strong>{{ $subject->subject_name }}</strong></th>
+                                <th><strong></strong></th>
+                                <th><strong>{{$fgrades['subject']}}</strong></th>
                                 <td>
                                     <strong>
-                                        @if ($firstQuarterGrade)
-                                        {{$firstQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
+                                        {{$fgrades['1st']}}
                                     </strong>
                                 </td>
                                 <td>
                                     <strong>
-                                        @if ($secondQuarterGrade)
-                                        {{$secondQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
+                                        {{$fgrades['2nd']}}
                                     </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{$fgrades['ave']}}
+                                    </strong>
+                                </td>
+                                <td>
                                 </td>
                             </tr>
-                            @php
-                            $lastsubjectid = $subject->subjectid;
-                            @endphp
-                            @endif
                             @endforeach
                         </tbody>
                     </table>
-                    <br>
-                    <h6 class="card-subtitle mb-2 text-muted"><strong>2nd Semester</strong></h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body overflow-scroll">
+                    <h4 class="card-subtitle mb-2 "><strong>2nd Semester</strong></h4>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><strong>Subjects</strong></th>
+                                <th><strong>Types</strong></th>
+                                <th><strong>Learning Area</strong></th>
                                 <th><strong>3rd</strong></th>
                                 <th><strong>4th</strong></th>
+                                <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Action Take</strong></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pastSubjects as $subject)
-                            @if ($subject->semester == '2nd' && $subject->subjectid != $lastsubjectid)
-                            @php
-                            $grades = DB::table('grades')
-                            ->where('subjectid', $subject->subjectid)
-                            ->where('studentid', $userinfo[0])
-                            ->where('yearid', $year->id)
-                            ->select('grades.grade', 'grades.quarter', 'grades.id')
-                            ->get()
-                            ->toArray();
-                            $firstQuarterGrade = '';
-                            $secondQuarterGrade = '';
-                            $firstquarterid = '';
-                            $secondquarterid = '';
-                            foreach ($grades as $grade) {
-                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
-                            $firstQuarterGrade = $grade->grade;
-                            $firstquarterid = $grade->id;
-                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
-                            $secondQuarterGrade = $grade->grade;
-                            $secondquarterid = $grade->id;
-                            }
-                            }
-                            @endphp
-
+                            @foreach ($second as $sgrades)
                             <tr>
-                                <th><strong>{{ $subject->subject_name }}</strong></th>
+                                <th><strong></strong></th>
+                                <th><strong>{{$sgrades['subject']}}</strong></th>
                                 <td>
                                     <strong>
-                                        @if ($firstQuarterGrade)
-                                        {{$firstQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
+                                        {{$sgrades['1st']}}
                                     </strong>
                                 </td>
                                 <td>
                                     <strong>
-                                        @if ($secondQuarterGrade)
-                                        {{$secondQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
+                                        {{$sgrades['2nd']}}
                                     </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{$sgrades['ave']}}
+                                    </strong>
+                                </td>
+                                <td>
                                 </td>
                             </tr>
-                            @php
-                            $lastsubjectid = $subject->subjectid;
-                            @endphp
-                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -181,159 +119,6 @@
             </div>
         </div>
     </div>
-
-    @else
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body overflow-scroll">
-                    <h5 class="card-title"><strong>{{$year->school_year}}</strong></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><strong>1st Semester</strong></h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th><strong>Subjects</strong></th>
-                                <th><strong>1st</strong></th>
-                                <th><strong>2nd</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                            $lastsubjectid = 999;
-                            @endphp
-                            @foreach ($subjects as $subject)
-                            @if ($subject->semester == '1st' && $subject->subjectid != $lastsubjectid)
-
-                            @php
-                            $grades = DB::table('grades')
-                            ->where('subjectid', $subject->subjectid)
-                            ->where('studentid', $userinfo[0])
-                            ->where('yearid', $year->id)
-                            ->select('grades.grade', 'grades.quarter', 'grades.id')
-                            ->get()
-                            ->toArray();
-                            $firstQuarterGrade = '';
-                            $secondQuarterGrade = '';
-                            $firstquarterid = '';
-                            $secondquarterid = '';
-                            foreach ($grades as $grade) {
-                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
-                            $firstQuarterGrade = $grade->grade;
-                            $firstquarterid = $grade->id;
-                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
-                            $secondQuarterGrade = $grade->grade;
-                            $secondquarterid = $grade->id;
-                            }
-                            }
-                            @endphp
-
-                            <tr>
-                                <th><strong>{{ $subject->subject_name }}</strong></th>
-                                <td>
-                                    <strong>
-                                        @if ($firstQuarterGrade)
-                                        {{$firstQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
-                                    </strong>
-                                </td>
-                                <td>
-                                    <strong>
-                                        @if ($secondQuarterGrade)
-                                        {{$secondQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
-                                    </strong>
-                                </td>
-                            </tr>
-                            @php
-                            $lastsubjectid = $subject->subjectid;
-                            @endphp
-                            @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <br>
-                    <h6 class="card-subtitle mb-2 text-muted"><strong>2nd Semester</strong></h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th><strong>Subjects</strong></th>
-                                <th><strong>3rd</strong></th>
-                                <th><strong>4th</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($subjects as $subject)
-                            @if ($subject->semester == '2nd' && $subject->subjectid != $lastsubjectid)
-                            @php
-                            $grades = DB::table('grades')
-                            ->where('subjectid', $subject->subjectid)
-                            ->where('studentid', $userinfo[0])
-                            ->where('yearid', $year->id)
-                            ->select('grades.grade', 'grades.quarter', 'grades.id')
-                            ->get()
-                            ->toArray();
-                            $firstQuarterGrade = '';
-                            $secondQuarterGrade = '';
-                            $firstquarterid = '';
-                            $secondquarterid = '';
-                            foreach ($grades as $grade) {
-                            if ($grade->quarter == "1st" || $grade->quarter == "3rd") {
-                            $firstQuarterGrade = $grade->grade;
-                            $firstquarterid = $grade->id;
-                            } elseif ($grade->quarter == "2nd" || $grade->quarter == "4th") {
-                            $secondQuarterGrade = $grade->grade;
-                            $secondquarterid = $grade->id;
-                            }
-                            }
-                            @endphp
-
-                            <tr>
-                                <th><strong>{{ $subject->subject_name }}</strong></th>
-                                <td>
-                                    <strong>
-                                        @if ($firstQuarterGrade)
-                                        {{$firstQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
-                                    </strong>
-                                </td>
-                                <td>
-                                    <strong>
-                                        @if ($secondQuarterGrade)
-                                        {{$secondQuarterGrade}}
-                                        @else
-                                        0
-                                        @endif
-                                    </strong>
-                                </td>
-                            </tr>
-                            @php
-                            $lastsubjectid = $subject->subjectid;
-                            @endphp
-                            @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @endif
-
-
-    @endif
-
-
-    @endforeach
-
-
-
 </div>
 
 

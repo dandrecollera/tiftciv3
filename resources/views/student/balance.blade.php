@@ -11,7 +11,7 @@
             @endphp
             <div class="card mb-4">
                 <div class="card-body overflow-scroll">
-                    <h3 class="card-title">{{ $balance->school_year}}</h3>
+                    <h3 class="card-title">{{ $balance->schoolyear}}</h3>
                     <table class="table">
                         <thead>
                             <tr>

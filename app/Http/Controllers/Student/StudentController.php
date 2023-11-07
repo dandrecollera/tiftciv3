@@ -25,7 +25,6 @@ class StudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-
         $data['news'] = $news = DB::table('wp_posts')
             ->where('post_type', 'news')
             ->orderby('id', 'desc')
@@ -33,71 +32,211 @@ class StudentController extends Controller
             ->get()
             ->toArray();
 
-
-
-
         $data['balance'] = $balance = DB::table('tuition')
-            ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
             ->orderBy('yearid', 'desc')
             ->first();
         $data['today'] = $today = Carbon::now()->format('l');
         $data['total'] = $total = $balance->voucher + $balance->tuition + $balance->registration;
 
-        // dd($balance);
-        $data['studentsection'] = $studentsection = DB::table('students')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
-            ->where('students.userid', $userinfo[0])
-            ->select('sections.section_name')
+
+        $fetchlateststudent = DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->orderby('id', 'desc')
             ->first();
 
-        $data['schedules'] = $schedule = DB::table('students')
-            ->leftjoin('schedules', 'schedules.sectionid', '=', 'students.sectionid')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->where('students.userid', $userinfo[0])
-            ->where('schedules.day', $today)
-            ->select(
-                'main_users_details.firstname',
-                'main_users_details.middlename',
-                'main_users_details.lastname',
-                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
-                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
-                'subjects.subject_name',
-            )
-            ->orderBy('schedules.start_time', 'asc')
-            ->get()
-            ->toArray();
-            // dd($schedule);
+        $data['sectname'] = $newsched = DB::table('curriculums')
+            ->where('id', $fetchlateststudent->sectionid)
+            ->first();
 
-        return view('student.home', $data);
+            $scheds = [];
+
+            $csttData = json_decode($newsched->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+                $day = $scheduleInfo->day;
+
+                if ($day == $today || $today == 'All') {
+                    $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                    $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                    $subject = DB::table('subjects')
+                        ->where('id', $scheduleInfo->subjectid)
+                        ->value('subject_name');
+
+                    $teacher = DB::table('main_users_details')
+                        ->select('firstname', 'middlename', 'lastname')
+                        ->where('userid', $scheduleInfo->teacherid)
+                        ->first();
+
+                    $section = $newsched->name;
+
+                    // Append the schedule to the array
+                    $scheds[] = [
+                        'day' => $day,
+                        'startTime' => $startTime,
+                        'endTime' => $endTime,
+                        'section' => $section,
+                        'teacher' => $teacher,
+                        'subject' => $subject,
+                    ];
+                }
+            }
+
+            // Sort the schedules
+            usort($scheds, function ($a, $b) {
+                $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+
+                if ($dayComparison !== 0) {
+                    return $dayComparison;
+                }
+
+                return strtotime($a['startTime']) - strtotime($b['startTime']);
+            });
+
+            $data['newsched'] = $scheds;
+
+            return view('student.home', $data);
     }
 
     public function grades(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+        $query = $request->query();
 
-
-        $getStatus = DB::table('main_users_details')
+        $data['latestyearstudent'] = $latestyearstudent = DB::table('students')
             ->where('userid', $userinfo[0])
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
+            ->orderBy('curriculums.schoolyear', 'desc')
             ->first();
 
-        if($getStatus->yearlevel != "Graduate"){
-            $data['studentsection'] = $studentsection = DB::table('students')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
-            ->where('students.userid', $userinfo[0])
-            ->select('sections.section_name', 'sections.id')
-            ->first();
+        $data['allyear'] = $allyear = DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->leftJoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
+            ->select('curriculums.schoolyear')
+            ->orderBy('curriculums.schoolyear', 'desc')
+            ->get()
+            ->pluck('schoolyear')
+            ->unique()
+            ->toArray();
 
-        $data['subjects'] = $subjects = DB::table('schedules')
-            ->where('sectionid', $studentsection->id)
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->get();
+        // dd($allyear);
+
+        $prioyear = isset($query['year'])  ? $query['year'] : $latestyearstudent->schoolyear;
+
+        $fetchsection = DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
+            ->where('curriculums.schoolyear', $prioyear)
+            ->where('curriculums.semester', '1st')
+            ->orderBy('curriculums.semester', 'asc')
+            ->get()
+            ->toArray();
+
+
+        $fetchsection2 = DB::table('students')
+            ->where('userid', $userinfo[0])
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
+            ->where('curriculums.schoolyear', $prioyear)
+            ->where('curriculums.semester', '2nd')
+            ->orderBy('curriculums.semester', 'asc')
+            ->get()
+            ->toArray();
+
+
+        $subjectgrades = [];
+        $subjectgrades2 = [];
+
+        foreach ($fetchsection as $section) {
+            $csttData = json_decode($section->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+
+                $semesterselected = $section->semester;
+                $subjectselected = $section->id;
+
+                $first = 0;
+                $second = 0;
+
+                    $first = DB::table('grades')
+                        ->where('quarter', '1st')
+                        ->where('studentid', $userinfo[0])
+                        ->where('subjectid', $scheduleInfo->subjectid)
+                        ->where('sectionid', $subjectselected)
+                        ->value('grade');
+                    $second = DB::table('grades')
+                        ->where('quarter', '2nd')
+                        ->where('studentid', $userinfo[0])
+                        ->where('subjectid', $scheduleInfo->subjectid)
+                        ->where('sectionid', $subjectselected)
+                        ->value('grade');
+
+                $subject = DB::table('subjects')
+                    ->where('id', $scheduleInfo->subjectid)
+                    ->value('subject_name');
+
+
+                $ave = 0;
+                if($first != null && $second != null){
+                    $ave = ($first + $second) / 2;
+                }
+
+                $subjectgrades[] = [
+                    'subject' => $subject,
+                    '1st' => $first == null ? '0' : $first,
+                    '2nd' => $second == null ? '0' : $second,
+                    'ave' => $ave,
+
+                ];
+            }
         }
 
+        foreach ($fetchsection2 as $section) {
+            $csttData = json_decode($section->cstt);
+
+            foreach ($csttData as $scheduleInfo) {
+                $semesterselected = $section->semester;
+                $subjectselected = $section->id;
+
+                $first = 0;
+                $second = 0;
+
+                $first = DB::table('grades')
+                    ->where('quarter', '1st')
+                    ->where('studentid', $userinfo[0])
+                    ->where('subjectid', $scheduleInfo->subjectid)
+                    ->where('sectionid', $subjectselected)
+                    ->value('grade');
+                $second = DB::table('grades')
+                    ->where('quarter', '2nd')
+                    ->where('studentid', $userinfo[0])
+                    ->where('subjectid', $scheduleInfo->subjectid)
+                    ->where('sectionid', $subjectselected)
+                    ->value('grade');
+
+                $subject = DB::table('subjects')
+                    ->where('id', $scheduleInfo->subjectid)
+                    ->value('subject_name');
 
 
-        // dd($subjects);
+                $ave = 0;
+                if($first != null && $second != null){
+                    $ave = ($first + $second) / 2;
+                }
+
+                $subjectgrades2[] = [
+                    'subject' => $subject,
+                    '1st' => $first == null ? '0' : $first,
+                    '2nd' => $second == null ? '0' : $second,
+                    'ave' => $ave,
+                ];
+            }
+        }
+
+        $data['first'] = $subjectgrades;
+        $data['second'] = $subjectgrades2;
 
         return view('student.grades', $data);
     }
@@ -109,49 +248,65 @@ class StudentController extends Controller
         $query = $request->query();
         $qstring = array();
 
-        $day = '';
-        if(!empty($query['day'])){
-            $qstring['day'] = $day = $query['day'];
-            $data['day'] = $day;
-        }
+        $selectedDay = isset($query['day']) ? $query['day'] : 'All';
 
-        $getStatus = DB::table('main_users_details')
+        $data['today'] = $today = Carbon::now()->format('l');
+        $fetchlateststudent = DB::table('students')
             ->where('userid', $userinfo[0])
+            ->orderby('id', 'desc')
             ->first();
 
-
-        if($getStatus->yearlevel != "Graduate"){
-            $data['studentsection'] = $studentsection = DB::table('students')
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
-            ->where('students.userid', $userinfo[0])
-            ->select('sections.section_name', 'sections.id')
+        $data['sectname'] = $newsched = DB::table('curriculums')
+            ->where('id', $fetchlateststudent->sectionid)
             ->first();
 
-        $schedules = DB::table('schedules')
-            ->where('sectionid', $studentsection->id)
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'schedules.userid')
-            ->leftjoin('subjects', 'subjects.id', '=', 'schedules.subjectid')
-            ->select(
-                'main_users_details.firstname',
-                'main_users_details.middlename',
-                'main_users_details.lastname',
-                DB::raw("TIME_FORMAT(schedules.start_time, '%h:%i %p') as start_time"),
-                DB::raw("TIME_FORMAT(schedules.end_time, '%h:%i %p') as end_time"),
-                'subjects.subject_name',
-                'subjects.semester',
-                'schedules.day',
-            )
-            ->orderBy('schedules.start_time', 'asc');
+            $scheds = [];
 
+            $csttData = json_decode($newsched->cstt);
 
-        if(!empty($day)){
-            $schedules->where('schedules.day', 'like', "%$day%");
-        }
+            foreach ($csttData as $scheduleInfo) {
+                $day = $scheduleInfo->day;
 
-        $data['schedules'] = $schedules->get();
-        // dd($schedules);
-        // dd($data['schedules']);
-        }
+                if ($day == $selectedDay || $selectedDay == 'All') {
+                    $startTime = date("h:i A", strtotime($scheduleInfo->starttime));
+                    $endTime = date("h:i A", strtotime($scheduleInfo->endtime));
+
+                    $subject = DB::table('subjects')
+                        ->where('id', $scheduleInfo->subjectid)
+                        ->value('subject_name');
+
+                    $teacher = DB::table('main_users_details')
+                        ->select('firstname', 'middlename', 'lastname')
+                        ->where('userid', $scheduleInfo->teacherid)
+                        ->first();
+
+                    $section = $newsched->name;
+
+                    // Append the schedule to the array
+                    $scheds[] = [
+                        'day' => $day,
+                        'startTime' => $startTime,
+                        'endTime' => $endTime,
+                        'section' => $section,
+                        'teacher' => $teacher,
+                        'subject' => $subject,
+                    ];
+                }
+            }
+
+            // Sort the schedules
+            usort($scheds, function ($a, $b) {
+                $dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                $dayComparison = array_search($a['day'], $dayOrder) - array_search($b['day'], $dayOrder);
+
+                if ($dayComparison !== 0) {
+                    return $dayComparison;
+                }
+
+                return strtotime($a['startTime']) - strtotime($b['startTime']);
+            });
+
+            $data['newsched'] = $scheds;
 
         $data['qstring'] = http_build_query($qstring);
         $data['qstring'] = $qstring;
@@ -164,7 +319,7 @@ class StudentController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
         $data['balances'] = $balances = DB::table('tuition')
-            ->leftjoin('schoolyears', 'schoolyears.id', '=', 'tuition.yearid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'tuition.yearid')
             ->where('userid', $userinfo[0])
             ->orderBy('tuition.id', 'desc')
             ->get()

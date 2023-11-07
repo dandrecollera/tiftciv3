@@ -3,12 +3,43 @@
 @section('content')
 <div class="row py-3">
     <div class="col-lg-8 mb-3">
-        <div class="col  mb-2">
+        <div class="col mb-2">
+
+
+
+            <div class="card">
+                <div class="card-body overflow-scroll">
+                    <h5 class="card-title">{{$sectname->name}} Schedule</h5>
+                    <h6 class="card-title">{{$today}}</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"><strong>Subject</strong></th>
+                                <th scope="col"><strong>Start</strong></th>
+                                <th scope="col"><strong>End</strong></th>
+                                <th scope="col"><strong>Teacher</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($newsched as $schedule)
+                            <th scope="row"><strong>{{ $schedule['subject'] }}</strong></th>
+                            <th scope="row"><strong>{{ $schedule['startTime'] }}</strong></th>
+                            <th scope="row"><strong>{{ $schedule['endTime'] }}</strong></th>
+                            <th scope="row"><strong>{{ $schedule['teacher']->firstname }} {{
+                                    $schedule['teacher']->middlename }} {{ $schedule['teacher']->lastname }}</strong>
+                            </th>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
 
             <div class="card">
                 <div class="card-body overflow-scroll">
                     <h5 class="card-title"><strong>Balance</strong></h5>
-                    <h6 class="card-title">{{ $balance->school_year}}</h6>
+                    <h6 class="card-title">{{ $balance->schoolyear}}</h6>
                     <table class="table">
                         <thead>
                             <tr>
@@ -48,55 +79,9 @@
                 </div>
             </div>
 
-            <br>
 
-            @if (isset($studentsection))
-            <div class="card">
-                <div class="card-body overflow-scroll">
-                    <h5 class="card-title">{{$studentsection->section_name}} Schedule</h5>
-                    <h6 class="card-title">{{$today}}</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col"><strong>Subject</strong></th>
-                                <th scope="col"><strong>Start</strong></th>
-                                <th scope="col"><strong>End</strong></th>
-                                <th scope="col"><strong>Teacher</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($schedules as $schedule)
-                            <tr>
-                                <th scope="row"><strong>{{ $schedule->subject_name }}</strong></th>
-                                <td>{{ $schedule->start_time }}</td>
-                                <td>{{ $schedule->end_time }}</td>
-                                <td>{{$schedule->firstname}} {{$schedule->middlename}} {{$schedule->lastname}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @else
-            <div class="card">
-                <div class="card-body overflow-scroll">
-                    <h5 class="card-title">Schedule</h5>
-                    <h6 class="card-title">{{$today}}</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col"><strong>Subject</strong></th>
-                                <th scope="col"><strong>Start</strong></th>
-                                <th scope="col"><strong>End</strong></th>
-                                <th scope="col"><strong>Teacher</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @endif
+
+
 
         </div>
     </div>

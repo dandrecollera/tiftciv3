@@ -44,42 +44,7 @@
                     </form>
                 </div>
             </div>
-            @if (isset($schedules))
-            <div class="card ">
-                <div class="card-body overflow-scroll">
 
-
-                    @php
-                    $day = request('day');
-                    @endphp
-                    <h5 class="card-title">{{$day ? $day.' Schedule' : 'Week Schedule'}}</h5>
-                    <table class="table ">
-                        <thead>
-                            <tr>
-                                <th scope="col"><strong>Semester</strong></th>
-                                <th scope="col"><strong>Subjects</strong></th>
-                                <th scope="col"><strong>Start</strong></th>
-                                <th scope="col"><strong>End</strong></th>
-                                <th scope="col"><strong>Day</strong></th>
-                                <th scope="col"><strong>Teacher</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($schedules as $schedule)
-                            <tr>
-                                <th><strong>{{$schedule->semester}}</strong></th>
-                                <th><strong>{{$schedule->subject_name}}</strong></th>
-                                <td>{{$schedule->start_time}}</td>
-                                <td>{{$schedule->end_time}}</td>
-                                <td>{{$schedule->day}}</td>
-                                <td>{{$schedule->firstname}} {{$schedule->middlename}} {{$schedule->lastname}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @else
             <div class="card ">
                 <div class="card-body overflow-scroll">
 
@@ -99,12 +64,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($newsched as $schedule)
+                            <tr>
+                                <th scope="row"><strong>{{ $schedule['subject'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['startTime'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['endTime'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['day'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['teacher']->firstname }} {{
+                                        $schedule['teacher']->middlename }} {{ $schedule['teacher']->lastname
+                                        }}</strong>
+                                </th>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-            @endif
-
         </div>
     </div>
 </div>

@@ -23,6 +23,8 @@ $path = request()->path();
     <i class="fas fa-peso-sign fa-fw me-3" style="{{$path == 'balance' ? 'color:#2D58A1;' : ''
         }}"></i><span>Balance</span>
 </a>
+
+
 @php
 $seenstatus = DB::table('appointments')
 ->where('email', '=', $userinfo[4])
@@ -49,7 +51,11 @@ $query->where('active', '=', 'Approved')
     @endif
 </a>
 
-
+<a href="/enrollment"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'enrollment' ? 'active' : ''}}">
+    <i class="fas fa-file fa-fw me-3" style="{{$path == 'enrollment' ? 'color:#2D58A1;' : ''
+        }}"></i><span>Enrollment</span>
+</a>
 
 <a href="https://tiftci.com/?"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'lms' ? 'active' : ''}}">

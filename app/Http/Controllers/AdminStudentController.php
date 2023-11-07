@@ -85,7 +85,6 @@ class AdminStudentController extends Controller
             ['display'=>'Last Name', 'field'=>'main_users_details.lastname' ],
             ['display'=>'First Name', 'field'=>'main_users_details.firstname' ],
             ['display'=>'Middle Name', 'field'=>'main_users_details.middlename' ],
-            ['display'=>'Section', 'field'=>'curriculums.name' ],
         ];
         if (!empty($query['sort'])) {
             $data['sort'] = $qstring['sort'] = $query['sort'];
@@ -99,14 +98,10 @@ class AdminStudentController extends Controller
         $qstring['page'] = $page;
         $countdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->count();
         $dbdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->leftjoin('students', 'students.userid', '=', 'main_users.id')
-            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
             ->where('accounttype', 'student')
             ->select(
                 'main_users.*',
@@ -117,9 +112,6 @@ class AdminStudentController extends Controller
                 'main_users_details.address',
                 'main_users_details.lrn',
                 'main_users_details.photo',
-                'curriculums.name',
-                'curriculums.strand',
-                'curriculums.yearlevel',
             );
 
         if(!empty($keyword)){
@@ -134,7 +126,6 @@ class AdminStudentController extends Controller
             ->orwhere('main_users_details.lastname', 'like', "%$keyword%")
             ->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")
             ->orwhere('main_users_details.address', 'like', "%$keyword%")
-            ->orwhere('curriculums.name', 'like', "%$keyword%")
             ->count();
 
             $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'student');
@@ -143,7 +134,6 @@ class AdminStudentController extends Controller
             $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'student');
             $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'student');
             $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('sections.section_name', 'like', "%$keyword%")->where('accounttype', 'student');
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
@@ -474,9 +464,14 @@ class AdminStudentController extends Controller
             )
             ->first();
 
+        // dd($dbdata);
+        $student = DB::table('students')
+            ->where('userid', $dbdata->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
         $data['sections'] = $sections = DB::table('curriculums')
-            ->where('strand', $dbdata->strand)
-            ->where('yearlevel', $dbdata->yearlevel)
+            ->where('id', $student->sectionid)
             ->get()
             ->toArray();
 
@@ -546,6 +541,8 @@ class AdminStudentController extends Controller
 
         DB::table('students')
             ->where('userid', $input['did'])
+            ->orderBy('id', 'desc')
+            ->take(1)
             ->update([
                 'sectionid' => $input['section'],
                 'updated_at' => Carbon::now()->toDateTimeString()
