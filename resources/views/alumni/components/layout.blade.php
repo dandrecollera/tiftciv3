@@ -95,8 +95,8 @@
         <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-warning fixed-top">
             <!-- Container wrapper -->
             <div class="container-fluid">
-                <a class="navbar-brand fw-bolder ps-2" href="/portal">
-                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Portal
+                <a class="navbar-brand fw-bolder ps-2" href="/alumni">
+                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Alumni
                 </a>
                 <!-- Right links -->
                 <div class="btn-group shadow-0 d-none d-lg-block">

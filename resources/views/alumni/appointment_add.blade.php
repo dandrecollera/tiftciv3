@@ -16,7 +16,6 @@
 $sections = DB::table('students')
 ->where('userid', $userinfo[0])
 ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
-->orderBy('students.id', 'desc')
 ->first();
 
 $myself = DB::table('main_users')
@@ -32,11 +31,11 @@ $currentyear = DB::table('schoolyears')
 
 
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/studentappointment_add_process" method="POST" target="_parent" enctype="multipart/form-data"
+    <form action="/alumniappointment_add_processs" method="POST" target="_parent" enctype="multipart/form-data"
         id="appointmentGo">
         @csrf
         <div class="container-fluid">
-
+            <h1>Appointment</h1>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 my-3">
@@ -92,7 +91,7 @@ $currentyear = DB::table('schoolyears')
 
                                 <div class="form-outline my-4">
                                     <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
-                                        value="No" readonly>
+                                        value="Yes" readonly>
                                     <label class="form-label" for="mobilenumber">Graduate</label>
                                 </div>
 
@@ -109,16 +108,8 @@ $currentyear = DB::table('schoolyears')
                                 <div class="form-outline my-4">
                                     <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
                                         value="{{$sections->schoolyear}}" readonly>
-                                    <label class="form-label" for="mobilenumber">School Year</label>
+                                    <label class="form-label" for="mobilenumber">Last School Year Attended</label>
                                 </div>
-
-                                <div class="form-outline my-4">
-                                    <input type="text" class="form-control" name="mobilenumber" id="mobilenumber"
-                                        value="{{$sections->name}}" readonly>
-                                    <label class="form-label" for="mobilenumber">Section</label>
-                                </div>
-
-
                             </div>
                         </div>
                     </div>

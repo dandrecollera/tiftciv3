@@ -26,7 +26,6 @@ class AdminAlumni extends Controller
     public function adminalumni(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
-
         $data['errorlist'] = [
             1 => 'All forms are required please try again.',
             2 => 'Your password is too short, it should be at least 8 characters long.',

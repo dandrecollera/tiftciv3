@@ -54,8 +54,6 @@ class MainTeacherController extends Controller
             ->orderBy('schoolyear', 'desc')
             ->first();
 
-
-
         $selectedDay = $today;
 
         $data['newsched'] = $newsched = DB::table('curriculums')

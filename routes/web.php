@@ -233,5 +233,8 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Aluni Portal
     Route::get('/alumni', [AlumniController::class, 'home'])->name('alumnihome');
+    Route::get('/alumniappointment', [AlumniController::class, 'alumniappointment'])->name('alumniappointment');
+    Route::get('/alumniappointmentslist', [AlumniController::class, 'alumniappointmentslist'])->name('alumniappointmentslist');
+    Route::post('/alumniappointment_add_processs', [AlumniController::class, 'alumniappointment_add_processs'])->name('alumniappointment_add_processs');
 
 });

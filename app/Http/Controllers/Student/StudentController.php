@@ -499,9 +499,11 @@ class StudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
+
         $sections = DB::table('students')
             ->where('userid', $userinfo[0])
-            ->leftjoin('sections', 'sections.id', '=', 'students.sectionid')
+            ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
+            ->orderBy('students.id', 'desc')
             ->first();
 
         $myself = DB::table('main_users')
@@ -579,8 +581,8 @@ class StudentController extends Controller
             'address' => $myself->address,
             'lrn' => $myself->lrn,
             'graduate' => 'No',
-            'yearattended' => $currentyear->school_year,
-            'section' => $sections->section_name,
+            'yearattended' => $sections->schoolyear,
+            'section' => $sections->name,
             'inquiry' => $forminput['inquiry'],
             'goodmoral' => $forminput['goodmoral'],
             'registration' => $forminput['registration'],

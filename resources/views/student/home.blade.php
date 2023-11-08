@@ -5,8 +5,6 @@
     <div class="col-lg-8 mb-3">
         <div class="col mb-2">
 
-
-
             <div class="card">
                 <div class="card-body overflow-scroll">
                     <h5 class="card-title">{{$sectname->name}} Schedule</h5>
@@ -78,11 +76,6 @@
                     </table>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
     <div class="col-lg-4">

@@ -2,12 +2,18 @@
 $path = request()->path();
 @endphp
 
-<a href="/portal" class="list-group-item list-group-item-spec  py-2 ripple {{$path == 'portal' ? 'active' : ''}}">
+<a href="/alumni" class="list-group-item list-group-item-spec  py-2 ripple {{$path == 'portal' ? 'active' : ''}}">
     <i class="fas fa-table-columns fa-fw me-3" style="{{$path == 'portal' ? 'color:#2D58A1;' : ''
         }}"></i><span>Home</span>
 </a>
 
-<br>
+<a href="/alumniappointmentslist"
+    class="list-group-item list-group-item-spec  py-2 ripple {{$path == 'portal' ? 'active' : ''}}">
+    <i class="fas fa-table-columns fa-fw me-3" style="{{$path == 'portal' ? 'color:#2D58A1;' : ''
+        }}"></i><span>Appointments</span>
+</a>
+
+{{-- <br>
 <h5>Information</h5>
 <a href="/grades" class="list-group-item list-group-item-spec py-2 ripple {{$path == 'grades' ? 'active' : ''}}">
     <i class="fas fa-star fa-fw me-3" style="{{$path == 'grades' ? 'color:#2D58A1;' : ''
@@ -55,4 +61,4 @@ $query->where('active', '=', 'Approved')
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'lms' ? 'active' : ''}}">
     <i class="fas fa-laptop fa-fw me-3" style="{{$path == 'lms' ? 'color:#2D58A1;' : ''
         }}"></i><span>Student LMS</span>
-</a>
+</a> --}}

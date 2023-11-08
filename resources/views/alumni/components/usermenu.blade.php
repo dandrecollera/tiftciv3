@@ -2,6 +2,6 @@
 <li>
     <hr class="dropdown-divider d-none d-lg-block">
 </li>
-<li><a class=" dropdown-item" href="/studentprofile">My profile</a></li>
-<li><a class="dropdown-item" href="/studentsettings">Settings</a></li>
+<li><a class=" dropdown-item" href="/alumniprofile">My profile</a></li>
+<li><a class="dropdown-item" href="/alumnisettings">Settings</a></li>
 <li><a class="dropdown-item" href="/logout">Logout</a></li>
