@@ -15,6 +15,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\EmailUpdateController;
 use App\Http\Controllers\AdminAlumni;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 use App\Http\Controllers\Alumni\AlumniController;
@@ -182,6 +183,10 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminalumni_pass_process', [AdminAlumni::class, 'adminalumni_pass_process'])->name('adminalumni_pass_process');
     Route::post('/adminalumni_image_process', [AdminAlumni::class, 'adminalumni_image_process'])->name('adminalumni_image_process');
     Route::get('/adminalumni_archive_process', [AdminAlumni::class, 'adminalumni_archive_process'])->name('adminalumni_archive_process');
+
+
+    // Admin Cashier
+    Route::get('/admincashier', [CashierController::class, 'admincashier'])->name('admincashier');
 
 
     // Student Portal

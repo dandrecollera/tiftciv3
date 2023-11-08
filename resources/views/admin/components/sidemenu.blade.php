@@ -102,3 +102,10 @@ $seenstatus = DB::table('appointments')->where('active', '=', 'Pending')->where(
     }}"></i><span>CMS Public</span>
 </a>
 @endif
+@if ($userinfo[5] == 'cashier')
+<a href="/admincashier"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'admincashier' ? 'active' : ''}}">
+    <i class="fas fa-money-bill fa-fw me-3" style="{{$path == 'admincashier' ? 'color:#2D58A1;' : ''
+}}"></i><span>Cashier</span>
+</a>
+@endif

@@ -7,13 +7,6 @@
             <h1>Students</h1>
         </div>
     </div>
-    <div class="btn-group">
-        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Student</button>
-
-        <button type="button" id="massAdd" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Batch Add Students</button>
-    </div>
     <hr>
     @if (!empty($error))
     <div class="row">
@@ -145,16 +138,9 @@
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                {{-- <a class="btn btn-success btn-sm" href="#"
-                                    data-bs-target="#subjectTeacher{{$dbr->id}}" data-bs-toggle="collapse"
-                                    data-bs-target="#addeditmodal"><i class="fa-solid fa-peso-sign fa-xs"></i></a> --}}
-                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-box-archive fa-xs"></i></a>
+                                <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-peso-sign fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>

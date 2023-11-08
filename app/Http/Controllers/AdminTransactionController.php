@@ -16,7 +16,7 @@ class AdminTransactionController extends Controller
         $this->middleware('axuadmin');
     }
 
-    public $default_url = 'adminstudent';
+    public $default_url = 'admincashier';
 
     public function admintransaction(Request $request){
         $data = array();
