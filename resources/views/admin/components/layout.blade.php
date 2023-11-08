@@ -99,7 +99,10 @@
             <!-- Container wrapper -->
             <div class="container-fluid ">
                 <a class="navbar-brand fw-bolder ps-2 text-white" href="/admin">
-                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" />Admin
+                    <img src="{{asset('asset/tiflogo.png')}}" height="60" alt="" /><span
+                        style="text-transform: capitalize">
+                        {{$userinfo[5]}}
+                    </span>
                 </a>
                 <!-- Right links -->
 
