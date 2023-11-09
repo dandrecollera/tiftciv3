@@ -16,10 +16,12 @@ use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\EmailUpdateController;
 use App\Http\Controllers\AdminAlumni;
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\RegistrarController;
+use App\Http\Controllers\StudentCashierController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Teacher\MainTeacherController;
 use App\Http\Controllers\Alumni\AlumniController;
-
+use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +40,74 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logoutProcess')
 Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment');
 Route::get('/appointment_add', [AppointmentController::class, 'appointment_add'])->name('appointment_add');
 Route::post('/appointment_add_process', [AppointmentController::class, 'appointment_add_process'])->name('appointment_add_process');
+
+
+Route::get('/getDailyChartData', function () {
+    $sixDaysAgo = Carbon::now()->subDays(6)->toDateString();
+
+    $dailyData = DB::table('transactions')
+        ->select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total_amount'))
+        ->where('created_at', '>=', $sixDaysAgo)
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->get();
+
+    return response()->json($dailyData);
+});
+
+Route::get('/getWeeklyChartData', function () {
+    $fourWeeksAgo = Carbon::now()->subWeeks(4)->toDateString();
+
+    $weeklyData = DB::table('transactions')
+        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('WEEK(created_at) as week'), DB::raw('SUM(amount) as total_amount'))
+        ->where('created_at', '>=', $fourWeeksAgo)
+        ->groupBy('year', 'week')
+        ->orderBy('year', 'asc')
+        ->orderBy('week', 'asc')
+        ->get();
+
+    return response()->json($weeklyData);
+});
+
+Route::get('/getDailyAppointmentsCount', function () {
+    $sixDaysAgo = Carbon::now()->subDays(6)->toDateString();
+
+    $dailyCounts = DB::table('appointments')
+        ->select(DB::raw('DATE(appointeddate) as date'),
+            DB::raw('SUM(goodmoral) as goodmoral_count'),
+            DB::raw('SUM(registration) as registration_count'),
+            DB::raw('SUM(f138) as f138_count'),
+            DB::raw('SUM(others) as others_count'))
+        ->where('active', 'Completed')
+        // ->orWhere('active', 'Approved')
+        ->where('appointeddate', '>=', $sixDaysAgo)
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->get();
+
+    return response()->json($dailyCounts);
+});
+
+Route::get('/getWeeklyAppointmentsCount', function () {
+    $fourWeeksAgo = Carbon::now()->subWeeks(4)->toDateString();
+
+    $weeklyCounts = DB::table('appointments')
+        ->select(DB::raw('YEAR(appointeddate) as year'),
+            DB::raw('WEEK(appointeddate) as week'),
+            DB::raw('SUM(goodmoral) as goodmoral_count'),
+            DB::raw('SUM(registration) as registration_count'),
+            DB::raw('SUM(f138) as f138_count'),
+            DB::raw('SUM(others) as others_count'))
+        ->where('active', 'Completed')
+        // ->orWhere('active', 'Approved')
+        ->where('appointeddate', '>=', $fourWeeksAgo)
+        ->groupBy('year', 'week')
+        ->orderBy('year', 'asc')
+        ->orderBy('week', 'asc')
+        ->get();
+
+    return response()->json($weeklyCounts);
+});
 
 
 Route::get('handbook', function () {
@@ -187,6 +257,28 @@ Route::group(['middleware' => 'axuauth'], function () {
 
     // Admin Cashier
     Route::get('/admincashier', [CashierController::class, 'admincashier'])->name('admincashier');
+    Route::get('/admincashier_add', [CashierController::class, 'admincashier_add'])->name('admincashier_add');
+    Route::get('/admincashier_edit', [CashierController::class, 'admincashier_edit'])->name('admincashier_edit');
+    Route::get('/admincashier_archive_process', [CashierController::class, 'admincashier_archive_process'])->name('admincashier_archive_process');
+    Route::post('/admincashier_add_process', [CashierController::class, 'admincashier_add_process'])->name('admincashier_add_process');
+    Route::post('/admincashier_edit_process', [CashierController::class, 'admincashier_edit_process'])->name('admincashier_edit_process');
+    Route::post('/admincashier_pass_process', [CashierController::class, 'admincashier_pass_process'])->name('admincashier_pass_process');
+    Route::post('/admincashier_image_process', [CashierController::class, 'admincashier_image_process'])->name('admincashier_image_process');
+
+    // Admin Registrar
+    Route::get('/adminregistrar', [RegistrarController::class, 'adminregistrar'])->name('adminregistrar');
+    Route::get('/adminregistrar_add', [RegistrarController::class, 'adminregistrar_add'])->name('adminregistrar_add');
+    Route::post('/adminregistrar_add_process', [RegistrarController::class, 'adminregistrar_add_process'])->name('adminregistrar_add_process');
+    Route::get('/adminregistrar_edit', [RegistrarController::class, 'adminregistrar_edit'])->name('adminregistrar_edit');
+    Route::post('/adminregistrar_edit_process', [RegistrarController::class, 'adminregistrar_edit_process'])->name('adminregistrar_edit_process');
+    Route::post('/adminregistrar_pass_process', [RegistrarController::class, 'adminregistrar_pass_process'])->name('adminregistrar_pass_process');
+    Route::post('/adminregistrar_image_process', [RegistrarController::class, 'adminregistrar_image_process'])->name('adminregistrar_image_process');
+    Route::get('/adminregistrar_archive_process', [RegistrarController::class, 'adminregistrar_archive_process'])->name('adminregistrar_archive_process');
+    Route::get('/registrarreport', [AdminAppointmentsController::class, 'registrarreport'])->name('registrarreport');
+
+    // Student Cashier
+    Route::get('/studentcashier', [StudentCashierController::class, 'studentcashier'])->name('studentcashier');
+    Route::get('/studentcashierreport', [StudentCashierController::class, 'studentcashierreport'])->name('studentcashierreport');
 
 
     // Student Portal

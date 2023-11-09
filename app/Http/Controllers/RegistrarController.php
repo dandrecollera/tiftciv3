@@ -10,18 +10,18 @@ use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class CashierController extends Controller
+class RegistrarController extends Controller
 {
     public function __construct(Request $request){
         $this->middleware('axuadmin');
     }
 
-    public $default_url = "admincashier";
+    public $default_url = "adminregistrar";
     public $default_lpp = 25;
     public $default_start_page = 1;
 
 
-    public function admincashier(Request $request){
+    public function adminregistrar(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -42,10 +42,10 @@ class CashierController extends Controller
         }
 
         $data['notiflist'] = [
-            1 => 'New Cashier has been saved.',
+            1 => 'New Registrar has been saved.',
             2 => 'Changes has been saved.',
             3 => 'Password has been changed.',
-            4 => 'Cashier has been updated.',
+            4 => 'Registrar has been updated.',
             5 => 'Image has been updated',
             6 => 'Tuition has been updated.',
             7 => 'Section has been changed',
@@ -94,11 +94,11 @@ class CashierController extends Controller
         $qstring['page'] = $page;
         $countdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->where('accounttype', 'cashier')
+            ->where('accounttype', 'registrar')
             ->count();
         $dbdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->where('accounttype', 'cashier')
+            ->where('accounttype', 'registrar')
             ->select(
                 'main_users.*',
                 'main_users_details.firstname',
@@ -112,9 +112,8 @@ class CashierController extends Controller
         if(!empty($keyword)){
             $countdata = DB::table('main_users')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->leftjoin('students', 'students.userid', '=', 'main_users.id')
             ->leftjoin('curriculums', 'curriculums.id', '=', 'students.sectionid')
-            ->where('accounttype', 'cashier')
+            ->where('accounttype', 'registrar')
             ->where('main_users.email', 'like', "%$keyword%")
             ->orwhere('main_users_details.firstname', 'like', "%$keyword%")
             ->orwhere('main_users_details.middlename', 'like', "%$keyword%")
@@ -123,12 +122,12 @@ class CashierController extends Controller
             ->orwhere('main_users_details.address', 'like', "%$keyword%")
             ->count();
 
-            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'cashier');
-            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'cashier');
-            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'cashier');
-            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'cashier');
-            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'cashier');
-            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'cashier');
+            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'registrar');
+            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'registrar');
+            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'registrar');
+            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'registrar');
+            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'registrar');
+            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'registrar');
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
@@ -165,16 +164,16 @@ class CashierController extends Controller
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
-        return view('admin.admincashier', $data);
+        return view('admin.adminregistrar', $data);
     }
 
-    public function admincashier_add(Request $request){
+    public function adminregistrar_add(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
-        return view('admin.admincashier_add', $data);
+        return view('admin.adminregistrar_add', $data);
     }
 
-    public function admincashier_add_process(Request $request) {
+    public function adminregistrar_add_process(Request $request) {
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input(); print_r($input);
@@ -203,7 +202,7 @@ class CashierController extends Controller
         $muserid = DB::table('main_users')->insertGetId([
             'email' => $input['email'] . '@tiftci.org',
             'password' => md5($input['password']),
-            'accounttype' => 'cashier',
+            'accounttype' => 'registrar',
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString()
         ]);
@@ -233,7 +232,7 @@ class CashierController extends Controller
         return redirect($this->default_url.'?n=1'); die();
     }
 
-    public function admincashier_edit(Request $request){
+    public function adminregistrar_edit(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -245,14 +244,14 @@ class CashierController extends Controller
         $data['dbdata'] = $dbdata = DB::table('main_users')
             ->select('main_users.*', 'main_users_details.firstname', 'main_users_details.middlename', 'main_users_details.lastname', 'main_users_details.mobilenumber', 'main_users_details.address', 'main_users_details.photo')
             ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->where('main_users.accounttype', 'cashier')
+            ->where('main_users.accounttype', 'registrar')
             ->where('main_users.id', $query['id'])
             ->first();
 
-        return view('admin.admincashier_edit', $data);
+        return view('admin.adminregistrar_edit', $data);
     }
 
-    public function admincashier_edit_process(Request $request){
+    public function adminregistrar_edit_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -262,7 +261,7 @@ class CashierController extends Controller
             die();
         }
 
-        $logindata = DB::table('main_users')->where('id', $input['did'])->where('accounttype', 'cashier')->first();
+        $logindata = DB::table('main_users')->where('id', $input['did'])->where('accounttype', 'registrar')->first();
         if(empty($logindata)){
             return redirect($this->default_url.'?e=5');
             die();
@@ -289,7 +288,7 @@ class CashierController extends Controller
         return redirect($this->default_url.'?n=2');
     }
 
-    public function admincashier_pass_process(Request $request){
+    public function adminregistrar_pass_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -312,7 +311,7 @@ class CashierController extends Controller
 
         $logindata = DB::table('main_users')
             ->where('id', $input['did'])
-            ->where('accounttype', 'cashier')
+            ->where('accounttype', 'registrar')
             ->first();
 
         if(empty($logindata)){
@@ -330,7 +329,7 @@ class CashierController extends Controller
         return redirect($this->default_url.'?n=3');
     }
 
-    public function admincashier_image_process(Request $request){
+    public function adminregistrar_image_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
@@ -380,7 +379,7 @@ class CashierController extends Controller
         return redirect($this->default_url.'?n=5');
     }
 
-    public function  admincashier_archive_process(Request $request){
+    public function  adminregistrar_archive_process(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
@@ -399,7 +398,7 @@ class CashierController extends Controller
 
         $logindata = DB::table('main_users')
             ->where('id', $input['did'])
-            ->where('accounttype', 'cashier')
+            ->where('accounttype', 'registrar')
             ->first();
 
         if (empty($logindata)) {

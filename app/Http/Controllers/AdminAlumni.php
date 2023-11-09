@@ -26,6 +26,7 @@ class AdminAlumni extends Controller
     public function adminalumni(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
+
         $data['errorlist'] = [
             1 => 'All forms are required please try again.',
             2 => 'Your password is too short, it should be at least 8 characters long.',
@@ -125,12 +126,12 @@ class AdminAlumni extends Controller
             ->orwhere('main_users_details.address', 'like', "%$keyword%")
             ->count();
 
-            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'student');
-            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'student');
+            $dbdata->where('main_users.email', 'like', "%$keyword%")->where('accounttype', 'alumni');
+            $dbdata->orwhere('main_users_details.firstname', 'like', "%$keyword%")->where('accounttype', 'alumni');
+            $dbdata->orwhere('main_users_details.middlename', 'like', "%$keyword%")->where('accounttype', 'alumni');
+            $dbdata->orwhere('main_users_details.lastname', 'like', "%$keyword%")->where('accounttype', 'alumni');
+            $dbdata->orwhere('main_users_details.mobilenumber', 'like', "%$keyword%")->where('accounttype', 'alumni');
+            $dbdata->orwhere('main_users_details.address', 'like', "%$keyword%")->where('accounttype', 'alumni');
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);

@@ -4,12 +4,12 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Cashier</h1>
+            <h1>Registrar</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Cashier
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Registrar
             User</button>
     </div>
     <hr>
@@ -44,7 +44,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <button onclick="location.href='./admincashier'" type="button" class="btn btn-dark"><i
+                    <button onclick="location.href='./adminregistrar'" type="button" class="btn btn-dark"><i
                             class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
@@ -78,7 +78,7 @@
                             @endforeach
                         </ul>
                         @if (!empty($sort) || $lpp != 25)
-                        <button onclick="location.href='./admincashier'" type="button" class="btn btn-dark"><i
+                        <button onclick="location.href='./adminregistrar'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
                     </div>
@@ -208,16 +208,16 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Cashier User');
-        $('#addeditframe').attr('src', '/admincashier_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New Registrar User');
+        $('#addeditframe').attr('src', '/adminregistrar_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Cashier User');
-        $('#addeditframe').attr('src', '/admincashier_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Edit This Registrar User');
+        $('#addeditframe').attr('src', '/adminregistrar_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');
@@ -227,7 +227,7 @@
         var iemail = $(this).data("email");
         console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/admincashier_archive_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminregistrar_archive_process?did='+iid+'&'+iqstring);
     });
 });
 

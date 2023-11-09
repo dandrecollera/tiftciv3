@@ -2,10 +2,14 @@
 $path = request()->path();
 @endphp
 
+@if ($userinfo[5] != 'cashier')
+
 <a href="/admin" class="list-group-item list-group-item-spec py-2 ripple {{$path == 'admin' ? 'active' : ''}}">
     <i class="fas fa-table-columns fa-fw me-3" style="{{$path == 'admin' ? 'color:#2D58A1;' : ''
         }}"></i><span>Dashboard</span>
 </a>
+
+@endif
 @if ($userinfo[5] == 'admin')
 <a href="#"
     class="list-group-item list-group-item-spec py-2 ripple dropdown-toggle {{$path == 'adminteacher' || $path == 'adminuser' ? 'active' : '' || $path == 'adminregistrar' ? 'active' : '' || $path == 'admincashier' ? 'active' : ''}}"
@@ -92,6 +96,11 @@ $seenstatus = DB::table('appointments')->where('active', '=', 'Pending')->where(
         @endif
     </div>
 </a>
+<a href="/registrarreport"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'registrarreport' ? 'active' : ''}}">
+    <i class="fas fa-chart-simple fa-fw me-3" style="{{$path == 'registrarreport' ? 'color:#2D58A1;' : ''
+}}"></i><span>Report</span>
+</a>
 @endif
 
 
@@ -103,9 +112,13 @@ $seenstatus = DB::table('appointments')->where('active', '=', 'Pending')->where(
 </a>
 @endif
 @if ($userinfo[5] == 'cashier')
-<a href="/admincashier"
-    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'admincashier' ? 'active' : ''}}">
-    <i class="fas fa-money-bill fa-fw me-3" style="{{$path == 'admincashier' ? 'color:#2D58A1;' : ''
+<a href="/studentcashier"
+    class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentcashier' ? 'active' : ''}}">
+    <i class="fas fa-money-bill fa-fw me-3" style="{{$path == 'studentcashier' ? 'color:#2D58A1;' : ''
 }}"></i><span>Cashier</span>
-</a>
-@endif
+    <a href="/studentcashierreport"
+        class="list-group-item list-group-item-spec py-2 ripple {{$path == 'studentcashierreport' ? 'active' : ''}}">
+        <i class="fas fa-chart-simple fa-fw me-3" style="{{$path == 'studentcashierreport' ? 'color:#2D58A1;' : ''
+}}"></i><span>Report</span>
+    </a>
+    @endif

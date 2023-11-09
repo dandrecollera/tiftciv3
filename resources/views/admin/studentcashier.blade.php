@@ -7,11 +7,6 @@
             <h1>Cashier</h1>
         </div>
     </div>
-    <div class="">
-        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Cashier
-            User</button>
-    </div>
     <hr>
     @if (!empty($error))
     <div class="row">
@@ -44,7 +39,7 @@
                         aria-label="Keyword Search" aria-describedby="basic-addon2" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <button onclick="location.href='./admincashier'" type="button" class="btn btn-dark"><i
+                    <button onclick="location.href='./studentcashier'" type="button" class="btn btn-dark"><i
                             class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
@@ -78,7 +73,7 @@
                             @endforeach
                         </ul>
                         @if (!empty($sort) || $lpp != 25)
-                        <button onclick="location.href='./admincashier'" type="button" class="btn btn-dark"><i
+                        <button onclick="location.href='./studentcashier'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
                     </div>
@@ -109,6 +104,8 @@
                                 class="{{ $orderbylist[$sort]['display'] == 'Middle Name' ? 'text-primary' : '' }}"><strong>Middle
                                     Name</strong></span></th>
 
+                        <th scope="col"><strong>Section</strong></th>
+                        <th scope="col"><strong>LRN</strong></th>
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
@@ -123,16 +120,27 @@
                         <td>{{$dbr->lastname}}</td>
                         <td>{{$dbr->firstname}}</td>
                         <td>{{$dbr->middlename}}</td>
+                        <td>
+                            @php
+                            $latestSection = DB::table('students')
+                            ->where('userid', $dbr->id)
+                            ->orderBy('id', 'desc')
+                            ->first();
+
+                            $thesection = DB::table('curriculums')
+                            ->where('id', $latestSection->sectionid)
+                            ->first();
+
+                            @endphp
+                            {{$thesection->name}}
+                        </td>
+                        <td>{{$dbr->lrn}}</td>
                         <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
-                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
-                                        class="fa-solid fa-pen fa-xs"></i></a>
-                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fas fa-box-archive fa-xs"></i></a>
+                                <a class="btn btn-success btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
+                                    data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-peso-sign fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -208,16 +216,21 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Cashier User');
-        $('#addeditframe').attr('src', '/admincashier_add?{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Add A New Student User');
+        $('#addeditframe').attr('src', '/adminstudent_add?{!!$qstring!!}');
+    });
+    $('#massAdd').on('click', function() {
+        console.log('add button clicked!');
+        $('#addeditmodalLabel').html('Batch Add Students');
+        $('#addeditframe').attr('src', '/adminstudent_batchadd?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
         console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Cashier User');
-        $('#addeditframe').attr('src', '/admincashier_edit?id='+iid+'{!!$qstring!!}');
+        $('#addeditmodalLabel').html('Edit This Student User');
+        $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
         console.log('delete button clicked!');
@@ -227,7 +240,7 @@
         var iemail = $(this).data("email");
         console.log(iid);
         $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/admincashier_archive_process?did='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminstudent_archive_process?did='+iid+'&'+iqstring);
     });
 });
 

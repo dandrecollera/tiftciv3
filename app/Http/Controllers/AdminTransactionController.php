@@ -16,7 +16,7 @@ class AdminTransactionController extends Controller
         $this->middleware('axuadmin');
     }
 
-    public $default_url = 'admincashier';
+    public $default_url = 'studentcashier';
 
     public function admintransaction(Request $request){
         $data = array();
@@ -164,6 +164,15 @@ class AdminTransactionController extends Controller
         }
 
 
+        $totalget = $transact['voucher'] + $transact['tuition'] + $transact['registration'];
+
+        DB::table('transactions')
+            ->insert([
+                'amount' => $totalget,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ]);
+
         $voucher = $tuitionamount->voucher - $transact['voucher'];
         $tuition = $tuitionamount->tuition - $transact['tuition'];
         $registration = $tuitionamount->registration - $transact['registration'];
@@ -179,4 +188,5 @@ class AdminTransactionController extends Controller
             ]);
         return redirect($this->default_url.'?n=6');
     }
+
 }

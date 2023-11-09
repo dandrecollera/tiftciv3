@@ -132,6 +132,7 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
     <script src="{{asset('js/jquery-3.6.4.min.js')}}"></script>
     <script src="{{asset('js/mdb.min.js')}}"></script>
