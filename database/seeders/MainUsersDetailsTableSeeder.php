@@ -14,12 +14,12 @@ class MainUsersDetailsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('main_users_details')->delete();
-        
+
         \DB::table('main_users_details')->insert(array (
-            0 => 
+            0 =>
             array (
                 'address' => 'Address Admin',
                 'created_at' => '2023-04-23 18:19:09',
@@ -35,7 +35,7 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'userid' => 1,
                 'yearlevel' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'address' => 'Interior Lapu Lapu St. Tanay Rizal',
                 'created_at' => '2023-04-25 07:24:24',
@@ -51,7 +51,7 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'userid' => 2,
                 'yearlevel' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'address' => '',
                 'created_at' => '2023-04-25 07:25:02',
@@ -67,7 +67,7 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'userid' => 3,
                 'yearlevel' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'address' => '',
                 'created_at' => '2023-04-25 07:25:38',
@@ -83,7 +83,7 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'userid' => 4,
                 'yearlevel' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'address' => '',
                 'created_at' => '2023-04-25 07:28:29',
@@ -99,24 +99,8 @@ class MainUsersDetailsTableSeeder extends Seeder
                 'userid' => 5,
                 'yearlevel' => NULL,
             ),
-            5 => 
-            array (
-                'address' => '4fdsafasdgasfdasd',
-                'created_at' => '2023-11-05 09:55:19',
-                'firstname' => 'Test',
-                'id' => 6,
-                'lastname' => 'Teacher4',
-                'lrn' => NULL,
-                'middlename' => '',
-                'mobilenumber' => '42342134124',
-                'photo' => '6.jpg',
-                'strand' => NULL,
-                'updated_at' => '2023-11-05 09:55:19',
-                'userid' => 6,
-                'yearlevel' => NULL,
-            ),
         ));
-        
-        
+
+
     }
 }
