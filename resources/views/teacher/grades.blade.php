@@ -13,25 +13,35 @@
 
 
     @foreach ($compiledCsttData as $subject)
-
     @php
-    // dd($subject);
+    $subjectname = DB::table('subjects')->where('id', $subject['subjectid'])->first();
 
-    $subjectname = DB::table('subjects')
-    ->where('id', $subject['subjectid'])
+    $checkarchive = DB::table('subjectarchive')
+    ->where('teacherid', $userinfo[0])
+    ->where('subjectid', $subject['subjectid'])
+    ->where('sectionid', $subject['curriculumid'])
     ->first();
+
+    // Check if the result is NOT empty
+    $isInArchive = !empty($checkarchive);
     @endphp
+
+    @unless($isInArchive)
     <div class="col-12 col-lg-4 mb-3">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title"><strong>{{$subject['section']}}</strong></h6>
-                <h6 class="card-title">{{$subjectname->subject_name}} - {{$subject['semester']}} Semester</h6>
-                <a href="/studentsgrades?subject={{$subject['subjectid']}}&section={{$subject['curriculumid']}}">
+                <h6 class="card-title"><strong>{{ $subject['section'] }}</strong></h6>
+                <h6 class="card-title">{{ $subjectname->subject_name }} - {{ $subject['semester'] }} Semester</h6>
+                <a href="/studentsgrades?subject={{ $subject['subjectid'] }}&section={{ $subject['curriculumid'] }}">
                     <button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>
+                </a>
+                <a href="/subjectarchive?subject={{ $subject['subjectid'] }}&section={{ $subject['curriculumid'] }}">
+                    <button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>
                 </a>
             </div>
         </div>
     </div>
+    @endunless
     @endforeach
 
 

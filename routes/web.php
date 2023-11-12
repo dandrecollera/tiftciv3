@@ -346,6 +346,7 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/getStudentSection', [MainTeacherController::class, 'getStudentSection'])->name('getStudentSection');
     Route::get('/studentlistpdf', [MainTeacherController::class, 'studentlistpdf'])->name('studentlistpdf');
     Route::get('/teacherschedulepdf', [MainTeacherController::class, 'teacherschedulepdf'])->name('teacherschedulepdf');
+    Route::get('/subjectarchive', [MainTeacherController::class, 'subjectarchive'])->name('subjectarchive');
 
     // Aluni Portal
     Route::get('/alumni', [AlumniController::class, 'home'])->name('alumnihome');

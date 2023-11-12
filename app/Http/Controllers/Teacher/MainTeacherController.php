@@ -576,7 +576,7 @@ class MainTeacherController extends Controller
 
         $pdf = PDF::loadview('teacher.teacherschedulepdf', $data);
 
-        return $pdf->stream('studentlist.pdf');
+        return $pdf->stream('myschedule.pdf');
     }
 
     public function studentlist(Request $request){
@@ -892,5 +892,21 @@ class MainTeacherController extends Controller
         session(['sessionkey' => $user_id]);
 
         return redirect('teachersettings?n=5');
+    }
+
+    public function subjectarchive(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $query = $request->query();
+
+        DB::table('subjectarchive')
+            ->insert([
+                'teacherid' => $userinfo[0],
+                'subjectid' => $query['subject'],
+                'sectionid' => $query['section'],
+            ]);
+
+        return redirect('/grading');
     }
 }
