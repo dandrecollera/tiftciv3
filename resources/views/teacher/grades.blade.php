@@ -43,9 +43,6 @@
     </div>
     @endunless
     @endforeach
-
-
-
 </div>
 @endsection
 
@@ -68,36 +65,43 @@
 
 
         function updatePageContent(updatedData) {
-        // Clear existing content
-        $('#card-container').empty();
+    // Clear existing content
+    $('#card-container').empty();
 
-        // Append the updated content
-        $.each(updatedData, function (index, subject) {
-            // Fetch subject name using AJAX
-            $.get('/getSubjectName', { subjectid: subject.subjectid }, function (subjectData) {
-                // Append the updated content to the page
-                var newContent =
-    '<div class="col-12 col-lg-4 mb-3">' +
-    '<div class="card">' +
-    '<div class="card-body">' +
-    '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
-    '<h6 class="card-title">' + subjectData.subject_name + '- ' + subject.semester + ' Semester</h6>' +
-    '<a href="/studentsgrades?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
-    '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
-    '</a>' +
-    '<a href="/subjectarchive?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
-    '<button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>' +
-    '</a>' +
-    '</div>' +
-    '</div>' +
-    '</div>';
+    // Iterate over the updated data
+    $.each(updatedData, function (index, subject) {
+        // Fetch subject name using AJAX
+        $.get('/getSubjectName', { subjectid: subject.subjectid }, function (subjectData) {
+            // Check if the subject is in the archive
+            $.get('/checkArchive', {
+                subjectid: subject.subjectid,
+                sectionid: subject.curriculumid
+            }, function (isInArchive) {
+                // Check if the result is NOT empty
+                if (!isInArchive) {
+                    // Append the updated content to the page
+                    var newContent =
+                        '<div class="col-12 col-lg-4 mb-3">' +
+                        '<div class="card">' +
+                        '<div class="card-body">' +
+                        '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
+                        '<h6 class="card-title">' + subjectData.subject_name + '- ' + subject.semester + ' Semester</h6>' +
+                        '<a href="/studentsgrades?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
+                        '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
+                        '</a>' +
+                        '<a href="/subjectarchive?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
+                        '<button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
 
-                // Append the new content to the row
-                $('#card-container').append(newContent);
+                    // Append the new content to the row
+                    $('#card-container').append(newContent);
+                }
             });
         });
-    }
-
-    })
+    });
+}
 </script>
 @endpush

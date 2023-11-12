@@ -909,4 +909,22 @@ class MainTeacherController extends Controller
 
         return redirect('/grading');
     }
+
+    public function checkArchive(Request $request)
+    {
+        $userinfo = $request->get('userinfo');
+        $teacherid = $userinfo[0];
+        $subjectid = $request->query('subjectid');
+        $sectionid = $request->query('sectionid');
+
+        // Query the subjectarchive table to check if the subject is in the archive
+        $isInArchive = DB::table('subjectarchive')
+            ->where('teacherid', $teacherid)
+            ->where('subjectid', $subjectid)
+            ->where('sectionid', $sectionid)
+            ->exists();
+
+        return response()->json($isInArchive);
+    }
+
 }
