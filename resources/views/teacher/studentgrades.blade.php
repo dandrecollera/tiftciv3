@@ -43,6 +43,7 @@
                             <th scope="col"><strong>{{$section->semester == '1st' ? '1st' : '3rd'}}</strong></th>
                             <th scope="col"><strong>{{$section->semester == '1st' ? '2nd' : '4th'}}</strong></th>
                             <th scope="col"><strong>Final Grade</strong></th>
+                            <th scope="col"><strong>Remarks</strong></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +98,9 @@
                                     <input type="number" class="form-control" id="gwaInput_{{$student->userid}}" {{$lock
                                         !=null ? 'readonly' : '' }}>
                                 </div>
+                            </td>
+                            <td>
+                                <span id="remarks_{{$student->userid}}"></span>
                             </td>
                         </tr>
 
@@ -155,6 +159,7 @@
             let id1st = $('#gradeinput1st-' + userid);
             let id2nd = $('#gradeinput2nd-' + userid);
             let gwaInput = $('#gwaInput_' + userid);
+            let remarks = $('#remarks_' + userid);
 
             if(inputvalue < 65 || inputvalue > 100){
                 gwaInput.val('');
@@ -170,15 +175,21 @@
 
             if (grade1st > 0 && grade2nd > 0) {
                 // Calculate average
-                calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput);
+                calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput, remarks);
             } else {
                 // If only one input has a value or both are empty, clear the average
                 gwaInput.val('');
             }
 
-            function calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput) {
+            function calculateAndSetAverage(userid, grade1st, grade2nd, gwaInput, remarks) {
                 // Calculate average
                 let average = (grade1st + grade2nd) / 2;
+
+                if(average >= 75){
+                    remarks.text('Passed');
+                } else {
+                    remarks.text('Failed')
+                }
 
                 // Update the readonly input with the calculated average
                 gwaInput.val(average.toFixed(2));

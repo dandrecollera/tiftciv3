@@ -10,15 +10,15 @@ use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class CurriculumController extends Controller
+class RealCurriculumController extends Controller
 {
     public function __construct(Request $request){
         $this->middleware('axuadmin');
     }
 
-    public $default_url_adminuser = "/adminsection";   //default return URL
-    public $default_lpp = 25;                       //default line per page
-    public $default_start_page = 1;                 //default starting page
+    public $default_url_adminuser = "/admincurriculum";
+    public $default_lpp = 25;
+    public $default_start_page = 1;
 
     public function admincurriculum(Request $request){
         $data = array();
@@ -71,10 +71,10 @@ class CurriculumController extends Controller
 
         $data['sort'] = 0;
         $data['orderbylist'] = [
-            ['display' => 'Default', 'field' => 'curriculums.id'],
-            ['display' => 'Name', 'field' => 'curriculums.name'],
-            ['display' => 'School Year', 'field' => 'curriculums.schoolyear'],
-            ['display' => 'Year Level', 'field' => 'curriculums.yearlevel'],
+            ['display' => 'Default', 'field' => 'realcurriculums.id'],
+            ['display' => 'Name', 'field' => 'realcurriculums.name'],
+            ['display' => 'School Year', 'field' => 'realcurriculums.schoolyear'],
+            ['display' => 'Year Level', 'field' => 'realcurriculums.yearlevel'],
         ];
         if(!empty($query['sort'])){
             $data['sort'] = $qstring['sort'] = $query['sort'];
@@ -86,18 +86,18 @@ class CurriculumController extends Controller
         }
         $qstring['page'] = $page;
 
-        $countdata = DB::table('curriculums')
+        $countdata = DB::table('realcurriculums')
             ->count();
-        $dbdata = DB::table('curriculums');
+        $dbdata = DB::table('realcurriculums');
 
         if(!empty($keyword)){
-            $countdata = DB::table('curriculums')
-                ->where('curriculums.name', 'like', "%$keyword%")
-                ->orWhere('curriculums.yearlevel', 'like', "%$keyword%")
+            $countdata = DB::table('realcurriculums')
+                ->where('realcurriculums.name', 'like', "%$keyword%")
+                ->orWhere('realcurriculums.yearlevel', 'like', "%$keyword%")
                 ->count();
 
-            $dbdata->where('curriculums.name', 'like', "%$keyword%");
-            $dbdata->orWhere('curriculums.yearlevel', 'like', "%$keyword%");
+            $dbdata->where('realcurriculums.name', 'like', "%$keyword%");
+            $dbdata->orWhere('realcurriculums.yearlevel', 'like', "%$keyword%");
         }
 
         $dbdata->orderBy($data['orderbylist'][$data['sort']]['field']);
@@ -134,7 +134,7 @@ class CurriculumController extends Controller
 
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
-        return view('admin.curriculum', $data);
+        return view('admin.newcurriculum', $data);
     }
 
     public function admincurriculum_subjects(Request $request){
@@ -143,54 +143,22 @@ class CurriculumController extends Controller
 
         $query = $request->query();
 
-        $data['subjects'] = $subjects = DB::table('curriculums')
+        $data['subjects'] = $subjects = DB::table('realcurriculums')
             ->where('id', $query['sid'])
             ->first();
 
+        // dd($subjects);
 
-        return view('admin.curriculum_subjects', $data);
+        return view('admin.newcurriculum_subjects', $data);
 
         dd($subjects);
     }
-
 
     public function admincurriculum_add(Request $request){
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
 
-        return view('admin.curriculum_add', $data);
-    }
-
-    public function fetchTeachers(Request $request){
-        $teachers = DB::table('main_users')
-            ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-            ->where('accounttype', 'teacher')
-            ->where('main_users.status', 'active')
-            ->select([
-                'main_users.id',
-                'main_users_details.firstname',
-                'main_users_details.middlename',
-                'main_users_details.lastname',
-            ])
-            ->get()
-            ->toArray();
-
-            return response()->json($teachers);
-            // dd($teachers);
-    }
-
-    public function fetchSubjects(Request $request){
-        $teachers = DB::table('subjects')
-            ->where('status', 'active')
-            ->select([
-                'id',
-                'subject_name',
-            ])
-            ->get()
-            ->toArray();
-
-            return response()->json($teachers);
-            // dd($teachers);
+        return view('admin.newcurriculum_add', $data);
     }
 
     public function admincurriculum_add_process(Request $request){
@@ -203,31 +171,26 @@ class CurriculumController extends Controller
         for($i = 0; $i < count($input['subject']) ; $i++){
             $csttData[] = [
                 'subjectid' => $input['subject'][$i],
-                'teacherid' => $input['teacher'][$i],
-                'day' => $input['day'][$i],
-                'starttime' => $input['starttime'][$i],
-                'endtime' => $input['endtime'][$i],
             ];
         }
 
         // dd($input);
         // dd(json_encode($csttData));
 
-        DB::table('curriculums')
+        DB::table('realcurriculums')
             ->insert([
                 'name' => $input['name'],
                 'schoolyear' => $input['schoolyear'],
                 'yearlevel' => $input['yearlevel'],
                 'strand' => $input['strand'],
                 'semester' => $input['semester'],
-                'count' => $input['nostudent'],
                 'cstt' => json_encode($csttData),
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
 
-        return redirect('/adminsection?n=1');
+        return redirect('/admincurriculum?n=1');
     }
 
     public function admincurriculum_edit(Request $request){
@@ -235,13 +198,13 @@ class CurriculumController extends Controller
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $query = $request->query();
 
-        $data['curriculum'] = $curriculum = DB::table('curriculums')
+        $data['curriculum'] = $curriculum = DB::table('realcurriculums')
             ->where('id', $query['id'])
             ->first();
 
 
         // dd($curriculum);
-        return view('admin.curriculum_edit', $data);
+        return view('admin.newcurriculum_edit', $data);
     }
 
     public function admincurriculum_edit_process(Request $request){
@@ -255,14 +218,10 @@ class CurriculumController extends Controller
         for($i = 0; $i < count($input['subject']) ; $i++){
             $csttData[] = [
                 'subjectid' => $input['subject'][$i],
-                'teacherid' => $input['teacher'][$i],
-                'day' => $input['day'][$i],
-                'starttime' => $input['starttime'][$i],
-                'endtime' => $input['endtime'][$i],
             ];
         }
 
-        DB::table('curriculums')
+        DB::table('realcurriculums')
             ->where('id', $input['sid'])
             ->update([
                 'name' => $input['name'],
@@ -274,7 +233,7 @@ class CurriculumController extends Controller
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);
 
-        return redirect('/adminsection?n=1');
+        return redirect('/admincurriculum?n=1');
     }
 
     public function admincurriculum_archive(Request $request){
@@ -294,7 +253,7 @@ class CurriculumController extends Controller
             die();
         }
 
-        $logindata = DB::table('curriculums')
+        $logindata = DB::table('realcurriculums')
             ->where('id', $input['did'])
             ->first();
 
@@ -304,13 +263,13 @@ class CurriculumController extends Controller
         }
 
         if($logindata->status == 'active'){
-            DB::table('curriculums')
+            DB::table('realcurriculums')
                 ->where('id', $input['did'])
                 ->update([
                     'status' => 'inactive',
                 ]);
         } else {
-            DB::table('curriculums')
+            DB::table('realcurriculums')
                 ->where('id', $input['did'])
                 ->update([
                     'status' => 'active',
@@ -318,28 +277,5 @@ class CurriculumController extends Controller
         }
 
         return redirect($this->default_url_adminuser.'?n=4&'.$qstring);
-    }
-
-    public function fetchNewCurr(Request $request){
-        $data = array();
-        $data['userinfo'] = $userinfo = $request->get('userinfo');
-        $query = $request->query();
-
-        $newcurr = DB::table('realcurriculums')
-            ->where('id', $query['id'])
-            ->first();
-
-        return response()->json($newcurr);
-    }
-    public function fetchNewSub(Request $request){
-        $data = array();
-        $data['userinfo'] = $userinfo = $request->get('userinfo');
-        $query = $request->query();
-
-        $newcurr = DB::table('subjects')
-            ->where('id', $query['newid'])
-            ->first();
-
-        return response()->json($newcurr);
     }
 }

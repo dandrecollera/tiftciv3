@@ -91,10 +91,13 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th scope="col"><strong>Code</strong></th>
                         <th scope="col"><span
                                 class="{{ $orderbylist[$sort]['display'] == 'Subject' ? 'text-primary' : '' }}"><strong>Subject
                                     Name</strong></span>
                         </th>
+
+                        <th scope="col"><strong>Description</strong></th>
                         <th scope="col"><strong>Status</strong></th>
                         {{-- <th scope="col"><strong>Strand</strong></th>
                         <th scope="col"><strong>Semester</strong></th>
@@ -105,7 +108,9 @@
                 <tbody>
                     @foreach ($dbresult as $dbr)
                     <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
+                        <td><strong>{{$dbr->code}}</strong></td>
                         <td><strong>{{$dbr->subject_name}}</strong></td>
+                        <td><strong>{{$dbr->description}}</strong></td>
                         <td><strong>{{$dbr->status}}</strong></td>
                         {{-- <td><strong>{{$dbr->strand}}</strong></td>
                         <td><strong>{{$dbr->semester}}</strong></td>
@@ -120,7 +125,7 @@
                                         class="fa-solid fa-pen fa-xs"></i></a> --}}
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->subject_name}}">
+                                    data-email="{{$dbr->subject_name}}" data-stat="{{$dbr->status}}">
                                     <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
@@ -170,13 +175,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Delete This Subject</div>
+                    <div id="arctitle">Archive This Subject</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <strong><span id="Email"></span></strong>?<br>
-                    Please note this is unrecoverable.
+                <p>Are you sure you want to <span id="arctext">archive</span> <strong><span
+                            id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -201,25 +206,16 @@
         $('#addeditmodalLabel').html('Add A New Subject');
         $('#addeditframe').attr('src', '/adminsubject_add?{!!$qstring!!}');
     });
-    $('.dcc_edit').on('click', function() {
-        console.log('edit button clicked!');
-        console.log( $(this).data("id") );
-        var iid = $(this).data("id");
-        console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Subject');
-        $('#addeditframe').attr('src', '/adminsubject_edit?id='+iid+'&{!!$qstring!!}');
-    });
-    $('.dcc-delete').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
-        var iid = $(this).data("id");
-        var iqstring = $(this).data("qstring");
-        var iemail = $(this).data("email");
-        console.log(iid);
-        $('#Email').html(iemail);
-        $('#DeleteButton').prop('href', '/adminsubject_delete_process?did='+iid+'&'+iqstring);
-    });
     $('.dcc-archive').on('click', function() {
+        if($(this).data('stat') == 'inactive'){
+            $('#arctitle').text('Unarchive This Subject');
+            $('#arctext').text('unarchive');
+            $('#DeleteButton').text('Unarchive');
+        } else {
+            $('#arctitle').text('Archive This Subject');
+            $('#arctext').text('archive');
+            $('#DeleteButton').text('Archive');
+        }
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");

@@ -164,11 +164,29 @@ class AdminTransactionController extends Controller
         }
 
 
+        $vou = '0';
+        $tui = '0';
+        $reg = '0';
+
+        if($transact['registration'] > 0){
+            $reg = '1';
+        }
+        if($transact['tuition'] > 0){
+            $tui = '1';
+        }
+        if($transact['voucher'] > 0){
+            $vou = '1';
+        }
+
         $totalget = $transact['voucher'] + $transact['tuition'] + $transact['registration'];
 
         DB::table('transactions')
             ->insert([
                 'amount' => $totalget,
+                'userid' => $input['did'],
+                'voucher' => $vou,
+                'tuition' => $tui,
+                'registration' => $reg,
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);

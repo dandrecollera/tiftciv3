@@ -26,14 +26,14 @@
         <div class="container-fluid">
 
 
-            <div class="input-group mt-2 mb-2">
-                <div class="form-outline">
-                    <input type="text" class="form-control" name="email" id="emailInput" required>
-                    <label for="emailInput" class="form-label">Email:</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
-                </div>
+            <div class="form-outline mt-2 mb-4">
+                <input type="text" class="form-control" name="email" id="emailInput" required>
+                <label for="emailInput" class="form-label">Username:</label>
+            </div>
+
+            <div class="form-outline my-4">
+                <input type="text" class="form-control" name="empty" id="empty" value="@tiftci.org" readonly>
+                <label for="emailInput" class="form-label">Email:</label>
             </div>
 
             <div class="row" id="conpass">
@@ -107,6 +107,10 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+
+    $('#emailInput').keyup(function(){
+        $('#empty').val($('#emailInput').val() + '@tiftci.org');
+    })
 
     $('#show1').on('click', function() {
         if($('#password').attr('type') == "text"){

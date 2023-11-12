@@ -43,6 +43,7 @@
                                 <th><strong>1st</strong></th>
                                 <th><strong>2nd</strong></th>
                                 <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Remarks</strong></th>
                                 <th><strong>Action Take</strong></th>
                             </tr>
                         </thead>
@@ -67,6 +68,9 @@
                                     </strong>
                                 </td>
                                 <td>
+                                    {{$fgrades['remarks']}}
+                                </td>
+                                <td>
                                 </td>
                             </tr>
                             @endforeach
@@ -86,6 +90,7 @@
                                 <th><strong>3rd</strong></th>
                                 <th><strong>4th</strong></th>
                                 <th><strong>Semestral Final Grade</strong></th>
+                                <th><strong>Remarks</strong></th>
                                 <th><strong>Action Take</strong></th>
                             </tr>
                         </thead>
@@ -108,6 +113,9 @@
                                     <strong>
                                         {{$sgrades['ave']}}
                                     </strong>
+                                </td>
+                                <td>
+                                    {{$sgrades['remarks']}}
                                 </td>
                                 <td>
                                 </td>

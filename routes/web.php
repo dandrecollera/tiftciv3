@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CurriculumController;
+use App\Http\Controllers\RealCurriculumController;
 use App\Http\Controllers\SubjectAdminController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SchoolYearController;
@@ -110,6 +111,7 @@ Route::get('/getWeeklyAppointmentsCount', function () {
 });
 
 
+
 Route::get('handbook', function () {
     $pathToFile = public_path('files/handbook.pdf');
 
@@ -181,8 +183,18 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/subject_teacher_add_process', [SubjectAdminController::class, 'admin_teacher_add_process'])->name('adminSubjectTeacherAddProcess');
     Route::get('/subject_teacher_delete_process', [SubjectAdminController::class, 'admin_teacher_delete_process'])->name('adminSubjectTeacherDeleteProcess');
 
+    // Real Curriculum
+    Route::get('/admincurriculum', [RealCurriculumController::class, 'admincurriculum'])->name('adminrealcurriculum');
+    Route::get('/adminrealcurriculum_subjects', [RealCurriculumController::class, 'admincurriculum_subjects'])->name('adminrealcurriculum_subjects');
+    Route::get('/adminnewcurriculum_add', [RealCurriculumController::class, 'admincurriculum_add'])->name('adminrealcurriculum_add');
+    Route::post('/adminrealcurriculum_add_process', [RealCurriculumController::class, 'admincurriculum_add_process'])->name('adminrealcurriculum_add_process');
+    Route::get('/adminnewcurriculum_edit', [RealCurriculumController::class, 'admincurriculum_edit'])->name('adminnewcurriculum_edit');
+    Route::post('/adminrealcurriculum_edit_process', [RealCurriculumController::class, 'admincurriculum_edit_process'])->name('adminrealcurriculum_edit_process');
+    Route::get('/adminnewcurriculum_archive', [RealCurriculumController::class, 'admincurriculum_archive'])->name('adminnewcurriculum_archive');
 
-    Route::get('/admincurriculum', [CurriculumController::class, 'admincurriculum'])->name('admincurriculum');
+
+    // Updated Admin Section
+    Route::get('/adminsection', [CurriculumController::class, 'admincurriculum'])->name('admincurriculum');
     Route::get('/admincurriculum_add', [CurriculumController::class, 'admincurriculum_add'])->name('admincurriculum_add');
     Route::post('/admincurriculum_add_process', [CurriculumController::class, 'admincurriculum_add_process'])->name('admincurriculum_add_process');
     Route::get('/admincurriculum_subjects', [CurriculumController::class, 'admincurriculum_subjects'])->name('admincurriculum_subjects');
@@ -191,11 +203,12 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::get('/fetchTeachers', [CurriculumController::class, 'fetchTeachers'])->name('fetchTeachers');
     Route::get('/fetchSubjects', [CurriculumController::class, 'fetchSubjects'])->name('fetchSubjects');
     Route::get('/admincurriculum_archive', [CurriculumController::class, 'admincurriculum_archive'])->name('admincurriculum_archive');
+    Route::get('/fetchNewCurr', [CurriculumController::class, 'fetchNewCurr'])->name('fetchNewCurr');
+    Route::get('/fetchNewSub', [CurriculumController::class, 'fetchNewSub'])->name('fetchNewSub');
 
 
 
     //Admin/Sections
-    Route::get('/adminsection', [SectionController::class, 'adminsection'])->name('adminSectionPage');
     Route::get('/adminsection_add', [SectionController::class, 'adminsection_add'])->name('adminSectionAddPage');
     Route::post('/adminsection_add_process', [SectionController::class, 'adminsection_add_process'])->name('adminSectionAddProcess');
     Route::get('/adminsection_edit', [SectionController::class, 'adminsection_edit'])->name('adminSectionEditPage');
@@ -275,10 +288,12 @@ Route::group(['middleware' => 'axuauth'], function () {
     Route::post('/adminregistrar_image_process', [RegistrarController::class, 'adminregistrar_image_process'])->name('adminregistrar_image_process');
     Route::get('/adminregistrar_archive_process', [RegistrarController::class, 'adminregistrar_archive_process'])->name('adminregistrar_archive_process');
     Route::get('/registrarreport', [AdminAppointmentsController::class, 'registrarreport'])->name('registrarreport');
+    Route::get('/regreport', [RegistrarController::class, 'regreport'])->name('regreport');
 
     // Student Cashier
     Route::get('/studentcashier', [StudentCashierController::class, 'studentcashier'])->name('studentcashier');
     Route::get('/studentcashierreport', [StudentCashierController::class, 'studentcashierreport'])->name('studentcashierreport');
+    Route::get('/cashreport', [StudentCashierController::class, 'cashreport'])->name('cashreport');
 
 
     // Student Portal

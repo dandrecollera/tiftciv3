@@ -4,6 +4,28 @@
 <div class="row py-3">
     <h1 class="mb-3">Enrollment</h1>
     <div class="container-xl">
+        @if (!empty($error))
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Error</h4>
+                    <p>{{ $errorlist[(int) $error ] }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        @endif
+        @if (!empty($notif))
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Success</h4>
+                    <p>{{ $notiflist[(int) $notif ] }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        @endif
         <form action="studentenrollment" id="enrollmentForm" method="POST">
             @csrf
             <div class="form-outline mb-3">

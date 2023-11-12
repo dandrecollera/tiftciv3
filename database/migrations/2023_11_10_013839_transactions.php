@@ -16,7 +16,13 @@ class Transactions extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('amount');
+            $table->unsignedBigInteger('userid');
+            $table->boolean('voucher')->default(false);
+            $table->boolean('tuition')->default(false);
+            $table->boolean('registration')->default(false);
             $table->timestamps();
+
+            $table->foreign('userid')->references('id')->on('main_users')->onDelete('cascade');
         });
     }
 

@@ -15,7 +15,9 @@ class Subjects extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code');
             $table->string('subject_name');
+            $table->text('description');
             $table->string('status')->default('active');
             // $table->string('semester');
             // $table->string('strand');

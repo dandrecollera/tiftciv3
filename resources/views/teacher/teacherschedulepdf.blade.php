@@ -21,18 +21,40 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        tr th {
-            font-family: Arial, Helvetica, sans-serif;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid;
+            font-size: 10px;
+        }
+
+        th {
+            background-color: #7ab4f7;
+            color: rgb(7, 7, 7);
+            border: 1px solid;
+            font-size: 10px;
         }
     </style>
 </head>
 
 <body>
-    <h1>
-        Schedule
-    </h1>
-    <p>School Year: {{$selectedyear}}
-    </p>
+    <center>
+        <img src="{{asset('asset/tiflogo.png')}}" alt="" style="max-width: 25%"><br>
+        <p>Trent Information First Technical Career Institute Inc.</p>
+        <hr>
+    </center>
+
+    <p><span style="font-size: 20px">{{$userinfo[1]}} {{$userinfo[2]}} {{$userinfo[3]}}'s Schedule</span><br>School
+        Year:
+        {{$selectedyear}} </p>
 
     <table class="table">
         <thead>
@@ -41,13 +63,13 @@
                 <th><strong>Start Time</strong></th>
                 <th><strong>End Time</strong></th>
                 <th><strong>Day</strong></th>
-                <th colspan="4"><strong>Subject</strong></th>
+                <th><strong>Subject</strong></th>
             </tr>
         <tbody>
             @foreach ($teacherschedule as $schedule)
 
             <tr>
-                <th scope="row"><strong>{{$schedule['section']}}</strong></th>
+                <td scope="row"><strong>{{$schedule['section']}}</strong></td>
                 <td>{{$schedule['startTime']}}</td>
                 <td>{{$schedule['endTime']}}</td>
                 <td>{{$schedule['day']}}</td>

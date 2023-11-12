@@ -4,12 +4,12 @@
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Curriculums</h1>
+            <h1>Sections</h1>
         </div>
     </div>
     <div class="">
         <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
-            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Curriculum</button>
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Section</button>
     </div>
     <hr>
     @if (!empty($error))
@@ -132,7 +132,8 @@
                                         class="fa-solid fa-caret-down fa-xs"></i></a>
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->name}}" data-year="{{$dbr->yearlevel}}">
+                                    data-email="{{$dbr->name}}" data-year="{{$dbr->yearlevel}}"
+                                    data-stat="{{$dbr->status}}">
                                     <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
@@ -182,12 +183,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Archive This Curriculum</div>
+                    <div id="arctitle">Archive This Section</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to <span id="arctext">archive</span> <strong><span
+                            id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -210,7 +212,7 @@
     $(document).ready(function(){
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
-        $('#addeditmodalLabel').html('Add A New Curriculum');
+        $('#addeditmodalLabel').html('Add A New Section');
         $('#addeditframe').attr('src', '/admincurriculum_add?{!!$qstring!!}');
     });
     $('.dcc_edit').on('click', function() {
@@ -218,18 +220,25 @@
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
         console.log(iid);
-        $('#addeditmodalLabel').html('Edit This Curriculum');
+        $('#addeditmodalLabel').html('Edit This Section');
         $('#addeditframe').attr('src', '/admincurriculum_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
+        if($(this).data('stat') == 'inactive'){
+            $('#arctitle').text('Unarchive This Section');
+            $('#arctext').text('unarchive');
+            $('#DeleteButton').text('Unarchive');
+        } else {
+            $('#arctitle').text('Archive This Section');
+            $('#arctext').text('archive');
+            $('#DeleteButton').text('Archive');
+        }
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
         var iyear = $(this).data('year');
         console.log(iid);
-        $('#Email').html(iemail + ':' + iyear);
+        $('#Email').html(iemail);
         $('#DeleteButton').prop('href', '/admincurriculum_archive?did='+iid+'&'+iqstring);
     });
 });

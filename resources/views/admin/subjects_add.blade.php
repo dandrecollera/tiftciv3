@@ -17,11 +17,20 @@
         <div class="container-fluid">
 
 
-            <div class="form-outline mt-2 mb-2">
+            <div class="form-outline mt-3 mb-3">
+                <input type="text" class="form-control" name="code" id="code" required>
+                <label for="code" class="form-label">Subject Code:</label>
+            </div>
+
+            <div class="form-outline mt-3 mb-3">
                 <input type="text" class="form-control" name="subjectname" id="Subject" required>
                 <label for="Subject" class="form-label">Subject Name:</label>
             </div>
 
+            <div class="form-outline mt-3 mb-3">
+                <input type="text" class="form-control" name="description" id="description" required>
+                <label for="description" class="form-label">Description:</label>
+            </div>
 
             {{-- <label for="emailInput" class="form-label">Semester</label>
             <div class="input-group mb-3">

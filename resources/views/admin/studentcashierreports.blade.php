@@ -7,14 +7,16 @@
             <h1>Transaction Reports</h1>
         </div>
     </div>
+    <button type="button" id="generatebuttopn" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+        data-bs-target="#addeditmodal">Generate Report</button>
     <hr>
     <div class="row" ">
         <div class=" col-md-6">
-        <canvas id="dailyChart" width="400" height="300"></canvas>
+        <canvas id="dailyChart" width="400" height="200"></canvas>
     </div>
 
     <div class="col-md-6">
-        <canvas id="weeklyChart" width="400" height="300"></canvas>
+        <canvas id="weeklyChart" width="400" height="200"></canvas>
     </div>
 </div>
 
@@ -24,7 +26,9 @@
             <thead>
                 <tr>
                     <th scope="col"><strong>ID</strong></th>
+                    <th scope="col"><strong>User</strong></th>
                     <th scope="col"><strong>Amount</strong></th>
+                    <th scope="col"><strong>Type</strong></th>
                     <th scope="col"><strong>Date</strong></th>
                 </tr>
             </thead>
@@ -32,7 +36,20 @@
                 @foreach ($dbresult as $dbr)
                 <tr>
                     <td>{{$dbr->id}}</td>
+                    <td>
+                        @php
+                        $username = DB::table('main_users_details')
+                        ->where('userid', $dbr->userid)
+                        ->first();
+                        @endphp
+                        {{$username->firstname}} {{$username->middlename}} {{$username->lastname}}
+                    </td>
                     <td>{{$dbr->amount}}</td>
+                    <td>
+                        {{$dbr->voucher == 1 ? 'Voucher ' : ''}}
+                        {{$dbr->tuition == 1 ? 'Tuition ' : ''}}
+                        {{$dbr->registration == 1 ? 'Registration ' : ''}}
+                    </td>
                     <td>{{$dbr->created_at}}</td>
                 </tr>
                 @endforeach
@@ -50,7 +67,35 @@
 </div>
 
 
+<div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addeditmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                    <div>Generate Report</div>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Create Reports</h4>
+                <div class="input-group mb-4">
+                    <div class="form-outline">
+                        <input type="date" class="form-control" name="startdate" id="startdate">
+                        <label class="form-label" for="startdate">Start Date</label>
+                    </div>
+                    <div class="form-outline">
+                        <input type="date" class="form-control" name="enddate" id="enddate">
+                        <label class="form-label overflow-x-scroll pe-2" for="enddate">End Date</label>
+                    </div>
+                </div>
+                <a href="" class="btn btn-black float-end" id="generatebutton" target="_blank">Generate</a>
+            </div>
 
+
+        </div>
+    </div>
+</div>
 
 
 @endsection
@@ -59,6 +104,11 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+    $('#startdate, #enddate').on('change', function(){
+        $('#generatebutton').attr('href', '/cashreport?start=' + $('#startdate').val() + '&end=' + $('#enddate').val());
+    })
     // Fetch daily data from Laravel route
     $.get('/getDailyChartData', function (dailyData) {
         // Process data for daily Chart.js

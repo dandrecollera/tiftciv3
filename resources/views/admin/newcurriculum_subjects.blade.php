@@ -67,13 +67,7 @@
                 <thead>
                     <tr>
                         <th scope="col"><strong>Subject</strong></th>
-                        <th scope="col"><strong>Teacher</strong></th>
-                        <th scope="col">
-                            <strong>Start</strong>
-                        </th>
-                        <th scope="col">
-                            <strong>End</strong>
-                        </th>
+
 
                     </tr>
                 </thead>
@@ -83,24 +77,13 @@
                     @endphp
 
                     @foreach ($csttArray as $dbr)
-
                     @php
                     $subject = DB::table('subjects')
                     ->where('id', $dbr['subjectid'])
                     ->first();
-
-
-                    $teacher = DB::table('main_users')
-                    ->leftjoin('main_users_details', 'main_users_details.userid', '=', 'main_users.id')
-                    ->where('main_users.id', $dbr['teacherid'])
-                    ->first();
-                    // dd($teacher);
                     @endphp
                     <tr>
                         <th><strong>{{ $subject->subject_name}}</strong></th>
-                        <th>{{ $teacher->firstname }} {{ $teacher->middlename }} {{ $teacher->lastname}}</th>
-                        <td>{{ \Carbon\Carbon::parse($dbr['starttime'])->format('h:i A') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($dbr['endtime'])->format('h:i A') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -687,6 +687,8 @@ class AdminStudentController extends Controller
         ->where('semester', $semester)
         ->pluck('name', 'id');
 
+        // dd($sections);
+
         return response()->json($sections);
     }
 

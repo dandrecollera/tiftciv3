@@ -179,8 +179,15 @@ class StudentController extends Controller
 
 
                 $ave = 0;
+                $remarks = '';
                 if($first != null && $second != null){
                     $ave = ($first + $second) / 2;
+
+                    if($ave >= 75){
+                        $remarks = "Passed";
+                    } else {
+                        $remarks = "Failed";
+                    }
                 }
 
                 $subjectgrades[] = [
@@ -188,6 +195,7 @@ class StudentController extends Controller
                     '1st' => $first == null ? '0' : $first,
                     '2nd' => $second == null ? '0' : $second,
                     'ave' => $ave,
+                    'remarks' => $remarks,
 
                 ];
             }
@@ -222,8 +230,15 @@ class StudentController extends Controller
 
 
                 $ave = 0;
+                $remarks = '';
                 if($first != null && $second != null){
                     $ave = ($first + $second) / 2;
+
+                    if($ave >= 75){
+                        $remarks = "Passed";
+                    } else {
+                        $remarks = "Failed";
+                    }
                 }
 
                 $subjectgrades2[] = [
@@ -231,6 +246,7 @@ class StudentController extends Controller
                     '1st' => $first == null ? '0' : $first,
                     '2nd' => $second == null ? '0' : $second,
                     'ave' => $ave,
+                    'remarks' => $remarks,
                 ];
             }
         }
@@ -316,6 +332,18 @@ class StudentController extends Controller
     public function studentenrollment(Request $request){
         $input = $request->input();
         $userinfo = $request->get('userinfo');
+
+        $allcount = DB::table('students')
+            ->where('sectionid', $input['section'])
+            ->count();
+
+        $selectedsec = DB::table('curriculums')
+            ->where('id', $input['section'])
+            ->first();
+
+        if($allcount >= $selectedsec->count){
+            return redirect('/enrollment?e=1');
+        }
 
         DB::table('main_users_details')
             ->where('userid', $userinfo[0])
@@ -658,6 +686,34 @@ class StudentController extends Controller
         $data['getstrand'] = $getstrand = DB::table('main_users_details')
             ->where('userid', $userinfo[0])
             ->first();
+
+            $data['errorlist'] = [
+                1 => 'All Slot is full.',
+                2 => 'Your password is too short, it should be at least 8 characters long.',
+                3 => 'Both password and retype password are not the same.',
+                4 => 'The subject already existed, please try to check the subject on the list.',
+                5 => 'This Subject does not exist',
+                6 => 'Status should only be Active or Inactive',
+                7 => 'Added Teacher to a Subject Sucessfully',
+            ];
+            $data['error'] = 0;
+            if(!empty($_GET['e'])){
+                $data['error'] = $_GET['e'];
+            }
+
+            $data['notiflist'] = [
+                1 => 'Enrollment Successful',
+                2 => 'Changes has been saved.',
+                3 => 'Password has been changed.',
+                4 => 'Subject has been deleted.',
+                5 => 'Added Teacher to a Subject Sucessfully'
+            ];
+            $data['notif'] = 0;
+            if(!empty($_GET['n'])){
+                $data['notif'] = $_GET['n'];
+            }
+
+            $query = $request->query();
 
         return view('student.enrollment', $data);
     }

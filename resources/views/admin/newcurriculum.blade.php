@@ -1,24 +1,16 @@
 @extends('admin.components.layout')
 
 @section('content')
-
-@php
-$seenstatus = DB::table('appointments')
-->where('active', '=', 'Pending')
-->where('adminseen', '=', 0)
-->update([
-'adminseen' => 1
-]);
-
-@endphp
-
 <div class="container-xl">
     <div class="row">
         <div class="col">
-            <h1>Appointments</h1>
+            <h1>Curriculum</h1>
         </div>
     </div>
-
+    <div class="">
+        <button type="button" id="addbutton" class="btn btn-dark shadow-sm btn-sm" data-bs-toggle="modal"
+            data-bs-target="#addeditmodal"><i class="fa-solid fa-circle-plus"></i> Add A New Curriculum</button>
+    </div>
     <hr>
     @if (!empty($error))
     <div class="row">
@@ -47,11 +39,10 @@ $seenstatus = DB::table('appointments')
             <form method="get">
                 <div class="input-group mb-3">
                     <input type="search" name="keyword" class="form-control"
-                        value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword"
-                        aria-label="Keyword Search" aria-describedby="basic-addon2" required>
+                        value="{{!empty($keyword) ? $keyword : ''}}" placeholder="Search Keyword" required>
                     <button class="btn btn-dark" type="submit"><i class="fas fa-search fa-sm"></i></button>
                     @if (!empty($keyword))
-                    <button onclick="location.href='./adminappointments'" type="button" class="btn btn-dark"><i
+                    <button onclick="location.href='./admincurriculum'" type="button" class="btn btn-dark"><i
                             class="fas fa-search fa-rotate fa-sm"></i></button>
                     @endif
                 </div>
@@ -74,7 +65,7 @@ $seenstatus = DB::table('appointments')
                     <div class="input-group">
                         <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">{{$orderbylist[$sort]['display'] == 'Default' ? 'SORT' :
-                            $orderbylist[$sort]['display'] }}</button>
+                            $orderbylist[$sort]['display'] }} </button>
                         <ul class="dropdown-menu">
                             @foreach($orderbylist as $key => $odl)
                             @php
@@ -85,13 +76,15 @@ $seenstatus = DB::table('appointments')
                             @endforeach
                         </ul>
                         @if (!empty($sort) || $lpp != 25)
-                        <button onclick="location.href='./adminappointments'" type="button" class="btn btn-dark"><i
+                        <button onclick="location.href='./admincurriculum'" type="button" class="btn btn-dark"><i
                                 class="fas fa-search fa-rotate fa-sm"></i></button>
                         @endif
                     </div>
                 </div>
+
             </form>
         </div>
+
     </div>
     <div class="row">
         <div class="col overflow-scroll scrollable-container mb-2">
@@ -99,68 +92,56 @@ $seenstatus = DB::table('appointments')
                 <thead>
                     <tr>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Email' ? 'text-primary' : '' }}"><strong>Email</strong>
-                            </span>
+                                class="{{ $orderbylist[$sort]['display'] == 'ID' ? 'text-primary' : '' }}"><strong></strong></span>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Inquiry' ? 'text-primary' : '' }}"><strong>Inquiry</strong>
-                            </span>
+                                class="{{ $orderbylist[$sort]['display'] == 'Name' ? 'text-primary' : '' }}"><strong>Name</strong></span>
+                        </th>
+                        <th scope="col"><strong>Strand</strong></th>
+                        <th scope="col"><strong>Semester</strong></th>
+                        <th scope="col"
+                            class="{{ $orderbylist[$sort]['display'] == 'School Year' ? 'text-primary' : '' }}">
+                            <strong>School Year</strong>
                         </th>
                         <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Appointed Date' ? 'text-primary' : '' }}"><strong>Appointed
-                                    Date</strong>
-                            </span>
-                        </th>
-                        <th scope="col"><span
-                                class="{{ $orderbylist[$sort]['display'] == 'Created Date' ? 'text-primary' : '' }}"><strong>Created
-                                    Date</strong>
-                            </span>
-                        </th>
+                                class="{{ $orderbylist[$sort]['display'] == 'Year Level' ? 'text-primary' : '' }}"><strong>Year
+                                    Level</strong></span></th>
+
                         <th scope="col"><strong>Status</strong></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dbresult as $dbr)
-                    <tr style="background-color: {{ $dbr->active == 'Pending' ? 'rgb(236, 236, 191)' : ''}}
-                        {{ $dbr->active == 'Completed' ? 'rgb(201, 236, 191)' : ''}}
-                        {{ $dbr->active == 'Declined' ? 'rgb(238, 212, 218)' : ''}}
-                        {{ $dbr->active == 'Cancelled' ? 'rgb(238, 212, 218)' : ''}}
-                        {{ $dbr->active == 'Approved' ? 'rgb(212, 238, 232)' : ''}}">
-                        <div></div>
-                        <td><strong>{{$dbr->email}}</strong></td>
-                        <td>{{$dbr->inquiry}}</td>
-                        <td>{{ date('m/d/Y l', strtotime($dbr->appointeddate)) }}</td>
-                        <td>{{ date_create($dbr->created_at)->format('m/d/Y h:i A') }}</td>
-                        <td>{{ $dbr->active == 'Completed' ? 'Released' : $dbr->active}}</td>
+                    <tr class="{{ $dbr->status == 'inactive' ? 'table-danger' : '' }}">
+
+                        <td>{{$dbr->id}}</td>
+                        <td>{{$dbr->name}}</td>
+                        <td>{{$dbr->strand}}</td>
+                        <td>{{$dbr->semester}}</td>
+                        <td>{{$dbr->schoolyear}}</td>
+                        <td>{{$dbr->yearlevel}}</td>
+                        <td>{{$dbr->status}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
+                                <a class="btn btn-primary btn-sm dcc_edit" href="#" data-id="{{$dbr->id}}"
+                                    data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
+                                        class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-dark btn-sm" href="#" data-bs-target="#subjectTeacher{{$dbr->id}}"
                                     data-bs-toggle="collapse" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-caret-down fa-xs"></i></a>
-                                @if ( $dbr->active == "Pending")
-                                <a class="btn btn-success btn-sm dcc-approve" data-bs-toggle="modal"
+                                <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-check fa-xs"></i></a>
-                                <a class="btn btn-danger btn-sm dcc-decline" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-close fa-xs"></i></a>
-                                @endif
-                                @if ($dbr->active == "Approved")
-                                <a class="btn btn-success btn-sm dcc-complete" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
-                                    <i class="fa-solid fa-check fa-xs"></i></a>
-                                @endif
+                                    data-email="{{$dbr->name}}" data-year="{{$dbr->yearlevel}}"
+                                    data-stat="{{$dbr->status}}">
+                                    <i class="fa-solid fa-trash fa-xs"></i></a>
                             </div>
                         </td>
                     </tr>
                     <tr id="subjectTeacher{{$dbr->id}}" class="collapse">
-                        <td colspan="7">
-                            <iframe id="" src="/adminappointments_info?sid={{$dbr->id}}" width="100%" height="500px"
-                                style="border:none;"></iframe>
+                        <td colspan="8">
+                            <iframe id="" src="/adminrealcurriculum_subjects?sid={{$dbr->id}}" width="100%"
+                                height="500px" style="border:none;"></iframe>
                         </td>
                     </tr>
                     @endforeach
@@ -180,7 +161,7 @@ $seenstatus = DB::table('appointments')
 
 <div class="modal fade" id="addeditmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addeditmodalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addeditmodalLabel">
@@ -189,7 +170,7 @@ $seenstatus = DB::table('appointments')
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe id="addeditframe" src="/adminsection_add" width="100%" height="450px"
+                <iframe id="addeditframe" src="/adminuser_add" width="100%" height="450px"
                     style="border:none; height:80vh;"></iframe>
             </div>
 
@@ -197,29 +178,31 @@ $seenstatus = DB::table('appointments')
     </div>
 </div>
 
-
-<div class="modal fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<div class="modal  fade" id="deletemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div id="modtitle"></div>
+                    <div id="arctitle">Archive This Student User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="modbod">
+                <p>Are you sure you want to <span id="arctext">archive</span> <strong><span
+                            id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
-                        <a href="" class="btn btn-success" id="DeleteButton">Confirm</a>
+                        <a href="" class="btn btn-warning" id="DeleteButton">Archive</a>
                         <a class="btn btn-primary" data-bs-dismiss="modal">Cancel</a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
 
 @endsection
 
@@ -227,49 +210,39 @@ $seenstatus = DB::table('appointments')
 
 <script type="text/javascript">
     $(document).ready(function(){
-    $('.dcc-approve').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
-        var iid = $(this).data("id");
-        var iqstring = $(this).data("qstring");
-        var iemail = $(this).data("email");
-        console.log(iid);
-        $('#modtitle').html('Approve this appointment?');
-        $('#modbod').html('Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>');
-        $('#Email').html(iemail);
-        $('#DeleteButton').removeClass('btn-danger').addClass('btn-success');
-        $('#DeleteButton').html('Approve');
-        $('#DeleteButton').prop('href', '/adminappointments_delete_process?sid='+iid+'&'+iqstring);
+    $('#addbutton').on('click', function() {
+        console.log('add button clicked!');
+        $('#addeditmodalLabel').html('Add A New Curriculum');
+        $('#addeditframe').attr('src', '/adminnewcurriculum_add?{!!$qstring!!}');
     });
-    $('.dcc-decline').on('click', function() {
-        console.log('delete button clicked!');
+    $('.dcc_edit').on('click', function() {
+        console.log('edit button clicked!');
         console.log( $(this).data("id") );
         var iid = $(this).data("id");
-        var iqstring = $(this).data("qstring");
-        var iemail = $(this).data("email");
         console.log(iid);
-        $('#modtitle').html('Decline this appointment?');
-        $('#modbod').html('Are you sure you want to decline this appointment by <strong><span id="Email"></span></strong>?<br>');
-        $('#Email').html(iemail);
-        $('#DeleteButton').addClass('btn-danger').removeClass('btn-success');
-        $('#DeleteButton').html('Decline');
-        $('#DeleteButton').prop('href', '/adminappointments_decline_process?sid='+iid+'&'+iqstring);
+        $('#addeditmodalLabel').html('Edit This Curriculum');
+        $('#addeditframe').attr('src', '/adminnewcurriculum_edit?id='+iid+'{!!$qstring!!}');
     });
-    $('.dcc-complete').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
+    $('.dcc-archive').on('click', function() {
+        if($(this).data('stat') == 'inactive'){
+            $('#arctitle').text('Unarchive This Curriculum');
+            $('#arctext').text('unarchive');
+            $('#DeleteButton').text('Unarchive');
+        } else {
+            $('#arctitle').text('Archive This Curriculum');
+            $('#arctext').text('archive');
+            $('#DeleteButton').text('Archive');
+        }
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
+        var iyear = $(this).data('year');
         console.log(iid);
-        $('#modtitle').html('Complete this appointment?');
-        $('#modbod').html('Are you sure you want to complete this appointment by <strong><span id="Email"></span></strong>?<br>');
         $('#Email').html(iemail);
-        $('#DeleteButton').removeClass('btn-danger').addClass('btn-success');
-        $('#DeleteButton').html('Complete');
-        $('#DeleteButton').prop('href', '/adminappointments_complete_process?sid='+iid+'&'+iqstring);
+        $('#DeleteButton').prop('href', '/adminnewcurriculum_archive?did='+iid+'&'+iqstring);
     });
 });
+
 </script>
 
 @endpush

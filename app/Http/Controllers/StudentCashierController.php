@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-
+use PDF;
 class StudentCashierController extends Controller
 {
     public function __construct(Request $request){
@@ -265,5 +265,30 @@ class StudentCashierController extends Controller
         $data['dbresult'] = $dbresult = $dbdata->get()->toArray();
 
         return view('admin.studentcashierreports', $data);
+    }
+
+    public function cashreport(Request $request){
+        $query = $request->query();
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['selected'] = $selected = DB::table('transactions')
+            ->whereBetween('created_at', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->get()
+            ->toArray();
+
+        $data['dailyData'] = $dailyData = DB::table('transactions')
+        ->whereBetween('created_at', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->select(DB::raw('SUM(amount) as total_amount'))
+            ->get()
+            ->toArray();
+
+        // dd($dailyData);
+        $data['start'] = $query['start'];
+        $data['end'] = $query['end'];
+
+        $pdf = PDF::loadview('admin.cashierreportpdf', $data);
+        return $pdf->stream('cashierreport.pdf');
+        dd($selected);
     }
 }

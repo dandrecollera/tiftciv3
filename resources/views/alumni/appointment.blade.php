@@ -64,7 +64,7 @@ $query->where('active', '=', 'Approved')
                                 <th></th>
                                 <td>{{ date_create($appointments->created_at)->format('m/d/Y h:i A') }}</td>
                                 <th>{{ date('m/d/Y l', strtotime($appointments->appointeddate)) }}</th>
-                                <td><strong>{{$appointments->active}}</td>
+                                <td>{{ $appointments->active == 'Completed' ? 'Released' : $appointments->active}}</td>
                                 @if ($appointments->active == "Pending" || $appointments->active == "Approved")
                                 <td><a class="btn btn-danger btn-sm dcc-approve" data-bs-toggle="modal"
                                         data-bs-target="#deletemodal" data-id="{{$appointments->id}}"

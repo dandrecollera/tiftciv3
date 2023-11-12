@@ -20,20 +20,14 @@
 
 @section('content')
 <div style="padding: 0px 20px 0px 10px">
-    <form action="/admincurriculum_edit_process" method="POST" target="_parent" enctype="multipart/form-data"
+    <form action="/adminrealcurriculum_edit_process" method="POST" target="_parent" enctype="multipart/form-data"
         class="was-validated">
         @csrf
         <div class="container-fluid">
 
-            <div class="form-outline my-3">
+            <div class="form-outline">
                 <input type="text" class="form-control" name="name" id="name" value="{{$curriculum->name}}" required>
                 <label for="name" class="form-label">Curriculum Name:</label>
-            </div>
-
-            <div class="form-outline my-3">
-                <input type="text" class="form-control" name="nostudent" id="nostudent" value="{{$curriculum->count}}"
-                    required>
-                <label for="nostudent" class="form-label">No of Students:</label>
             </div>
 
             <label for="address" class="form-label">School Year:</label>
@@ -77,8 +71,6 @@
                 <thead>
                     <tr>
                         <th scope="col">Subject</th>
-                        <th scope="col">Teacher</th>
-                        <th scope="col">Time</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -110,44 +102,6 @@
                                     </option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-group mb-3">
-                                <select name="teacher[]" class="form-select teacher" required>
-                                    @foreach ($allteachers as $teach)
-                                    <option value="{{ $teach->id }}" {{ $teach->id == $row['teacherid'] ? 'selected' :
-                                        ''
-                                        }}>
-                                        {{ $teach->firstname }}
-                                        {{ $teach->middlename }}
-                                        {{ $teach->lastname }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-group mb-3">
-                                <select name="day[]" id="" class="form-select day" required>
-                                    <option value="Monday" {{ $row['day']=='Monday' ? 'selected' : '' }}>Monday
-                                    </option>
-                                    <option value="Tuesday" {{ $row['day']=='Tuesday' ? 'selected' : '' }}>Tuesday
-                                    </option>
-                                    <option value="Wednesday" {{ $row['day']=='Wednesday' ? 'selected' : '' }}>Wednesday
-                                    </option>
-                                    <option value="Thursday" {{ $row['day']=='Thursday' ? 'selected' : '' }}>Thursday
-                                    </option>
-                                    <option value="Friday" {{ $row['day']=='Friday' ? 'selected' : '' }}>Friday</option>
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-group mb-3">
-                                <input type="time" name="starttime[]" class="form-control"
-                                    value="{{ $row['starttime'] }}" required>
-                                <input type="time" name="endtime[]" class="form-control" value="{{ $row['endtime'] }}"
-                                    required>
                             </div>
                         </td>
                         <td>

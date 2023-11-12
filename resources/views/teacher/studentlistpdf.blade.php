@@ -21,17 +21,39 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        tr th {
-            font-family: Arial, Helvetica, sans-serif;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid;
+            font-size: 10px;
+        }
+
+        th {
+            background-color: #7ab4f7;
+            color: rgb(7, 7, 7);
+            border: 1px solid;
+            font-size: 10px;
         }
     </style>
 </head>
 
 <body>
-    <h1>
-        {{ $section->name }} Students
-    </h1>
-    <p>School Year: {{$section->schoolyear}} || Semester: {{$section->semester}} || Year Level: {{$section->yearlevel}}
+    <center>
+        <img src="{{asset('asset/tiflogo.png')}}" alt="" style="max-width: 25%"><br>
+        <p>Trent Information First Technical Career Institute Inc.</p>
+        <hr>
+    </center>
+
+    <p><span style="font-size: 20px">{{ $section->name }} Students List</span><br>School Year: {{$section->schoolyear}}
+        || Semester: {{$section->semester}} || Year Level: {{$section->yearlevel}}
     </p>
 
     <table class="table">
@@ -46,11 +68,11 @@
         <tbody>
             @foreach ($dbresult as $dbr)
             <tr>
-                <th><strong>{{$dbr->email}}</strong></th>
-                <th><strong>{{$dbr->lrn}}</strong></th>
-                <th><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong></th>
-                <th><strong>{{$dbr->mobilenumber}}</strong></th>
-                <th colspan="4"><strong>{{$dbr->address}}</strong></th>
+                <td><strong>{{$dbr->email}}</strong></td>
+                <td><strong>{{$dbr->lrn}}</strong></td>
+                <td><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong></td>
+                <td><strong>{{$dbr->mobilenumber}}</strong></td>
+                <td colspan="4"><strong>{{$dbr->address}}</strong></td>
             </tr>
             @endforeach
         </tbody>

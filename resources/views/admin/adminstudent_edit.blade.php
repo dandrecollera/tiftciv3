@@ -24,15 +24,15 @@
         <div class="container-fluid mb-4">
 
             <h4>Edit Student Details</h4>
-            <div class="input-group mt-2 mb-2">
-                <div class="form-outline">
-                    <input type="text" class="form-control" name="email" id="emailInput"
-                        value="{{ explode('@', $dbdata->email)[0] }}" required>
-                    <label for="emailInput" class="form-label">Email:</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" class="form-control is-valid" value="@tiftci.org" readonly>
-                </div>
+            <div class="form-outline mt-2 mb-4">
+                <input type="text" class="form-control" name="email" id="emailInput"
+                    value="{{ explode('@', $dbdata->email)[0] }}" required>
+                <label for=" emailInput" class="form-label">Username:</label>
+            </div>
+
+            <div class="form-outline my-4">
+                <input type="text" class="form-control" name="empty" id="empty" value="{{ $dbdata->email}}" readonly>
+                <label for=" emailInput" class="form-label">Email:</label>
             </div>
 
             <div class="form-outline mt-4 mb-2">
@@ -225,11 +225,15 @@
     var currentYear = new Date().getFullYear();
 
     for (var year = currentYear + 1; year >= 2020; year--) {
-    var value = year + '-' + (year + 1);
-    var selected = value === '{{$dbdata->schoolyear}}' ? 'selected' : '';
+        var value = year + '-' + (year + 1);
+        var selected = value === '{{$dbdata->schoolyear}}' ? 'selected' : '';
 
-    $('#schoolyear').append('<option value="' + value + '" ' + selected + '>' + value + '</option>');
-}
+        $('#schoolyear').append('<option value="' + value + '" ' + selected + '>' + value + '</option>');
+    }
+
+    $('#emailInput').keyup(function(){
+        $('#empty').val($('#emailInput').val() + '@tiftci.org');
+    })
 
     $('#show1').on('click', function() {
         if($('#password').attr('type') == "text"){

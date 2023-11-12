@@ -135,7 +135,7 @@
                                         class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
                                     data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
+                                    data-email="{{$dbr->email}}" data-stat="{{$dbr->status}}">
                                     <i class="fa-solid fa-box-archive fa-xs"></i></a>
                             </div>
                         </td>
@@ -186,12 +186,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Delete This Student User</div>
+                    <div id="arctitle">Archive This Alumni User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to <span id="arctext">archive</span> <strong><span
+                            id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -214,7 +215,7 @@
     $('#addbutton').on('click', function() {
         console.log('add button clicked!');
         $('#maxwidthchange').css('max-width', '90%');
-        $('#addeditmodalLabel').html('Add A New Student User');
+        $('#addeditmodalLabel').html('Add A New Alumni User');
         $('#addeditframe').attr('src', '/adminalumni_add?{!!$qstring!!}');
     });
     $('#massAdd').on('click', function() {
@@ -229,6 +230,15 @@
         $('#addeditframe').attr('src', '/adminalumni_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
+        if($(this).data('stat') == 'inactive'){
+            $('#arctitle').text('Unarchive This Alumni User');
+            $('#arctext').text('unarchive');
+            $('#DeleteButton').text('Unarchive');
+        } else {
+            $('#arctitle').text('Archive This Alumni User');
+            $('#arctext').text('archive');
+            $('#DeleteButton').text('Archive');
+        }
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");

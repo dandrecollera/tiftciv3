@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class RegistrarController extends Controller
 {
@@ -421,5 +422,48 @@ class RegistrarController extends Controller
         }
 
         return redirect($this->default_url . '?n=4&' . $qstring);
+    }
+
+    public function regreport(Request $request){
+        $query = $request->query();
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['selected'] = $selected = DB::table('appointments')
+            ->where('active', 'Completed')
+            ->whereBetween('appointeddate', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->get()
+            ->toArray();
+
+        $data['goodmoral'] = $goodmoral = DB::table('appointments')
+            ->where('goodmoral', '1')
+            ->where('active', 'Completed')
+            ->whereBetween('appointeddate', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->count();
+
+        $data['registration'] = $registration = DB::table('appointments')
+            ->where('registration', '1')
+            ->where('active', 'Completed')
+            ->whereBetween('appointeddate', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->get()
+            ->count();
+        $data['f138'] = $f138 = DB::table('appointments')
+            ->where('f138', '1')
+            ->where('active', 'Completed')
+            ->whereBetween('appointeddate', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->get()
+            ->count();
+        $data['others'] = $others = DB::table('appointments')
+            ->where('others', '1')
+            ->where('active', 'Completed')
+            ->whereBetween('appointeddate', [$query['start'] . ' 00:00:00', $query['end'] . ' 23:59:59'])
+            ->get()
+            ->count();
+        $data['start'] = $query['start'];
+        $data['end'] = $query['end'];
+
+        $pdf = PDF::loadview('admin.appointmentreportpdf', $data);
+        return $pdf->stream('appointmentreport.pdf');
+        dd($selected);
     }
 }

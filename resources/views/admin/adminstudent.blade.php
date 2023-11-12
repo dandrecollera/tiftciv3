@@ -152,8 +152,8 @@
                                     data-bs-toggle="modal" data-bs-target="#addeditmodal"><i
                                         class="fa-solid fa-pen fa-xs"></i></a>
                                 <a class="btn btn-warning btn-sm dcc-archive" data-bs-toggle="modal"
-                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-qstring="{{$qstring}}"
-                                    data-email="{{$dbr->email}}">
+                                    data-bs-target="#deletemodal" data-id="{{$dbr->id}}" data-stat="{{$dbr->status}}"
+                                    data-qstring=" {{$qstring}}" data-email="{{$dbr->email}}">
                                     <i class="fa-solid fa-box-archive fa-xs"></i></a>
                             </div>
                         </td>
@@ -203,12 +203,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">
-                    <div>Archive This Student User</div>
+                    <div id="arctitle">Archive This Student User</div>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to archive <strong><span id="Email"></span></strong>?<br>
+                <p>Are you sure you want to <span id="arctext">archive</span> <strong><span
+                            id="Email"></span></strong>?<br>
                 </p>
                 <div class="justify-content-end d-flex">
                     <div class="btn-group">
@@ -247,12 +248,18 @@
         $('#addeditframe').attr('src', '/adminstudent_edit?id='+iid+'{!!$qstring!!}');
     });
     $('.dcc-archive').on('click', function() {
-        console.log('delete button clicked!');
-        console.log( $(this).data("id") );
+        if($(this).data('stat') == 'inactive'){
+            $('#arctitle').text('Unarchive This Student User');
+            $('#arctext').text('unarchive');
+            $('#DeleteButton').text('Unarchive');
+        } else {
+            $('#arctitle').text('Archive This Student User');
+            $('#arctext').text('archive');
+            $('#DeleteButton').text('Archive');
+        }
         var iid = $(this).data("id");
         var iqstring = $(this).data("qstring");
         var iemail = $(this).data("email");
-        console.log(iid);
         $('#Email').html(iemail);
         $('#DeleteButton').prop('href', '/adminstudent_archive_process?did='+iid+'&'+iqstring);
     });

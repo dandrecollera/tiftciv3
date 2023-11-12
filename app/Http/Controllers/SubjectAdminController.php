@@ -165,7 +165,9 @@ class SubjectAdminController extends Controller
 
         $subjectid = DB::table('subjects')
             ->insertGetID([
+                'code' => $input['code'],
                 'subject_name' => $input['subjectname'],
+                'description' => $input['description'],
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString()
             ]);

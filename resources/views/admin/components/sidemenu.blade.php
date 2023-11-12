@@ -50,11 +50,11 @@ $path = request()->path();
     }}"></i><span>Curriculums</span>
 </a>
 
-{{-- <a href="/adminsection"
+<a href="/adminsection"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminsection' ? 'active' : ''}}">
-    <i class="fas fa-people-roof fa-fw me-3" style="{{$path == 'adminsection' ? 'color:#2D58A1;' : ''
+    <i class="fas fa-people-group fa-fw me-3" style="{{$path == 'adminsection' ? 'color:#2D58A1;' : ''
     }}"></i><span>Sections</span>
-</a> --}}
+</a>
 
 {{-- <a href="/adminschoolyear"
     class="list-group-item list-group-item-spec py-2 ripple {{$path == 'adminschoolyear' ? 'active' : ''}}">
