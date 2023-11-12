@@ -77,17 +77,20 @@
             $.get('/getSubjectName', { subjectid: subject.subjectid }, function (subjectData) {
                 // Append the updated content to the page
                 var newContent =
-                    '<div class="col-12 col-lg-4 mb-3">' +
-                    '<div class="card">' +
-                    '<div class="card-body">' +
-                        '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
-                    '<h6 class="card-title">' + subjectData.subject_name + '- '+  subject.semester +' Semester</h6>' +
-                    '<a href="/studentsgrades?subject=' + subject.subjectid + '&section='+ subject.curriculumid +'">' +
-                    '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
-                    '</a>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+    '<div class="col-12 col-lg-4 mb-3">' +
+    '<div class="card">' +
+    '<div class="card-body">' +
+    '<h6 class="card-title"><strong>' + subject.section + '</strong></h6>' +
+    '<h6 class="card-title">' + subjectData.subject_name + '- ' + subject.semester + ' Semester</h6>' +
+    '<a href="/studentsgrades?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
+    '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
+    '</a>' +
+    '<a href="/subjectarchive?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
+    '<button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>' +
+    '</a>' +
+    '</div>' +
+    '</div>' +
+    '</div>';
 
                 // Append the new content to the row
                 $('#card-container').append(newContent);
