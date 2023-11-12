@@ -19,13 +19,19 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($newsched as $schedule)
-                            <th scope="row"><strong>{{ $schedule['subject'] }}</strong></th>
-                            <th scope="row"><strong>{{ $schedule['startTime'] }}</strong></th>
-                            <th scope="row"><strong>{{ $schedule['endTime'] }}</strong></th>
-                            <th scope="row"><strong>{{ $schedule['teacher']->firstname }} {{
-                                    $schedule['teacher']->middlename }} {{ $schedule['teacher']->lastname }}</strong>
-                            </th>
+                            <tr>
+
+
+                                <th scope="row"><strong>{{ $schedule['subject'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['startTime'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['endTime'] }}</strong></th>
+                                <th scope="row"><strong>{{ $schedule['teacher']->firstname }} {{
+                                        $schedule['teacher']->middlename }} {{ $schedule['teacher']->lastname
+                                        }}</strong>
+                                </th>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
