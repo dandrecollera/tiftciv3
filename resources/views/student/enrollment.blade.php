@@ -135,9 +135,15 @@
             handleSelectChanges();
         })
 
+        $('#enrollmentForm').on('submit', function(event) {
+
+            event.preventDefault();
+
+        });
+
         $('#passed').on('click', function () {
             // Trigger form submission when the confirm button in the modal is clicked
-            $('#enrollmentForm').submit();
+            $('#enrollmentForm').off('submit').submit();
         });
 
         function handleSelectChanges(){
