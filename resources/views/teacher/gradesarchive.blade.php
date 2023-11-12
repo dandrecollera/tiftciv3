@@ -35,9 +35,6 @@
                 <a href="/studentsgrades?subject={{ $subject['subjectid'] }}&section={{ $subject['curriculumid'] }}">
                     <button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>
                 </a>
-                <a href="/subjectarchive?subject={{ $subject['subjectid'] }}&section={{ $subject['curriculumid'] }}">
-                    <button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>
-                </a>
             </div>
         </div>
     </div>
@@ -81,9 +78,6 @@
                                 '<h6 class="card-title">' + subjectData.subject_name + '- ' + subject.semester + ' Semester</h6>' +
                                 '<a href="/studentsgrades?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
                                 '<button type="button" class="btn btn-outline-primary btn-sm">Show Students</button>' +
-                                '</a>' +
-                                '<a href="/subjectarchive?subject=' + subject.subjectid + '&section=' + subject.curriculumid + '">' +
-                                '<button type="button" class="btn btn-outline-black btn-sm float-end">Archive</button>' +
                                 '</a>' +
                                 '</div>' +
                                 '</div>' +
