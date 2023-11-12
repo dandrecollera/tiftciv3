@@ -2,13 +2,16 @@
 
 @section('content')
 <h1 class="">Grading Portal</h1>
+<h5 class="mb-3">Select a Section to see list of students</h5>
+<a class="btn btn-black shadow-sm btn-sm mb-4" href="/gradingarchive">Show
+    Archive</a>
 <select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
     @foreach ($allyear as $singyear)
     <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
     @endforeach
+
 </select>
 
-<h5 class="mb-3">Select a Section to see list of students</h5>
 <div class="row" id="card-container">
 
 
