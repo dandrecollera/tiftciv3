@@ -927,4 +927,52 @@ class MainTeacherController extends Controller
         return response()->json($isInArchive);
     }
 
+    public function gradingarchive(Request $request){
+        $data = array();
+        $data['userinfo'] = $userinfo = $request->get('userinfo');
+
+        $data['allyear'] = $allyear = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->select([
+                'schoolyear'
+            ])
+            ->orderBy('schoolyear', 'desc')
+            ->get()
+            ->unique('schoolyear')
+            ->toArray();
+
+        $latestyear = DB::table('curriculums')
+            ->orderBy('schoolyear', 'desc')
+            ->first();
+
+        $data['subjects'] = $subjects = DB::table('curriculums')
+            ->whereJsonContains('cstt', [['teacherid' => $userinfo[0]]])
+            ->where('schoolyear', $latestyear->schoolyear)
+            ->get()
+            ->toArray();
+
+        $selectedTeacherId = $userinfo[0];
+        $compiledCsttData = [];
+
+        foreach ($subjects as $subject) {
+
+            $csttArray = json_decode($subject->cstt, true);
+
+            $filteredCsttData = array_filter($csttArray, function ($item) use ($selectedTeacherId) {
+                return $item['teacherid'] == $selectedTeacherId;
+            });
+
+            foreach ($filteredCsttData as $csttItem) {
+                $csttItem['curriculumid'] = $subject->id;
+                $csttItem['section'] = $subject->name;
+                $csttItem['semester'] = $subject->semester;
+                $compiledCsttData[] = $csttItem;
+            }
+        }
+
+        $data['compiledCsttData'] = $compiledCsttData;
+
+        return view('teacher.gradesarchive', $data);
+    }
+
 }
