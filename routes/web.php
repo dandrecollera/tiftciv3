@@ -111,6 +111,10 @@ Route::get('/getWeeklyAppointmentsCount', function () {
 });
 
 
+Route::get('tester', function(){
+    return view('test');
+});
+
 
 Route::get('handbook', function () {
     $pathToFile = public_path('files/handbook.pdf');
