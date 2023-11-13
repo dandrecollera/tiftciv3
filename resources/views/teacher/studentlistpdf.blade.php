@@ -48,11 +48,11 @@
 <body>
     <center>
         <img src="{{asset('asset/tiflogo.png')}}" alt="" style="max-width: 25%"><br>
-        <p>Trent Information First Technical Career Institute Inc.</p>
+        <p style="font-size: 23px">Trent Information First Technical Career Institute Inc.</p>
         <hr>
     </center>
 
-    <p><span style="font-size: 20px">{{ $section->name }} Students List</span><br>School Year: {{$section->schoolyear}}
+    <p><span style="font-size: 18px">{{ $section->name }} Students List</span><br>School Year: {{$section->schoolyear}}
         || Semester: {{$section->semester}} || Year Level: {{$section->yearlevel}}
     </p>
 
