@@ -59,6 +59,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th><strong></strong></th>
                 <th><strong>Section</strong></th>
                 <th><strong>Start Time</strong></th>
                 <th><strong>End Time</strong></th>
@@ -66,15 +67,22 @@
                 <th><strong>Subject</strong></th>
             </tr>
         <tbody>
+            @php
+            $count = 1;
+            @endphp
             @foreach ($teacherschedule as $schedule)
 
             <tr>
+                <td scope="row"><strong>{{$count}}</strong></td>
                 <td scope="row"><strong>{{$schedule['section']}}</strong></td>
                 <td>{{$schedule['startTime']}}</td>
                 <td>{{$schedule['endTime']}}</td>
                 <td>{{$schedule['day']}}</td>
                 <td>{{$schedule['subject']}}</td>
             </tr>
+            @php
+            $count++;
+            @endphp
             @endforeach
         </tbody>
         </thead>

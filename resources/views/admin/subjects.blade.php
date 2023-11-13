@@ -102,7 +102,7 @@
                         {{-- <th scope="col"><strong>Strand</strong></th>
                         <th scope="col"><strong>Semester</strong></th>
                         <th scope="col"><strong>yearlevel</strong></th> --}}
-                        <th scope="col"></th>
+                        <th scope="col"><strong>Actions</strong></th>
                     </tr>
                 </thead>
                 <tbody>

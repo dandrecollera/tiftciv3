@@ -59,6 +59,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th><strong></strong></th>
                 <th><strong>Email</strong></th>
                 <th><strong>LRN</strong></th>
                 <th><strong>Name</strong></th>
@@ -66,14 +67,25 @@
                 <th colspan="4"><strong>Address</strong></th>
             </tr>
         <tbody>
+            @php
+            $count = 1;
+            @endphp
             @foreach ($dbresult as $dbr)
             <tr>
+                <td><strong>
+
+                        {{$count}}
+                    </strong></td>
                 <td><strong>{{$dbr->email}}</strong></td>
                 <td><strong>{{$dbr->lrn}}</strong></td>
                 <td><strong>{{$dbr->firstname}} {{$dbr->middlename}} {{$dbr->lastname}}</strong></td>
                 <td><strong>{{$dbr->mobilenumber}}</strong></td>
                 <td colspan="4"><strong>{{$dbr->address}}</strong></td>
             </tr>
+
+            @php
+            $count++;
+            @endphp
             @endforeach
         </tbody>
         </thead>

@@ -75,7 +75,7 @@ $query->where('active', '=', 'Approved')
                                 <th><strong>Created<strong></th>
                                 <th><strong>Appointed Date</strong></th>
                                 <th><strong>Status</strong></th>
-                                <th><strong></strong></th>
+                                <th><strong>Actions</strong></th>
                             </tr>
                         </thead>
                         <tbody>

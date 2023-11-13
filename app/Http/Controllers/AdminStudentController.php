@@ -38,7 +38,8 @@ class AdminStudentController extends Controller
             6 => 'Status should only be Active or Inactive',
             7 => 'No Image has been Uploaded',
             8 => 'Enter right amount.',
-            9 => 'Image is over 2MB.'
+            9 => 'Image is over 2MB.',
+            10 => 'Section slot is full',
         ];
         $data['error'] = 0;
         if (!empty($_GET['e'])) {
@@ -188,6 +189,20 @@ class AdminStudentController extends Controller
         $data = array();
         $data['userinfo'] = $userinfo = $request->get('userinfo');
         $input = $request->input();
+
+        $allcount = DB::table('students')
+            ->where('sectionid', $input['section'])
+            ->count();
+
+
+        $selectedsec = DB::table('curriculums')
+            ->where('id', $input['section'])
+            ->first();
+
+        if($allcount >= $selectedsec->count){
+            return redirect($this->default_url.'?e=10');
+            die();
+        }
 
         if(empty($input['email']) || empty($input['lrn']) || empty($input['password']) || empty($input['password2']) || empty($input['firstname']) || empty($input['lastname']) || empty($input['status']) || empty($input['paymenttype']) || empty($input['paymentmethod'])){
             return redirect($this->default_url.'?e=1');

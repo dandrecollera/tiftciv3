@@ -6,11 +6,16 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
-                    @foreach ($allyear as $singyear)
-                    <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
-                    @endforeach
-                </select>
+                <div class="d-flex align-items-center">
+                    <h5 class="me-3">School Year:</h5>
+                    <select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
+                        @foreach ($allyear as $singyear)
+                        <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
+                        @endforeach
+
+                    </select>
+
+                </div>
                 <h4 class="card-title">Sections</h4>
                 <div>
                     <table class="table">
@@ -21,7 +26,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
+                                <th><strong>Actions</strong></th>
                             </tr>
                         </thead>
                         <tbody id="sectionbody">

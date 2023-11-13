@@ -110,7 +110,7 @@
                                     Name</strong></span></th>
 
                         <th scope="col"><strong>Status</strong></th>
-                        <th scope="col"></th>
+                        <th scope="col"><strong>Actions</strong></th>
                     </tr>
                 </thead>
                 <tbody>

@@ -5,12 +5,16 @@
 <h5 class="mb-3">Select a Section to see list of students</h5>
 <a class="btn btn-black shadow-sm btn-sm mb-4" href="/gradingarchive">Show
     Archive</a>
-<select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
-    @foreach ($allyear as $singyear)
-    <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
-    @endforeach
+<div class="d-flex align-items-center">
+    <h5 class="me-3">School Year:</h5>
+    <select name="schoolyear" id="schoolyear" class="form-select mb-3" style="width:25%">
+        @foreach ($allyear as $singyear)
+        <option value="{{$singyear->schoolyear}}">{{$singyear->schoolyear}}</option>
+        @endforeach
 
-</select>
+    </select>
+
+</div>
 
 <div class="row" id="card-container">
 
